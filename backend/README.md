@@ -108,6 +108,17 @@ Enums em `models/enums.py`; `created_at`/`updated_at` em UTC naive, como `Lead.c
 
 **Fora, por decisão em aberto:** grupos de estudo (SHOULD). O pré-cadastro já é a tabela `lead`.
 
+### Seed (cartão #25)
+
+Sem dados ninguém testa listagem, paginação ou match. Com o `.env` configurado, dentro de `backend/`:
+
+```bash
+python seed.py            # popula se estiver vazio; rodar de novo não duplica
+python seed.py --reset    # apaga usuários e dados do domínio e popula de novo (não toca em lead/item)
+```
+
+Cria 33 tecnologias, 12 usuários com perfil (os 5 do grupo + 7 fictícios), 6 projetos, 12 vagas e 14 candidaturas em todos os estados — os mesmos projetos e nomes do protótipo do Figma. **Senha de todos os usuários: `123456`** (usernames: `matheus`, `pedro`, `erick`, `guilherme.leal`, `guilherme.silva`, `ana.lima`, `bruno.costa`, `carla.mendes`, `diego.rocha`, `fernanda.alves`, `joao.pereira`, `larissa.santos`). Para mudar os dados, edite as listas no topo do `seed.py`.
+
 ---
 
 ## 🚀 Testando a API (Documentação Automática)
