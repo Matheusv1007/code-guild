@@ -86,6 +86,41 @@ uvicorn main:app --reload
 
 ---
 
+## 🗄️ Modelo de dados (cartão #5)
+
+Além de `user`, `lead` e `item`, o domínio da CodeGuild está em `models/` — uma entidade por arquivo, no mesmo padrão SQLModel (`XBase` + `X(table=True)`). As tabelas são criadas pelo `create_all()` do `lifespan`, como as demais. Diagrama completo em [`docs/diagrama-er.mmd`](../docs/diagrama-er.mmd) (Mermaid, renderiza no GitHub) — **mexeu em um model, atualize o diagrama junto**.
+
+| Tabela | Arquivo | Observação |
+|---|---|---|
+| `technology` | `technology.py` | Catálogo compartilhado (Python, FastAPI...). Vocabulário comum do match (R4). Populado pelo seed; editar por SQL até existir admin. |
+| `profile` | `profile.py` | 1:1 com `user`. `full_name`, `bio`, `level`, `interests`, GitHub opcional (R5): `github_username`, `github_data` (JSONB) e `github_updated_at` fazem o cache com data de renovação. |
+| `profile_technology` | `profile.py` | PK (profile, technology, `kind`). `kind` = MASTERED ou LEARNING — as duas listas do perfil numa tabela só, para o match comparar com uma query. |
+| `project` | `project.py` | `owner_id` → `user`, `ON DELETE RESTRICT` (não se apaga usuário com projeto). `status` OPEN/CLOSED. `github_url` opcional. |
+| `vacancy` | `vacancy.py` | Vaga de um projeto. `quantity > 0` (check). `level` opcional (NULL = qualquer). `status` OPEN/CLOSED. "Lotada" é calculado: candidaturas APPROVED ≥ quantity (R3). |
+| `vacancy_technology` | `vacancy.py` | Stack pedida pela vaga, mesmo vocabulário do perfil. |
+| `application` | `application.py` | Candidatura. `status` PENDING/APPROVED/REJECTED/CANCELED; os três finais são terminais. **R1** via índice único parcial `(vacancy_id, user_id) WHERE status = 'PENDING'`. `message` opcional. |
+
+Enums em `models/enums.py`; `created_at`/`updated_at` em UTC naive, como `Lead.created_at`.
+
+**Regras que ficam na API, não no banco:** R2 (só o `owner` do projeto cria vagas e decide candidaturas), R3 (vaga OPEN e com posições livres antes de aceitar candidatura), transições de estado só a partir de PENDING, e não se candidatar à própria vaga.
+
+**Interpretação a confirmar com o grupo:** só PENDING conta como candidatura ativa, então cancelar *ou ser rejeitado* libera nova candidatura à mesma vaga. Para bloquear reincidência após rejeição, o índice vira `WHERE status IN ('PENDING','REJECTED')`.
+
+**Fora, por decisão em aberto:** grupos de estudo (SHOULD). O pré-cadastro já é a tabela `lead`.
+
+### Seed (cartão #25)
+
+Sem dados ninguém testa listagem, paginação ou match. Com o `.env` configurado, dentro de `backend/`:
+
+```bash
+python seed.py            # popula se estiver vazio; rodar de novo não duplica
+python seed.py --reset    # apaga usuários e dados do domínio e popula de novo (não toca em lead/item)
+```
+
+Cria 33 tecnologias, 12 usuários com perfil (os 5 do grupo + 7 fictícios), 6 projetos, 12 vagas e 14 candidaturas em todos os estados — os mesmos projetos e nomes do protótipo do Figma. **Senha de todos os usuários: `123456`** (usernames: `matheus`, `pedro`, `erick`, `guilherme.leal`, `guilherme.silva`, `ana.lima`, `bruno.costa`, `carla.mendes`, `diego.rocha`, `fernanda.alves`, `joao.pereira`, `larissa.santos`). Para mudar os dados, edite as listas no topo do `seed.py`.
+
+---
+
 ## 🚀 Testando a API (Documentação Automática)
 
 A melhor parte do FastAPI é que ele cria uma documentação interativa para você automaticamente usando o Swagger UI.
