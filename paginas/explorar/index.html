@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar Projetos - CodeGuild</title>
+    <link rel="stylesheet" href="../../estilos/global.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="explore-layout">
+    <header class="header dashboard-header">
+        <div class="container header-container">
+            <div class="header-logo">CodeGuild</div>
+            <nav class="header-nav">
+                <a href="../painel/index.html">Início</a>
+                <a href="#" class="active">Explorar Projetos</a>
+                <a href="../minhas-candidaturas/index.html">Meus Projetos</a>
+            </nav>
+            <div class="header-actions">
+                <a href="../login/index.html" class="user-profile" style="text-decoration: none; cursor: pointer; color: inherit;" title="Fazer Login">
+                    <span class="user-name">Pedro Simon (Entrar)</span>
+                    <div class="avatar">PS</div>
+                </a>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <section class="explore-header">
+            <h1>Explorar projetos</h1>
+            <p>Encontre oportunidades compatíveis com seus interesses e tecnologias.</p>
+            
+            <div class="filters-bar">
+                <input type="text" class="search-input" placeholder="Buscar por termo...">
+                
+                <div class="filter-group">
+                    <select class="filter-select">
+                        <option value="">Tecnologia</option>
+                        <option value="python">Python</option>
+                        <option value="react">React</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Nível</option>
+                        <option value="iniciante">Iniciante</option>
+                        <option value="intermediario">Intermediário</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Status</option>
+                        <option value="aberto">Aberto</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="explore-results">
+            <div class="projects-list">
+                <!-- Project 1 -->
+                <div class="card project-list-card">
+                    <div class="card-left">
+                        <div class="card-title-row">
+                            <h3>Sistema de Gestão Acadêmica</h3>
+                            <span class="match-score">75% Match</span>
+                        </div>
+                        <p class="creator">Criado por: Matheus Vasco</p>
+                        <p class="description">Plataforma completa para gestão acadêmica integrada de disciplinas, frequência, notas e laboratórios.</p>
+                        <div class="tags">
+                            <span class="badge">Python</span>
+                            <span class="badge">FastAPI</span>
+                            <span class="badge">PostgreSQL</span>
+                            <span class="badge">React</span>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                        <span class="openings">2 vagas abertas</span>
+                        <a href="../detalhes-projeto/index.html" class="btn btn-primary">Ver projeto</a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="card project-list-card">
+                    <div class="card-left">
+                        <div class="card-title-row">
+                            <h3>CodeGuild Mobile</h3>
+                            <span class="match-score match">74% Match</span>
+                        </div>
+                        <p class="creator">Criado por: Erick Alves</p>
+                        <p class="description">Versão mobile para iOS e Android focado no matchmaking acelerado de equipes de tecnologia.</p>
+                        <div class="tags">
+                            <span class="badge">React Native</span>
+                            <span class="badge">FastAPI</span>
+                            <span class="badge">PostgreSQL</span>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                        <span class="openings">3 vagas abertas</span>
+                        <a href="../detalhes-projeto/index.html" class="btn btn-primary">Ver projeto</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">CodeGuild</div>
+                <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+

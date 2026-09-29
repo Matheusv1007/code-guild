@@ -1,0 +1,170 @@
+/* Applications Specific Styles */
+
+.applications-layout {
+    background-color: var(--bg-secondary);
+    min-height: 100vh;
+}
+
+.dashboard-header {
+    background-color: white;
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 0;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.main-content {
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+.applications-header {
+    margin-bottom: 32px;
+}
+
+.applications-header h1 {
+    font-size: 28px;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.applications-header p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+.tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 32px;
+}
+
+.tab-btn {
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover {
+    color: #111827;
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.applications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.app-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+}
+
+.app-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background-color: #ecfdf5;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.app-info h3 {
+    font-size: 18px;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.app-info p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.text-primary {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.text-warning {
+    color: #f59e0b;
+    font-weight: 500;
+}
+
+.app-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.pending {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.status-badge.approved {
+    background-color: #ecfdf5;
+    color: var(--primary-color);
+}
+
+.status-badge.rejected {
+    background-color: #fee2e2;
+    color: var(--danger-color);
+}
+
+.view-link {
+    font-size: 14px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}
+
+.cancel-btn {
+    color: var(--danger-color);
+    border-color: #fca5a5;
+}
+
+.cancel-btn:hover {
+    background-color: #fef2f2;
+}
