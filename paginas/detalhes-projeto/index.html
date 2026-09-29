@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Projeto - CodeGuild</title>
+    <link rel="stylesheet" href="../../estilos/global.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="details-layout">
+    <header class="header dashboard-header">
+        <div class="container header-container">
+            <div class="header-logo">CodeGuild</div>
+            <nav class="header-nav">
+                <a href="../painel/index.html">Início</a>
+                <a href="../explorar/index.html">Explorar Projetos</a>
+                <a href="../minhas-candidaturas/index.html">Meus Projetos</a>
+            </nav>
+            <div class="header-actions">
+                <a href="../login/index.html" class="user-profile" style="text-decoration: none; cursor: pointer; color: inherit;" title="Fazer Login">
+                    <span class="user-name">Pedro Simon (Entrar)</span>
+                    <div class="avatar">PS</div>
+                </a>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <div class="breadcrumb">
+            <a href="../explorar/index.html">&larr; Voltar para explorar projetos</a>
+        </div>
+        
+        <section class="project-header card">
+            <div class="project-title-area">
+                <span class="badge match">75% Match</span>
+                <h1>Sistema de Gestão Acadêmica</h1>
+                <p class="creator">Criado por: Matheus Vasco</p>
+                <div class="tags" style="margin-top: 16px;">
+                    <span class="badge">Python</span>
+                    <span class="badge">FastAPI</span>
+                    <span class="badge">PostgreSQL</span>
+                    <span class="badge">React</span>
+                </div>
+            </div>
+            <div class="project-actions">
+                <a href="#" class="btn btn-outline">GitHub do projeto</a>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <div class="main-column">
+                <section class="details-section card">
+                    <h2>Sobre o projeto</h2>
+                    <p>Plataforma integrada para gestão acadêmica integrada de disciplinas, frequência, notas e laboratórios. O objetivo é simplificar a rotina de estudantes e professores com uma interface moderna e acessível, garantindo que as squads utilizem as melhores práticas de Clean Architecture e testes automatizados.</p>
+                </section>
+
+                <section class="details-section card">
+                    <h2>Vagas abertas</h2>
+                    
+                    <div class="job-card">
+                        <div class="job-header">
+                            <h3>Backend Developer</h3>
+                            <span class="badge">Intermediário</span>
+                        </div>
+                        <p class="openings">1 vaga disponível</p>
+                        <div class="requirements">
+                            <strong>Requisitos recomendados:</strong>
+                            <div class="tags">
+                                <span class="badge">Python</span>
+                                <span class="badge">FastAPI</span>
+                                <span class="badge">PostgreSQL</span>
+                            </div>
+                        </div>
+                        <div class="job-footer">
+                            <div class="match-info">
+                                <span>Seu match:</span> <strong class="text-primary">82%</strong>
+                            </div>
+                            <button class="btn btn-primary" onclick="abrirModal()">Candidatar-se</button>
+                        </div>
+                    </div>
+
+                    <div class="job-card">
+                        <div class="job-header">
+                            <h3>Frontend Developer</h3>
+                            <span class="badge">Intermediário</span>
+                        </div>
+                        <p class="openings">1 vaga disponível</p>
+                        <div class="requirements">
+                            <strong>Requisitos recomendados:</strong>
+                            <div class="tags">
+                                <span class="badge">React</span>
+                                <span class="badge">JavaScript</span>
+                                <span class="badge">TypeScript</span>
+                            </div>
+                        </div>
+                        <div class="job-footer">
+                            <div class="match-info">
+                                <span>Seu match:</span> <strong class="text-warning">65%</strong>
+                            </div>
+                            <button class="btn btn-primary" onclick="abrirModal()">Candidatar-se</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="side-column">
+                <section class="team-section card">
+                    <h2>Equipe atual</h2>
+                    <div class="team-member">
+                        <div class="avatar">MV</div>
+                        <div class="member-info">
+                            <strong>Matheus Vasco</strong>
+                            <span>Full Stack Developer (Responsável)</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">EA</div>
+                        <div class="member-info">
+                            <strong>Erick Alves</strong>
+                            <span>Frontend Developer</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">CodeGuild</div>
+                <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Candidatura -->
+    <div id="applicationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>Candidatar-se à vaga</h2>
+                <button class="close-btn" onclick="fecharModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Projeto:</strong> Sistema de Gestão Acadêmica</p>
+                <p><strong>Vaga:</strong> Backend Developer</p>
+                <div class="match-info" style="margin: 16px 0; padding: 12px; background: #ecfdf5; border-radius: 8px;">
+                    <span style="color: #0CB172; font-weight: 600;">Seu match: 82% (Excelente compatibilidade)</span>
+                </div>
+                <div class="form-group" style="margin-top: 16px;">
+                    <label>Por que você gostaria de participar deste projeto?</label>
+                    <textarea placeholder="Escreva uma breve mensagem destacando seu interesse..." rows="4" style="width: 100%; padding: 12px; border: 1px solid #e9ecef; border-radius: 8px; margin-top: 8px; font-family: inherit; resize: vertical;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e9ecef;">
+                <button class="btn btn-outline" onclick="fecharModal()">Cancelar</button>
+                <a href="../login/index.html" class="btn btn-primary" onclick="alert('Candidatura enviada com sucesso! Você será redirecionado para o login.')">Enviar candidatura</a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            width: 100%;
+            max-width: 500px;
+            padding: 24px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .close-btn {
+            font-size: 24px;
+            color: #6c757d;
+        }
+        .close-btn:hover {
+            color: #1a1a1a;
+        }
+    </style>
+
+    <script>
+        function abrirModal() {
+            document.getElementById('applicationModal').style.display = 'flex';
+        }
+        function fecharModal() {
+            document.getElementById('applicationModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
+
