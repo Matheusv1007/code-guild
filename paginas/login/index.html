@@ -15,7 +15,9 @@
                 <h1>Conecte-se e comece a construir.</h1>
             </div>
             
-            <form class="auth-form" action="../painel/index.html">
+            <form class="auth-form" novalidate>
+                <p id="login-error" class="form-error" role="alert" hidden></p>
+
                 <div class="form-group">
                     <label for="username">Usuário</label>
                     <input type="text" id="username" name="username" placeholder="seu.usuario" autocomplete="username" required>
@@ -26,7 +28,7 @@
                         <label for="password">Senha</label>
                         <a href="#" class="forgot-password">Esqueceu a senha?</a>
                     </div>
-                    <input type="password" id="password" placeholder="••••••••" required>
+                    <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" required>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-block">Entrar na minha conta</button>
@@ -37,6 +39,10 @@
             </div>
         </div>
     </div>
+
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/login.js"></script>
 </body>
 </html>
 
