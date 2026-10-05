@@ -1,5 +1,16 @@
 /* Landing Page Specific Styles */
 
+/* Âncoras do menu (#como-funciona, #projetos, #beneficios) */
+html {
+    scroll-behavior: smooth;
+}
+
+/* .header (global) zera o padding lateral de .container no mesmo elemento */
+.header.container {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
 .hero {
     display: flex;
     align-items: center;
@@ -116,6 +127,12 @@
 .steps-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 32px;
 }
 
