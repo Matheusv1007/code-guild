@@ -1,6 +1,6 @@
 fastapi[standard]
 uvicorn[standard]
-sqlmodel
+sqlmodel==0.0.47
 psycopg2-binary
 python-dotenv
 python-jose[cryptography]
