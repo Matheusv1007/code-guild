@@ -1,12 +1,14 @@
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
+from pydantic import field_validator, model_validator
 from sqlalchemy import JSON, Column
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, Relationship, SQLModel
 
 from .common import utcnow
 from .enums import Level, TechnologyKind
+from .technology import TechnologyRead
 
 if TYPE_CHECKING:
     from .technology import Technology
@@ -41,6 +43,53 @@ class ProfileSummary(SQLModel):
     level: Level
     bio: str | None = None
     github_username: str | None = None
+
+
+class ProfileWrite(ProfileBase):
+    """Corpo de POST/PUT /me/profile: substitui o perfil inteiro, inclusive as tecnologias."""
+    full_name: str = Field(min_length=1, max_length=120)
+    mastered_technology_ids: list[int] = Field(default_factory=list)
+    learning_technology_ids: list[int] = Field(default_factory=list)
+
+    @field_validator("full_name", mode="before")
+    @classmethod
+    def strip_full_name(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+    @field_validator("bio", "interests", "github_username", mode="before")
+    @classmethod
+    def blank_to_none(cls, value):
+        if isinstance(value, str):
+            value = value.strip()
+            return value or None
+        return value
+
+    @field_validator("mastered_technology_ids", "learning_technology_ids")
+    @classmethod
+    def deduplicate(cls, value: list[int]) -> list[int]:
+        return list(dict.fromkeys(value))
+
+    @model_validator(mode="after")
+    def check_kinds_do_not_overlap(self):
+        overlap = set(self.mastered_technology_ids) & set(self.learning_technology_ids)
+        if overlap:
+            ids = ", ".join(str(i) for i in sorted(overlap))
+            raise ValueError(f"Uma tecnologia não pode ser dominada e estudada ao mesmo tempo (ids: {ids})")
+        return self
+
+
+class ProfileRead(SQLModel):
+    """Perfil completo do usuário autenticado (GET/POST/PUT /me/profile)."""
+    id: int
+    full_name: str
+    level: Level
+    bio: str | None = None
+    interests: str | None = None
+    github_username: str | None = None
+    mastered: list[TechnologyRead] = []
+    learning: list[TechnologyRead] = []
+    created_at: datetime
+    updated_at: datetime
 
 
 class Profile(ProfileBase, table=True):
