@@ -196,3 +196,26 @@
     font-weight: 700;
     color: #111827;
 }
+
+/* Aviso de perfil incompleto (GET /me com profile: null) */
+.profile-reminder {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 48px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.profile-reminder[hidden] {
+    display: none;
+}
+
+.profile-reminder p {
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.profile-reminder .btn {
+    white-space: nowrap;
+}

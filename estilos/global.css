@@ -157,3 +157,21 @@ button {
   height: 100%;
   object-fit: cover;
 }
+
+/* Usuário no header (mesmo visual em todas as páginas internas) */
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* <a class="btn"> (Entrar) herda line-height 1.6 do body e <button> (Sair) usa "normal":
+   sem isto o header muda de altura entre o estado anônimo e o logado. */
+.header-actions .btn {
+  line-height: normal;
+}
+
+/* "hidden" sempre esconde, mesmo em elementos com display próprio (.btn, .user-profile, flex...) */
+[hidden] {
+  display: none !important;
+}
