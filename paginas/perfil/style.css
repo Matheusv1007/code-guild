@@ -1,5 +1,4 @@
-/* Perfil técnico: reaproveita o header e o layout do painel */
-@import url("../painel/style.css");
+/* Perfil técnico (header, footer e .main-content vêm de estilos/global.css) */
 
 .profile-layout {
     background-color: var(--bg-secondary);

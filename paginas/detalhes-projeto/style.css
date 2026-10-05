@@ -5,34 +5,9 @@
     min-height: 100vh;
 }
 
-.dashboard-header {
-    background-color: white;
-    border-bottom: 1px solid var(--border-color);
-    padding: 16px 0;
-}
-
-.header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.user-name {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-primary);
-}
-
+/* Breadcrumb logo abaixo do header: topo menor que o padrão (40px) do global.css */
 .main-content {
     padding-top: 24px;
-    padding-bottom: 80px;
 }
 
 .breadcrumb {

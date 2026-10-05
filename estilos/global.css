@@ -127,15 +127,82 @@ button {
   font-size: 14px;
 }
 
+.header-nav a {
+  position: relative;
+}
+
 .header-nav a:hover,
 .header-nav a.active {
   color: var(--text-primary);
+}
+
+/* Item ativo: sublinhado verde curto e centralizado (protótipo). Pseudo-elemento: não altera a geometria. */
+.header-nav a.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--primary-color);
+  transform: translateX(-50%);
 }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+/* Header das páginas internas (painel, explorar, detalhes, minhas-candidaturas, perfil) */
+.dashboard-header {
+  background-color: white;
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 0;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Área principal das páginas internas */
+.main-content {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+/* Footer (todas as páginas que o possuem) */
+.footer {
+  border-top: 1px solid var(--border-color);
+  padding: 32px 0;
+  margin-top: 40px;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.footer-copyright {
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 /* User Avatar */
