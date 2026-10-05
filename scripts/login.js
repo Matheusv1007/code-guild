@@ -2,10 +2,8 @@
  * Login da página paginas/login/index.html.
  *
  * Envia username + senha para POST /login, salva o token e redireciona ao painel.
- * Depende de auth.js (saveToken) e api.js (apiFetch, ApiError) carregados antes.
+ * Depende de auth.js (saveToken, HOME_PAGE) e api.js (apiFetch, ApiError) carregados antes.
  */
-
-const PAINEL_PAGE = "../painel/index.html";
 
 // Já logado: não faz sentido ver o formulário de novo.
 redirectIfAuthenticated();
@@ -60,7 +58,7 @@ loginForm.addEventListener("submit", async (event) => {
             body: { username, password },
         });
         saveToken(data.access_token);
-        window.location.href = PAINEL_PAGE;
+        window.location.href = HOME_PAGE;
     } catch (error) {
         showLoginError(loginErrorMessage(error));
         loginButton.disabled = false;

@@ -71,6 +71,16 @@ label {
     text-decoration: underline;
 }
 
+/* Recuperação de senha ainda não implementada: texto informativo, não clicável */
+.forgot-password.is-unavailable {
+    color: var(--text-secondary);
+    cursor: default;
+}
+
+.forgot-password.is-unavailable:hover {
+    text-decoration: none;
+}
+
 input {
     width: 100%;
     padding: 12px 16px;

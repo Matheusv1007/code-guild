@@ -1,22 +1,21 @@
 /**
- * Header das páginas públicas (explorar, detalhes-projeto) ciente da sessão.
+ * Header das páginas públicas (inicio, explorar, detalhes-projeto) ciente da sessão.
  *
  * A página continua acessível sem login (não usa requireAuth()).
- * - sem sessão: mostra [data-guest-only] ("Entrar"); [data-home-link] ("Início") → landing;
- * - com sessão: mostra [data-auth-only] ("Meus Projetos", "Meu Perfil", nome, iniciais, "Sair"),
- *   [data-home-link] → painel, e busca GET /me;
- * - token expirado ou recusado (401): apaga o token e volta ao estado anônimo, sem redirecionar.
+ * - sem sessão: mostra [data-guest-only] ("Entrar", "Entrar para se candidatar");
+ *   [data-home-link] (logo e "Início") → landing;
+ * - com sessão: mostra [data-auth-only] ("Minhas Candidaturas", "Meu Perfil", nome, iniciais, "Sair",
+ *   "Candidatar-se"); [data-home-link] → painel, e busca GET /me;
+ * - token expirado (ao abrir ou com a página aberta) ou recusado (401): apaga o token e volta ao
+ *   estado anônimo, sem redirecionar.
  *
  * Carregar no fim do <body>, depois de auth.js, api.js e user-header.js.
  */
 
-// "Início" do visitante: landing pública (o logado vai para HOME_PAGE, o painel, de auth.js).
-const GUEST_HOME_PAGE = "../inicio/index.html";
-
 /**
  * Mostra só os itens do estado atual. Além do atributo hidden, usa display inline:
  * o resultado não depende de o navegador ter a versão nova do global.css (cache).
- * Também aponta [data-home-link] para o painel ou para a landing.
+ * Também aponta [data-home-link] (logo e "Início") para HOME_PAGE ou GUEST_HOME_PAGE (auth.js).
  */
 function setHeaderSession(loggedIn) {
     const toggle = (element, visible) => {
@@ -30,6 +29,26 @@ function setHeaderSession(loggedIn) {
     });
 }
 
+/** Sessão encerrada numa página pública: continua na página, agora como visitante. */
+function endPublicSession() {
+    removeToken();
+    setHeaderSession(false);
+}
+
+/** Equivalente ao scheduleSessionExpiry() de session.js, mas sem levar ao login. */
+function schedulePublicSessionExpiry() {
+    const token = getToken();
+    const exp = getTokenExpiration(token);
+    if (exp !== null) {
+        setTimeout(() => {
+            // Outro login (em outra aba) pode ter trocado o token: só encerra o que expirou.
+            if (getToken() === token) {
+                endPublicSession();
+            }
+        }, Math.max(exp * 1000 - Date.now(), 0));
+    }
+}
+
 async function initPublicHeader() {
     // isAuthenticated() já apaga token expirado.
     if (!isAuthenticated()) {
@@ -39,6 +58,7 @@ async function initPublicHeader() {
 
     setHeaderSession(true);
     bindLogoutButtons();
+    schedulePublicSessionExpiry();
 
     try {
         // Sem a opção `auth`: em página pública um 401 não deve levar ao login.
@@ -46,8 +66,7 @@ async function initPublicHeader() {
         renderHeaderUser(user);
     } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
-            removeToken();
-            setHeaderSession(false);
+            endPublicSession();
             return;
         }
         // API fora do ar: mantém o estado logado (Sair continua disponível), sem nome.

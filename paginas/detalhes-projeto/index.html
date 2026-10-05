@@ -10,11 +10,11 @@
 <body class="details-layout">
     <header class="header dashboard-header">
         <div class="container header-container">
-            <div class="header-logo">CodeGuild</div>
+            <div class="header-logo"><a href="../inicio/index.html" data-home-link>CodeGuild</a></div>
             <nav class="header-nav">
                 <a href="../inicio/index.html" data-home-link>Início</a>
-                <a href="../explorar/index.html">Explorar Projetos</a>
-                <a href="../minhas-candidaturas/index.html" data-auth-only hidden>Meus Projetos</a>
+                <a href="../explorar/index.html" class="active" aria-current="page">Explorar Projetos</a>
+                <a href="../minhas-candidaturas/index.html" data-auth-only hidden>Minhas Candidaturas</a>
                 <a href="../perfil/index.html" data-auth-only hidden>Meu Perfil</a>
             </nav>
             <div class="header-actions">
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="project-actions">
-                <a href="#" class="btn btn-outline">GitHub do projeto</a>
+                <button type="button" class="btn btn-outline" disabled title="Integração com o GitHub ainda não disponível">GitHub do projeto (em breve)</button>
             </div>
         </section>
 
@@ -78,7 +78,8 @@
                             <div class="match-info">
                                 <span>Seu match:</span> <strong class="text-primary">82%</strong>
                             </div>
-                            <button class="btn btn-primary" onclick="abrirModal()">Candidatar-se</button>
+                            <button type="button" class="btn btn-primary" onclick="abrirModal()" data-auth-only hidden>Candidatar-se</button>
+                            <a href="../login/index.html" class="btn btn-primary" data-guest-only>Entrar para se candidatar</a>
                         </div>
                     </div>
 
@@ -100,7 +101,8 @@
                             <div class="match-info">
                                 <span>Seu match:</span> <strong class="text-warning">65%</strong>
                             </div>
-                            <button class="btn btn-primary" onclick="abrirModal()">Candidatar-se</button>
+                            <button type="button" class="btn btn-primary" onclick="abrirModal()" data-auth-only hidden>Candidatar-se</button>
+                            <a href="../login/index.html" class="btn btn-primary" data-guest-only>Entrar para se candidatar</a>
                         </div>
                     </div>
                 </section>
@@ -155,9 +157,10 @@
                     <textarea placeholder="Escreva uma breve mensagem destacando seu interesse..." rows="4" style="width: 100%; padding: 12px; border: 1px solid #e9ecef; border-radius: 8px; margin-top: 8px; font-family: inherit; resize: vertical;"></textarea>
                 </div>
             </div>
+            <p id="application-notice" class="modal-notice" role="status" hidden>Candidaturas ainda não estão disponíveis nesta versão.</p>
             <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e9ecef;">
                 <button class="btn btn-outline" onclick="fecharModal()">Cancelar</button>
-                <a href="../login/index.html" class="btn btn-primary" onclick="alert('Candidatura enviada com sucesso! Você será redirecionado para o login.')">Enviar candidatura</a>
+                <button type="button" class="btn btn-primary" onclick="enviarCandidatura()">Enviar candidatura</button>
             </div>
         </div>
     </div>
@@ -193,11 +196,21 @@
     </style>
 
     <script>
+        // Candidatura real ainda não existe: o modal só é aberto por quem está logado
+        // e "Enviar" não simula sucesso. isAuthenticated()/LOGIN_PAGE vêm de auth.js.
         function abrirModal() {
+            if (!isAuthenticated()) {
+                window.location.href = LOGIN_PAGE;
+                return;
+            }
+            document.getElementById('application-notice').hidden = true;
             document.getElementById('applicationModal').style.display = 'flex';
         }
         function fecharModal() {
             document.getElementById('applicationModal').style.display = 'none';
+        }
+        function enviarCandidatura() {
+            document.getElementById('application-notice').hidden = false;
         }
     </script>
 
