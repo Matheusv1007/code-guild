@@ -10,13 +10,11 @@
 
 const TOKEN_KEY = "codeguild_token";
 
-// Caminhos relativos válidos a partir de qualquer paginas/<tela>/index.html
+// Rotas compartilhadas: caminhos relativos válidos a partir de qualquer paginas/<tela>/index.html.
+// Páginas privadas carregam scripts/session.js; inicio, explorar e detalhes-projeto, scripts/public-header.js.
 const LOGIN_PAGE = "../login/index.html";
-const HOME_PAGE = "../painel/index.html";
-
-// Definição de páginas (pasta em paginas/). As privadas usam scripts/session.js.
-const PUBLIC_PAGES = ["inicio", "login", "explorar", "detalhes-projeto"];
-const PRIVATE_PAGES = ["painel", "minhas-candidaturas", "perfil"];
+const HOME_PAGE = "../painel/index.html"; // início de quem está logado
+const GUEST_HOME_PAGE = "../inicio/index.html"; // início do visitante (landing)
 
 function saveToken(token) {
     try {

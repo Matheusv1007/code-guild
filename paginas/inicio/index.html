@@ -9,15 +9,17 @@
 </head>
 <body>
     <header class="header container">
-        <div class="header-logo">CodeGuild</div>
+        <div class="header-logo"><a href="../inicio/index.html" data-home-link>CodeGuild</a></div>
         <nav class="header-nav">
-            <a href="#" class="active">Como funciona</a>
-            <a href="#">Projetos</a>
-            <a href="#">Benefícios</a>
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#projetos">Projetos</a>
+            <a href="#beneficios">Benefícios</a>
         </nav>
         <div class="header-actions">
-            <a href="../login/index.html" class="btn btn-outline">Entrar</a>
-            <a href="../cadastro/index.html" class="btn btn-primary">Criar conta</a>
+            <a href="../login/index.html" class="btn btn-outline" data-guest-only>Entrar</a>
+            <a href="../cadastro/index.html" class="btn btn-primary" data-guest-only>Criar conta</a>
+            <a href="../painel/index.html" class="btn btn-primary" data-auth-only hidden>Ir para o painel</a>
+            <button type="button" class="btn btn-outline" data-logout data-auth-only hidden>Sair</button>
         </div>
     </header>
 
@@ -28,7 +30,7 @@
                 <p>Conecte-se com estudantes que possuem habilidades e interesses compatíveis com os seus e transforme ideias em projetos reais.</p>
                 <div class="hero-actions">
                     <a href="../explorar/index.html" class="btn btn-primary">Explorar projetos</a>
-                    <a href="../cadastro/index.html" class="btn btn-outline">Criar minha conta</a>
+                    <a href="../cadastro/index.html" class="btn btn-outline" data-guest-only>Criar minha conta</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -43,7 +45,7 @@
             </div>
         </section>
 
-        <section class="how-it-works bg-light">
+        <section id="como-funciona" class="how-it-works bg-light">
             <div class="container">
                 <div class="section-header">
                     <span class="subtitle">Como funciona</span>
@@ -75,7 +77,7 @@
             </div>
         </section>
 
-        <section class="featured-projects container">
+        <section id="projetos" class="featured-projects container">
             <div class="section-header left">
                 <span class="subtitle">Oportunidades reais</span>
                 <h2>Projetos em destaque</h2>
@@ -128,6 +130,30 @@
                 </div>
             </div>
         </section>
+
+        <section id="beneficios" class="benefits bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="subtitle">Benefícios</span>
+                    <h2>Para quem é o CodeGuild</h2>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="step-card">
+                        <h3>Estudantes iniciantes</h3>
+                        <p>Encontre seu primeiro projeto prático e parceiros no mesmo nível para aprender junto.</p>
+                    </div>
+                    <div class="step-card">
+                        <h3>Alunos intermediários e veteranos</h3>
+                        <p>Lidere equipes, pratique novas tecnologias e fortaleça seu portfólio com projetos reais.</p>
+                    </div>
+                    <div class="step-card">
+                        <h3>Monitores e professores</h3>
+                        <p>Proponha desafios, divulgue iniciativas e oriente projetos acadêmicos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -138,6 +164,11 @@
             </div>
         </div>
     </footer>
+
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/user-header.js"></script>
+    <script src="../../scripts/public-header.js"></script>
 </body>
 </html>
 

@@ -5,30 +5,6 @@
     min-height: 100vh;
 }
 
-.dashboard-header {
-    background-color: white;
-    border-bottom: 1px solid var(--border-color);
-    padding: 16px 0;
-}
-
-.header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.main-content {
-    padding-top: 40px;
-    padding-bottom: 80px;
-}
-
 .applications-header {
     margin-bottom: 32px;
 }

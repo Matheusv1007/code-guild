@@ -1,5 +1,16 @@
 /* Landing Page Specific Styles */
 
+/* Âncoras do menu (#como-funciona, #projetos, #beneficios) */
+html {
+    scroll-behavior: smooth;
+}
+
+/* .header (global) zera o padding lateral de .container no mesmo elemento */
+.header.container {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
 .hero {
     display: flex;
     align-items: center;
@@ -119,6 +130,12 @@
     gap: 32px;
 }
 
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
 .step-card {
     background: white;
     padding: 32px;
@@ -198,27 +215,4 @@
     font-size: 14px;
     color: var(--text-secondary);
     font-weight: 500;
-}
-
-.footer {
-    border-top: 1px solid var(--border-color);
-    padding: 32px 0;
-    margin-top: 40px;
-}
-
-.footer-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.footer-logo {
-    font-weight: 700;
-    font-size: 18px;
-    color: var(--text-primary);
-}
-
-.footer-copyright {
-    color: var(--text-secondary);
-    font-size: 14px;
 }
