@@ -34,6 +34,15 @@ class ProfileBase(SQLModel):
     github_username: str | None = Field(default=None, max_length=39)  
 
 
+class ProfileSummary(SQLModel):
+    """Dados básicos do perfil devolvidos junto com o usuário em GET /me."""
+    id: int
+    full_name: str
+    level: Level
+    bio: str | None = None
+    github_username: str | None = None
+
+
 class Profile(ProfileBase, table=True):
     
     id: int | None = Field(default=None, primary_key=True)
