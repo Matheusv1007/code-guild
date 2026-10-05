@@ -9,3 +9,8 @@ class TechnologyBase(SQLModel):
 class Technology(TechnologyBase, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
+
+
+class TechnologyRead(TechnologyBase):
+    """Item do catálogo devolvido por GET /technologies."""
+    id: int
