@@ -216,3 +216,132 @@ html {
     color: var(--text-secondary);
     font-weight: 500;
 }
+
+/* Contagem regressiva (scripts/countdown.js) */
+.countdown {
+    padding-bottom: 80px;
+}
+
+.countdown-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 40px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-radius: 24px;
+}
+
+.countdown-info {
+    flex: 1 1 320px;
+}
+
+.countdown-info h2 {
+    font-size: 28px;
+    line-height: 1.2;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.countdown-info p {
+    color: var(--text-secondary);
+}
+
+.countdown-info time {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.countdown-timer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    flex: 0 1 480px;
+}
+
+.countdown-unit {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    padding: 20px 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Bloco "flutua" ao passar o mouse */
+.countdown-unit:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-value {
+    display: block;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--primary-color);
+    /* Algarismos com a mesma largura: os blocos não "pulam" a cada segundo */
+    font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+/* Contagem encerrada: valores em 00, sem o destaque verde */
+.countdown.is-finished .countdown-value {
+    color: var(--text-secondary);
+}
+
+/* Contagem encerrada: o card pulsa para destacar a mensagem de chegada */
+.countdown.is-finished .countdown-card {
+    animation: countdown-pulse 0.6s ease-in-out 2;
+}
+
+@keyframes countdown-pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+/* Quem pede menos movimento no sistema não vê a animação nem o efeito de flutuar */
+@media (prefers-reduced-motion: reduce) {
+    .countdown-unit,
+    .countdown-unit:hover,
+    .countdown.is-finished .countdown-card {
+        animation: none;
+        transition: none;
+        transform: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .countdown-card {
+        padding: 24px;
+    }
+
+    .countdown-info h2 {
+        font-size: 22px;
+    }
+
+    .countdown-timer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .countdown-value {
+        font-size: 32px;
+    }
+}

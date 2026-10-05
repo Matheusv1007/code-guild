@@ -11,6 +11,7 @@
     <header class="header container">
         <div class="header-logo"><a href="../inicio/index.html" data-home-link>CodeGuild</a></div>
         <nav class="header-nav">
+            <a href="#lancamento">Lançamento</a>
             <a href="#como-funciona">Como funciona</a>
             <a href="#projetos">Projetos</a>
             <a href="#beneficios">Benefícios</a>
@@ -40,6 +41,42 @@
                         <div class="match-badge">Match 98%</div>
                         <div class="mockup-line"></div>
                         <div class="mockup-line short"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contagem regressiva: data alvo em COUNTDOWN_TARGET (scripts/countdown.js) -->
+        <section id="lancamento" class="countdown container" data-countdown>
+            <div class="countdown-card">
+                <div class="countdown-info">
+                    <span class="subtitle">Lançamento do MVP</span>
+                    <div data-countdown-running>
+                        <h2>Falta pouco para o CodeGuild entrar no ar</h2>
+                        <p>Lançamento em <time data-countdown-date>breve</time>.</p>
+                    </div>
+                    <div data-countdown-finished hidden aria-live="polite">
+                        <h2>Chegou o dia! O CodeGuild está no ar.</h2>
+                        <p>Crie seu perfil e encontre seu próximo projeto.</p>
+                    </div>
+                </div>
+
+                <div class="countdown-timer" role="timer" aria-label="Tempo restante para o lançamento do MVP">
+                    <div class="countdown-unit">
+                        <span class="countdown-value" data-countdown-unit="days">--</span>
+                        <span class="countdown-label">Dias</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-value" data-countdown-unit="hours">--</span>
+                        <span class="countdown-label">Horas</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-value" data-countdown-unit="minutes">--</span>
+                        <span class="countdown-label">Minutos</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-value" data-countdown-unit="seconds">--</span>
+                        <span class="countdown-label">Segundos</span>
                     </div>
                 </div>
             </div>
@@ -169,6 +206,7 @@
     <script src="../../scripts/api.js"></script>
     <script src="../../scripts/user-header.js"></script>
     <script src="../../scripts/public-header.js"></script>
+    <script src="../../scripts/countdown.js"></script>
 </body>
 </html>
 
