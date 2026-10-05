@@ -1,6 +1,6 @@
 from sqlmodel import select
 from integration.database import SessionDep
-from models import User, UserCreate, UserLogin
+from models import Profile, ProfileSummary, User, UserCreate, UserLogin, UserMe
 from auth.security import get_password_hash, verify_password, create_access_token
 
 def register_user(session: SessionDep, user_data: UserCreate) -> User | None:
@@ -22,4 +22,16 @@ def authenticate_user(session: SessionDep, user_login: UserLogin) -> str | None:
     user = session.exec(statement).first()
     if not user or not verify_password(user_login.password, user.hashed_password):
         return None
+    if not user.is_active:
+        return None
     return create_access_token(data={"sub": user.username})
+
+def get_me(session: SessionDep, user: User) -> UserMe:
+    profile = session.exec(select(Profile).where(Profile.user_id == user.id)).first()
+    return UserMe(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        is_active=user.is_active,
+        profile=ProfileSummary.model_validate(profile) if profile else None,
+    )

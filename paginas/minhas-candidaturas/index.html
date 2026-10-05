@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Candidaturas - CodeGuild</title>
+    <link rel="stylesheet" href="../../estilos/global.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/session.js"></script>
+</head>
+<body class="applications-layout">
+    <header class="header dashboard-header">
+        <div class="container header-container">
+            <div class="header-logo">CodeGuild</div>
+            <nav class="header-nav">
+                <a href="../painel/index.html">Início</a>
+                <a href="../explorar/index.html">Explorar Projetos</a>
+                <a href="#" class="active">Meus Projetos</a>
+            </nav>
+            <div class="header-actions">
+                <div class="user-profile">
+                    <span class="user-name" data-user-name></span>
+                    <div class="avatar" data-user-initials></div>
+                </div>
+                <button type="button" class="btn btn-outline" data-logout>Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <section class="applications-header">
+            <h1>Minhas candidaturas</h1>
+            <p>Acompanhe o andamento de suas solicitações para squads acadêmicos.</p>
+            
+            <div class="tabs">
+                <button class="tab-btn active">Todas</button>
+                <button class="tab-btn">Pendentes</button>
+                <button class="tab-btn">Aprovadas</button>
+                <button class="tab-btn">Rejeitadas</button>
+            </div>
+        </section>
+
+        <section class="applications-list">
+            <!-- App 1 -->
+            <div class="card app-card">
+                <div class="app-info">
+                    <div class="app-icon">S</div>
+                    <div>
+                        <h3>Sistema de Gestão Acadêmica</h3>
+                        <p>Backend Developer • <span class="text-primary">Match: 82%</span></p>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <span class="status-badge pending">Pendente</span>
+                    <a href="../detalhes-projeto/index.html" class="view-link">Ver projeto</a>
+                    <button class="btn btn-outline cancel-btn">Cancelar candidatura</button>
+                </div>
+            </div>
+
+            <!-- App 2 -->
+            <div class="card app-card">
+                <div class="app-info">
+                    <div class="app-icon">C</div>
+                    <div>
+                        <h3>CodeGuild Mobile</h3>
+                        <p>Frontend Developer • <span class="text-primary">Match: 74%</span></p>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <span class="status-badge approved">Aprovada</span>
+                    <a href="../detalhes-projeto/index.html" class="view-link">Ver projeto</a>
+                </div>
+            </div>
+
+            <!-- App 3 -->
+            <div class="card app-card">
+                <div class="app-info">
+                    <div class="app-icon" style="background-color: #f3f4f6;">P</div>
+                    <div>
+                        <h3>Plataforma de Eventos</h3>
+                        <p>UX/UI Designer • <span class="text-warning">Match: 55%</span></p>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <span class="status-badge rejected">Rejeitada</span>
+                    <a href="../detalhes-projeto/index.html" class="view-link">Ver projeto</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">CodeGuild</div>
+                <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

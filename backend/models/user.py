@@ -1,5 +1,7 @@
 from sqlmodel import Field, SQLModel
 
+from .profile import ProfileSummary
+
 class UserBase(SQLModel):
     """Classe base para Usuários. Contém os dados em comum."""
     username: str = Field(index=True, unique=True)
@@ -29,3 +31,7 @@ class UserLogin(SQLModel):
 
 class UserRead(UserBase):
     id: int
+
+class UserMe(UserRead):
+    """Schema de resposta de GET /me: usuário autenticado + perfil básico (ou null)."""
+    profile: ProfileSummary | None = None

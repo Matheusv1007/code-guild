@@ -29,7 +29,8 @@ def get_current_user(
         raise credentials_exception
 
     user = session.exec(select(User).where(User.username == token_data.username)).first()
-    if user is None:
+    # Usuário removido ou desativado depois da emissão do token não é mais aceito.
+    if user is None or not user.is_active:
         raise credentials_exception
 
     return user

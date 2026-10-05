@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from integration.database import SessionDep
-from models import Token, UserCreate, UserLogin, UserRead
+from models import Token, User, UserCreate, UserLogin, UserMe, UserRead
+from auth.dependencies import get_current_user
 from services import auth_service
 
 auth_router = APIRouter(tags=["Autenticação"])
@@ -25,3 +26,8 @@ def login_for_access_token(session: SessionDep, user_login: UserLogin):
             headers={"WWW-Authenticate": "Bearer"},
         )
     return {"access_token": access_token, "token_type": "bearer"}
+
+@auth_router.get("/me", response_model=UserMe)
+def read_me(session: SessionDep, current_user: User = Depends(get_current_user)):
+    """Retorna o usuário autenticado e, se existir, o perfil básico."""
+    return auth_service.get_me(session, current_user)

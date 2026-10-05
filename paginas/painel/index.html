@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CodeGuild</title>
+    <link rel="stylesheet" href="../../estilos/global.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/session.js"></script>
+</head>
+<body class="dashboard-layout">
+    <header class="header dashboard-header">
+        <div class="container header-container">
+            <div class="header-logo">CodeGuild</div>
+            <nav class="header-nav">
+                <a href="#" class="active">Início</a>
+                <a href="../explorar/index.html">Explorar Projetos</a>
+                <a href="../minhas-candidaturas/index.html">Meus Projetos</a>
+            </nav>
+            <div class="header-actions">
+                <div class="user-profile">
+                    <span class="user-name" data-user-name></span>
+                    <div class="avatar" data-user-initials></div>
+                </div>
+                <button type="button" class="btn btn-outline" data-logout>Sair</button>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <section class="welcome-section">
+            <div class="welcome-header">
+                <h1 id="welcome-title">Olá 👋</h1>
+                <p>Encontre seu próximo projeto acadêmico.</p>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar projetos ou tecnologias...">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <div class="section-header-row">
+                <h2>Projetos recomendados</h2>
+                <a href="../explorar/index.html" class="view-all">Ver todos</a>
+            </div>
+            
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="card project-card">
+                    <div class="card-header">
+                        <h3>Sistema Financeiro Acadêmico</h3>
+                        <span class="match-score">82% Match</span>
+                    </div>
+                    <p>Plataforma para organização e controle financeiro de estudantes e laboratórios acadêmicos.</p>
+                    <div class="tags">
+                        <span class="badge">Python</span>
+                        <span class="badge">FastAPI</span>
+                        <span class="badge">PostgreSQL</span>
+                    </div>
+                    <div class="project-footer">
+                        <span class="openings">3 vagas abertas</span>
+                        <a href="../detalhes-projeto/index.html" class="btn btn-outline">Ver projeto &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="card project-card">
+                    <div class="card-header">
+                        <h3>Aplicativo de Eventos</h3>
+                        <span class="match-score">67% Match</span>
+                    </div>
+                    <p>Sistema para gerenciar eventos universitários e controle automático de inscrições e presenças.</p>
+                    <div class="tags">
+                        <span class="badge">React</span>
+                        <span class="badge">JavaScript</span>
+                        <span class="badge">Figma</span>
+                    </div>
+                    <div class="project-footer">
+                        <span class="openings">2 vagas abertas</span>
+                        <a href="../detalhes-projeto/index.html" class="btn btn-outline">Ver projeto &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="card project-card">
+                    <div class="card-header">
+                        <h3>CodeGuild Mobile</h3>
+                        <span class="match-score match">74% Match</span>
+                    </div>
+                    <p>App mobile multiplataforma da própria plataforma CodeGuild focado em matchmaking de squads.</p>
+                    <div class="tags">
+                        <span class="badge">React Native</span>
+                        <span class="badge">FastAPI</span>
+                        <span class="badge">PostgreSQL</span>
+                    </div>
+                    <div class="project-footer">
+                        <span class="openings">3 vagas abertas</span>
+                        <a href="../detalhes-projeto/index.html" class="btn btn-outline">Ver projeto &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Minha atividade</h2>
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <span class="stat-label">Candidaturas enviadas</span>
+                    <span class="stat-value">2</span>
+                </div>
+                <div class="card stat-card">
+                    <span class="stat-label">Projetos participando</span>
+                    <span class="stat-value">1</span>
+                </div>
+                <div class="card stat-card">
+                    <span class="stat-label">Projetos criados</span>
+                    <span class="stat-value">1</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">CodeGuild</div>
+                <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../scripts/painel.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #0CB172;
+  --primary-hover: #0a9660;
+  --bg-color: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6c757d;
+  --border-color: #e9ecef;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --border-radius: 8px;
+  --font-family: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-outline {
+  border: 1px solid var(--border-color);
+  background-color: white;
+  color: var(--text-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--bg-secondary);
+}
+
+.card {
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 24px;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+}
+
+.badge.match {
+  color: var(--primary-color);
+  background-color: rgba(12, 177, 114, 0.1);
+  border-color: rgba(12, 177, 114, 0.2);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-logo {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+.header-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.header-nav a {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.header-nav a:hover,
+.header-nav a.active {
+  color: var(--text-primary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* User Avatar */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--text-secondary);
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
