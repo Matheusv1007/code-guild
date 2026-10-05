@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - CodeGuild</title>
+    <link rel="stylesheet" href="../../estilos/global.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/session.js"></script>
+</head>
+<body class="profile-layout">
+    <header class="header dashboard-header">
+        <div class="container header-container">
+            <div class="header-logo">CodeGuild</div>
+            <nav class="header-nav">
+                <a href="../painel/index.html">Início</a>
+                <a href="../explorar/index.html">Explorar Projetos</a>
+                <a href="../minhas-candidaturas/index.html">Meus Projetos</a>
+            </nav>
+            <div class="header-actions">
+                <div class="user-profile">
+                    <span class="user-name" data-user-name></span>
+                    <div class="avatar" data-user-initials></div>
+                </div>
+                <button type="button" class="btn btn-outline" data-logout>Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content profile-content">
+        <a href="../painel/index.html" class="back-link">&larr; Voltar ao painel</a>
+
+        <section class="profile-header">
+            <h1>Meu perfil técnico</h1>
+            <p>Conte um pouco sobre você e suas habilidades.</p>
+        </section>
+
+        <p id="profile-loading" class="profile-loading" role="status">Carregando seu perfil...</p>
+
+        <div id="profile-load-error" class="form-error load-error" role="alert" hidden>
+            <span id="profile-load-error-message"></span>
+            <button type="button" id="profile-retry" class="btn btn-outline">Tentar novamente</button>
+        </div>
+
+        <form id="profile-form" class="profile-form" novalidate hidden>
+            <section class="card form-section">
+                <div class="form-section-header">
+                    <h2>Informações pessoais</h2>
+                    <span id="profile-mode" class="badge"></span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="full_name">Nome completo <span class="required">*</span></label>
+                        <input type="text" id="full_name" name="full_name" maxlength="120" autocomplete="name" placeholder="Seu nome completo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="level">Nível <span class="required">*</span></label>
+                        <!-- Valores do enum Level do backend (models/enums.py) -->
+                        <select id="level" name="level" required>
+                            <option value="">Selecione seu nível</option>
+                            <option value="BEGINNER">Iniciante</option>
+                            <option value="INTERMEDIATE">Intermediário</option>
+                            <option value="ADVANCED">Avançado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" rows="4" placeholder="Fale sobre sua formação, experiências e objetivos."></textarea>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="interests">Interesses</label>
+                        <textarea id="interests" name="interests" rows="2" placeholder="Ex.: desenvolvimento web, dados, jogos, open source"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="github_username">Usuário do GitHub</label>
+                        <div class="input-prefix">
+                            <span>github.com/</span>
+                            <input type="text" id="github_username" name="github_username" maxlength="39" autocomplete="off" spellcheck="false" placeholder="seu-usuario">
+                        </div>
+                        <small class="field-hint">Informe só o username, sem o link (ex.: <code>octocat</code>).</small>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card form-section">
+                <div class="form-section-header">
+                    <h2>Tecnologias que domino</h2>
+                </div>
+                <p class="section-hint">Selecione as tecnologias com as quais você já trabalha com segurança.</p>
+                <div id="mastered-technologies" class="tech-grid" data-kind="mastered"></div>
+            </section>
+
+            <section class="card form-section">
+                <div class="form-section-header">
+                    <h2>Tecnologias que estou estudando</h2>
+                </div>
+                <p class="section-hint">Uma tecnologia só pode estar em uma das listas: ao marcá-la aqui, ela sai de "domino".</p>
+                <div id="learning-technologies" class="tech-grid" data-kind="learning"></div>
+            </section>
+
+            <p id="profile-error" class="form-error" role="alert" hidden></p>
+            <p id="profile-success" class="form-success" role="status" hidden></p>
+
+            <div class="form-actions">
+                <button type="submit" id="profile-submit" class="btn btn-primary">Criar perfil</button>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">CodeGuild</div>
+                <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../scripts/perfil.js"></script>
+</body>
+</html>
