@@ -1,6 +1,8 @@
 from datetime import datetime
 from sqlmodel import Field, SQLModel
 
+from .common import utcnow
+
 class LeadBase(SQLModel):
     name: str
     email: str = Field(index=True, unique=True)
@@ -9,7 +11,7 @@ class LeadBase(SQLModel):
 
 class Lead(LeadBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=utcnow)
 
 class LeadCreate(LeadBase):
     pass

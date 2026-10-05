@@ -10,6 +10,8 @@ from api.item import app_router
 from api.auth import auth_router
 from api.users import users_router
 from api.leads import leads_router
+from api.technologies import technologies_router
+from api.profile import profile_router
 from integration.database import lifespan
 
 # Criação da instância principal da aplicação FastAPI
@@ -51,3 +53,9 @@ app.include_router(users_router)
 
 # Inclui as rotas para captura de Leads (Interessados)
 app.include_router(leads_router)
+
+# Inclui o catálogo público de tecnologias
+app.include_router(technologies_router)
+
+# Inclui as rotas do perfil técnico do usuário autenticado
+app.include_router(profile_router)

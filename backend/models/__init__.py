@@ -3,8 +3,8 @@ from .user import User, UserBase, UserCreate, UserUpdate, UserLogin, UserRead, U
 from .token import Token, TokenData
 from .lead import Lead, LeadBase, LeadCreate, LeadRead
 from .enums import ApplicationStatus, Level, ProjectStatus, TechnologyKind, VacancyStatus
-from .technology import Technology, TechnologyBase
-from .profile import Profile, ProfileBase, ProfileSummary, ProfileTechnology
+from .technology import Technology, TechnologyBase, TechnologyRead
+from .profile import Profile, ProfileBase, ProfileRead, ProfileSummary, ProfileTechnology, ProfileWrite
 from .project import Project, ProjectBase
 from .vacancy import Vacancy, VacancyBase, VacancyTechnology
 from .application import Application, ApplicationBase
@@ -15,8 +15,8 @@ __all__ = [
     "Token", "TokenData",
     "Lead", "LeadBase", "LeadCreate", "LeadRead",
     "ApplicationStatus", "Level", "ProjectStatus", "TechnologyKind", "VacancyStatus",
-    "Technology", "TechnologyBase",
-    "Profile", "ProfileBase", "ProfileSummary", "ProfileTechnology",
+    "Technology", "TechnologyBase", "TechnologyRead",
+    "Profile", "ProfileBase", "ProfileRead", "ProfileSummary", "ProfileTechnology", "ProfileWrite",
     "Project", "ProjectBase",
     "Vacancy", "VacancyBase", "VacancyTechnology",
     "Application", "ApplicationBase",

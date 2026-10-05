@@ -12,16 +12,18 @@
         <div class="container header-container">
             <div class="header-logo">CodeGuild</div>
             <nav class="header-nav">
-                <a href="../painel/index.html">Início</a>
+                <a href="../inicio/index.html" data-home-link>Início</a>
                 <a href="#" class="active">Explorar Projetos</a>
-                <a href="../minhas-candidaturas/index.html">Meus Projetos</a>
+                <a href="../minhas-candidaturas/index.html" data-auth-only hidden>Meus Projetos</a>
+                <a href="../perfil/index.html" data-auth-only hidden>Meu Perfil</a>
             </nav>
             <div class="header-actions">
-                <a href="../login/index.html" class="user-profile" style="text-decoration: none; cursor: pointer; color: inherit;" title="Fazer Login">
-                    <span class="user-name">Pedro Simon (Entrar)</span>
-                    <div class="avatar">PS</div>
-                </a>
-            </div>
+                <a href="../login/index.html" class="btn btn-outline" data-guest-only>Entrar</a>
+                <div class="user-profile" data-auth-only hidden>
+                    <span class="user-name" data-user-name></span>
+                    <div class="avatar" data-user-initials></div>
+                </div>
+                <button type="button" class="btn btn-outline" data-logout data-auth-only hidden>Sair</button>
             </div>
         </div>
     </header>
@@ -109,6 +111,11 @@
             </div>
         </div>
     </footer>
+
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/user-header.js"></script>
+    <script src="../../scripts/public-header.js"></script>
 </body>
 </html>
 
