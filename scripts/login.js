@@ -7,6 +7,9 @@
 
 const PAINEL_PAGE = "../painel/index.html";
 
+// Já logado: não faz sentido ver o formulário de novo.
+redirectIfAuthenticated();
+
 const loginForm = document.querySelector(".auth-form");
 const loginError = document.getElementById("login-error");
 const loginButton = loginForm.querySelector("button[type='submit']");

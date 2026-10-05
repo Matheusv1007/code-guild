@@ -10,10 +10,11 @@
 
 const TOKEN_KEY = "codeguild_token";
 
-// Caminho relativo válido a partir de qualquer paginas/<tela>/index.html
+// Caminhos relativos válidos a partir de qualquer paginas/<tela>/index.html
 const LOGIN_PAGE = "../login/index.html";
+const HOME_PAGE = "../painel/index.html";
 
-// Definição de páginas (pasta em paginas/). A proteção ainda não é aplicada.
+// Definição de páginas (pasta em paginas/). As privadas usam scripts/session.js.
 const PUBLIC_PAGES = ["inicio", "login", "explorar", "detalhes-projeto"];
 const PRIVATE_PAGES = ["painel", "minhas-candidaturas", "perfil"];
 
@@ -69,13 +70,32 @@ function isAuthenticated() {
 }
 
 /**
- * Para uso futuro nas páginas privadas: redireciona ao login se não houver sessão.
- * Ainda NÃO é chamada por nenhuma página.
+ * Páginas privadas: sem sessão válida, vai direto ao login.
+ * Usa replace() para a página privada não ficar no histórico (o "voltar" não a reabre).
  */
 function requireAuth() {
     if (!isAuthenticated()) {
-        window.location.href = LOGIN_PAGE;
+        window.location.replace(LOGIN_PAGE);
         return false;
     }
     return true;
+}
+
+/** Página de login: com sessão válida, vai direto ao painel. */
+function redirectIfAuthenticated() {
+    if (isAuthenticated()) {
+        window.location.replace(HOME_PAGE);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Encerra a sessão: apaga o token e volta ao login.
+ * Usada pelo botão "Sair" e quando a API recusa o token (401). O JWT é stateless,
+ * então não há chamada ao backend.
+ */
+function logout() {
+    removeToken();
+    window.location.replace(LOGIN_PAGE);
 }

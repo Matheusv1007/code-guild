@@ -6,6 +6,9 @@
     <title>Dashboard - CodeGuild</title>
     <link rel="stylesheet" href="../../estilos/global.css">
     <link rel="stylesheet" href="style.css">
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/session.js"></script>
 </head>
 <body class="dashboard-layout">
     <header class="header dashboard-header">
@@ -17,10 +20,11 @@
                 <a href="../minhas-candidaturas/index.html">Meus Projetos</a>
             </nav>
             <div class="header-actions">
-                <a href="../login/index.html" class="user-profile" style="text-decoration: none; cursor: pointer; color: inherit;" title="Fazer Login">
-                    <span class="user-name">Pedro Simon (Entrar)</span>
-                    <div class="avatar">PS</div>
-                </a>
+                <div class="user-profile">
+                    <span class="user-name" data-user-name></span>
+                    <div class="avatar" data-user-initials></div>
+                </div>
+                <button type="button" class="btn btn-outline" data-logout>Sair</button>
             </div>
             </div>
         </div>
@@ -29,7 +33,7 @@
     <main class="container main-content">
         <section class="welcome-section">
             <div class="welcome-header">
-                <h1>Olá, Pedro 👋</h1>
+                <h1 id="welcome-title">Olá 👋</h1>
                 <p>Encontre seu próximo projeto acadêmico.</p>
             </div>
             
@@ -129,6 +133,8 @@
             </div>
         </div>
     </footer>
+
+    <script src="../../scripts/painel.js"></script>
 </body>
 </html>
 

@@ -4,7 +4,12 @@
  * Backend padrão: http://127.0.0.1:8000
  * Frontend padrão: http://127.0.0.1:5500
  *
- * Depende de getToken() (scripts/auth.js) apenas quando a opção `auth` é usada.
+ * Depende de getToken() e logout() (scripts/auth.js) apenas quando a opção `auth` é usada.
+ *
+ * Sessão inválida: em uma chamada com `auth: true`, sem token ou com resposta 401
+ * (token expirado, adulterado ou usuário desativado), o token é apagado e o usuário
+ * vai para o login. Chamadas sem `auth` (ex.: POST /login) nunca redirecionam,
+ * o que evita loop na própria tela de login.
  */
 
 const API_URL = "http://127.0.0.1:8000";
@@ -55,6 +60,7 @@ async function apiFetch(path, { method = "GET", body, auth = false, headers = {}
     if (auth) {
         const token = getToken();
         if (!token) {
+            logout();
             throw new ApiError(401, "Usuário não autenticado");
         }
         requestHeaders.Authorization = `Bearer ${token}`;
@@ -72,6 +78,10 @@ async function apiFetch(path, { method = "GET", body, auth = false, headers = {}
     }
 
     const data = response.status === 204 ? null : await response.json().catch(() => null);
+
+    if (auth && response.status === 401) {
+        logout();
+    }
 
     if (!response.ok) {
         throw new ApiError(response.status, extractErrorMessage(data, response), data);
