@@ -15,6 +15,7 @@
             <a href="#como-funciona">Como funciona</a>
             <a href="#projetos">Projetos</a>
             <a href="#beneficios">Benefícios</a>
+            <a href="#pre-cadastro">Pré-cadastro</a>
         </nav>
         <div class="header-actions">
             <a href="../login/index.html" class="btn btn-outline" data-guest-only>Entrar</a>
@@ -191,6 +192,44 @@
                 </div>
             </div>
         </section>
+
+        <!-- Pré-cadastro: envio para POST /leads (scripts/pre-cadastro.js) -->
+        <section id="pre-cadastro" class="pre-signup container">
+            <div class="pre-signup-card">
+                <div class="pre-signup-info">
+                    <span class="subtitle">Pré-cadastro</span>
+                    <h2>Garanta seu lugar no lançamento</h2>
+                    <p>Deixe seus dados e avisaremos você assim que o CodeGuild entrar no ar.</p>
+                </div>
+
+                <form class="lead-form card" novalidate>
+                    <p id="lead-error" class="form-error" role="alert" hidden></p>
+                    <p id="lead-success" class="form-success" role="status" hidden></p>
+
+                    <div class="form-group">
+                        <label for="lead-name">Nome</label>
+                        <input type="text" id="lead-name" name="name" placeholder="Seu nome" autocomplete="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lead-email">E-mail</label>
+                        <input type="email" id="lead-email" name="email" placeholder="seu.email@universidade.edu" autocomplete="email" required>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="lead-course-period">Curso/período</label>
+                        <input type="text" id="lead-course-period" name="course_period" placeholder="Ex.: Sistemas de Informação, 6º período" required>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="lead-areas">Áreas de interesse</label>
+                        <textarea id="lead-areas" name="areas_of_interest" rows="3" placeholder="Ex.: desenvolvimento web, dados, mobile" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary form-group-full">Quero participar</button>
+                </form>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -207,6 +246,7 @@
     <script src="../../scripts/user-header.js"></script>
     <script src="../../scripts/public-header.js"></script>
     <script src="../../scripts/countdown.js"></script>
+    <script src="../../scripts/pre-cadastro.js"></script>
 </body>
 </html>
 
