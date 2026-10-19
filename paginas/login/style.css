@@ -128,3 +128,18 @@ input:focus {
 .auth-footer a:hover {
     text-decoration: underline;
 }
+
+.auth-back {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.auth-back a {
+    color: var(--text-secondary);
+}
+
+.auth-back a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}

@@ -3,9 +3,9 @@
  *
  * A página continua acessível sem login (não usa requireAuth()).
  * - sem sessão: mostra [data-guest-only] ("Entrar", "Entrar para se candidatar");
- *   [data-home-link] (logo e "Início") → landing;
+ *   [data-home-link] vira "Início" → landing;
  * - com sessão: mostra [data-auth-only] ("Minhas Candidaturas", "Meu Perfil", nome, iniciais, "Sair",
- *   "Candidatar-se"); [data-home-link] → painel, e busca GET /me;
+ *   "Candidatar-se"); [data-home-link] vira "Painel" → painel, e busca GET /me;
  * - token expirado (ao abrir ou com a página aberta) ou recusado (401): apaga o token e volta ao
  *   estado anônimo, sem redirecionar.
  *
@@ -15,7 +15,8 @@
 /**
  * Mostra só os itens do estado atual. Além do atributo hidden, usa display inline:
  * o resultado não depende de o navegador ter a versão nova do global.css (cache).
- * Também aponta [data-home-link] (logo e "Início") para HOME_PAGE ou GUEST_HOME_PAGE (auth.js).
+ * Também ajusta [data-home-link]: "Painel" → HOME_PAGE ou "Início" → GUEST_HOME_PAGE (auth.js).
+ * O logo não usa esse atributo: sempre leva à landing.
  */
 function setHeaderSession(loggedIn) {
     const toggle = (element, visible) => {
@@ -26,6 +27,7 @@ function setHeaderSession(loggedIn) {
     document.querySelectorAll("[data-guest-only]").forEach((element) => toggle(element, !loggedIn));
     document.querySelectorAll("[data-home-link]").forEach((link) => {
         link.setAttribute("href", loggedIn ? HOME_PAGE : GUEST_HOME_PAGE);
+        link.textContent = loggedIn ? "Painel" : "Início";
     });
 }
 
