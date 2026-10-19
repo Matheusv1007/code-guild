@@ -10,7 +10,7 @@ A CodeGuild é uma plataforma acadêmica para estudantes e desenvolvedores em fo
 - encontrar **projetos** de colegas;
 - formar **equipes**;
 - futuramente, **candidatar-se a vagas** desses projetos;
-- futuramente, **integrar informações públicas do GitHub** ao perfil.
+- exibir no perfil as **informações públicas do GitHub** (perfil, repositórios e linguagens).
 
 O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. A seção [Estado atual](#estado-atual) diz o que já funciona e o que ainda está planejado.
 
@@ -20,7 +20,7 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 |---|---|
 | Backend | Python 3.10+, FastAPI, SQLModel (SQLAlchemy + Pydantic), PostgreSQL (driver `psycopg2`), JWT (`python-jose`) com senha em hash (`bcrypt`), `python-dotenv` |
 | Frontend | HTML5, CSS3 e JavaScript puro (sem framework e sem etapa de build) |
-| Integração externa | GitHub REST API: **integração planejada/em desenvolvimento** (ainda não há código que a consuma) |
+| Integração externa | GitHub REST API (perfil público, repositórios e linguagens), via `httpx` no backend |
 
 ## Estado atual
 
@@ -31,6 +31,7 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 - Proteção das páginas privadas (painel, minhas candidaturas, perfil) e da área autenticada da API.
 - Perfil técnico: criar, consultar e editar (`/me/profile`).
 - Catálogo de tecnologias (`/technologies`).
+- Integração com a GitHub REST API na tela de perfil: perfil público, repositórios recentes e linguagens. Os dados ficam salvos no banco com a data da última consulta e são atualizados sob demanda (no máximo a cada 10 minutos); se o GitHub estiver fora do ar, os dados salvos continuam sendo exibidos e o resto do sistema funciona normalmente.
 - Navegação pública e autenticada: o header muda conforme a sessão; visitantes navegam pelas páginas públicas sem serem levados ao login.
 - Landing page com as seções Como funciona, Projetos e Benefícios.
 - API FastAPI + PostgreSQL, com seed de dados para desenvolvimento.
@@ -38,7 +39,6 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 **Em desenvolvimento**
 
 - Projetos: os modelos (`project`, `vacancy`, `application`) e o seed já existem, mas ainda não há rotas na API; as telas de explorar, detalhes, painel e minhas candidaturas exibem dados de exemplo fixos no HTML.
-- Integração com a GitHub REST API.
 
 **Planejado**
 
@@ -109,7 +109,7 @@ Edite `backend/.env` (criado a partir de `backend/.env.example`):
 
 O `.env` é local de cada integrante e está no `.gitignore`: **nunca faça commit dele**.
 
-As variáveis `GITHUB_API_URL` e `GITHUB_TOKEN` aparecem comentadas no `.env.example` como uso futuro. Nenhum código as lê ainda; elas serão habilitadas quando a task de integração com o GitHub for implementada. O token será opcional e nunca deve ser commitado.
+As variáveis `GITHUB_API_URL` e `GITHUB_TOKEN` são **opcionais** (comentadas no `.env.example`); sem elas a integração com o GitHub funciona normalmente. O `GITHUB_TOKEN` só aumenta o limite de consultas da API do GitHub (60 por hora sem token, 5.000 com) e **nunca deve ser commitado**.
 
 ### 4. Executar o backend
 
@@ -170,6 +170,8 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | `GET /me` | Bearer | usuário autenticado, com resumo do perfil (ou `null`) |
 | `GET /me/profile` · `POST /me/profile` · `PUT /me/profile` | Bearer | consulta, cria e edita o perfil técnico |
 | `GET /technologies` | — | catálogo de tecnologias |
+| `GET /me/github` | Bearer | dados do GitHub salvos no perfil (não consulta o GitHub) |
+| `POST /me/github/refresh` | Bearer | consulta o GitHub agora e salva (no máximo a cada 10 minutos) |
 | `POST /leads` · `GET /leads` | — · Bearer | pré-cadastro de interessados (sem tela no frontend) |
 | `/users` (CRUD) | Bearer, exceto `POST` | gestão de usuários (cada usuário só altera a própria conta) |
 | `/items` (CRUD) | Bearer | exemplo de aula, sem uso no produto |

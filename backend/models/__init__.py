@@ -8,6 +8,7 @@ from .profile import Profile, ProfileBase, ProfileRead, ProfileSummary, ProfileT
 from .project import Project, ProjectBase
 from .vacancy import Vacancy, VacancyBase, VacancyTechnology
 from .application import Application, ApplicationBase
+from .github import GitHubData, GitHubRead
 
 __all__ = [
     "Item", "ItemBase", "ItemCreate", "ItemUpdate",
@@ -20,4 +21,5 @@ __all__ = [
     "Project", "ProjectBase",
     "Vacancy", "VacancyBase", "VacancyTechnology",
     "Application", "ApplicationBase",
+    "GitHubData", "GitHubRead",
 ]

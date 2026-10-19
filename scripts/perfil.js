@@ -1,8 +1,9 @@
 /**
  * Perfil técnico (paginas/perfil/index.html): cria ou edita o perfil do usuário autenticado.
  *
- * Depende de session.js (hasSession, getCurrentUser, renderHeaderUser) e de
- * api.js (apiFetch, ApiError). 401 já é tratado por apiFetch (logout + login).
+ * Depende de session.js (hasSession, getCurrentUser, renderHeaderUser), de
+ * api.js (apiFetch, ApiError) e de github.js (loadGithubSection).
+ * 401 já é tratado por apiFetch (logout + login).
  *
  * - GET /technologies monta as duas grades de tecnologias;
  * - GET /me/profile: 200 → modo edição (PUT); 404 → modo criação (POST);
@@ -221,6 +222,7 @@ async function loadProfilePage() {
 
         profileLoading.hidden = true;
         profileForm.hidden = false;
+        loadGithubSection(); // github.js; erros ficam só no card do GitHub
     } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
             return; // apiFetch já encerrou a sessão e redirecionou ao login
@@ -277,6 +279,7 @@ async function handleProfileSubmit(event) {
         setMode(true);
         updateHeaderName(profile);
         showProfileSuccess(creating ? "Perfil criado com sucesso!" : "Alterações salvas com sucesso!");
+        loadGithubSection(); // trocar o usuário do GitHub descarta os dados salvos da conta anterior
     } catch (error) {
         setMode(hasProfile);
         if (error instanceof ApiError && error.status === 401) {

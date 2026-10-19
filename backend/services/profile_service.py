@@ -4,6 +4,7 @@ from integration.database import SessionDep
 from models import (Profile, ProfileRead, ProfileTechnology, ProfileWrite, Technology, TechnologyKind,
                     TechnologyRead, User)
 from models.common import utcnow
+from services.github_service import clear_github_data
 
 
 class ProfileAlreadyExistsError(Exception):
@@ -81,6 +82,11 @@ def create_profile(session: SessionDep, user: User, data: ProfileWrite) -> Profi
 def update_profile(session: SessionDep, profile: Profile, data: ProfileWrite) -> Profile:
     """Substitui campos e tecnologias do perfil em um único commit."""
     _ensure_technologies_exist(session, data)
+
+    # Outro usuário do GitHub (ou nenhum): os dados salvos eram de outra conta.
+    # O GitHub não diferencia maiúsculas de minúsculas no username.
+    if (profile.github_username or "").lower() != (data.github_username or "").lower():
+        clear_github_data(profile)
 
     for key, value in data.model_dump(include=PROFILE_FIELDS).items():
         setattr(profile, key, value)

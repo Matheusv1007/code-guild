@@ -114,6 +114,38 @@
                 <button type="submit" id="profile-submit" class="btn btn-primary">Criar perfil</button>
             </div>
         </form>
+
+        <!-- Dados públicos do GitHub (scripts/github.js). Fora do <form>: falhas aqui não afetam o perfil. -->
+        <section id="github-section" class="card form-section github-section" hidden>
+            <div class="form-section-header">
+                <h2>GitHub</h2>
+                <button type="button" id="github-refresh" class="btn btn-outline" hidden>Buscar dados do GitHub</button>
+            </div>
+            <p id="github-status" class="section-hint" role="status"></p>
+            <p id="github-error" class="form-error" role="alert" hidden></p>
+
+            <div id="github-content" class="github-content" hidden>
+                <div class="github-user">
+                    <img id="github-avatar" class="github-avatar" alt="" width="64" height="64">
+                    <div>
+                        <a id="github-name" class="github-name" target="_blank" rel="noopener noreferrer"></a>
+                        <p id="github-bio" class="github-bio"></p>
+                        <div class="github-stats">
+                            <span><strong id="github-public-repos"></strong> repositórios públicos</span>
+                            <span><strong id="github-followers"></strong> seguidores</span>
+                            <span><strong id="github-following"></strong> seguindo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="github-subtitle">Linguagens</h3>
+                <p class="field-hint">Linguagem principal de cada repositório próprio (forks não contam).</p>
+                <ul id="github-languages" class="github-languages"></ul>
+
+                <h3 class="github-subtitle">Repositórios atualizados recentemente</h3>
+                <ul id="github-repos" class="github-repos"></ul>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -125,6 +157,7 @@
         </div>
     </footer>
 
+    <script src="../../scripts/github.js"></script>
     <script src="../../scripts/perfil.js"></script>
 </body>
 </html>
