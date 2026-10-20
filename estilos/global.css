@@ -14,6 +14,11 @@
   --font-family: 'Inter', sans-serif;
 }
 
+/* Reserva o espaço da scrollbar em todas as páginas: com ou sem rolagem, a largura útil é a mesma */
+html {
+  scrollbar-gutter: stable;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -169,6 +174,48 @@ button {
   width: 100%;
 }
 
+/* Grid com laterais iguais: o menu fica sempre no centro, sem depender da largura
+   do logo nem do bloco do usuário (que só é preenchido depois do GET /me). */
+.dashboard-header .header-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+.dashboard-header .header-logo {
+  justify-self: start;
+}
+
+.dashboard-header .header-nav {
+  justify-self: center;
+}
+
+.dashboard-header .header-actions {
+  justify-self: end;
+}
+
+/* Abaixo de 1200px o grid não comporta menu + nome longo (160px) lado a lado: logo e usuário
+   ficam na primeira linha (o usuário desce se não couber) e o menu ocupa uma linha própria. */
+@media (max-width: 1199px) {
+  .dashboard-header .header-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 16px;
+  }
+
+  .dashboard-header .header-actions {
+    margin-left: auto;
+  }
+
+  .dashboard-header .header-nav {
+    order: 1;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 24px;
+  }
+}
+
 .user-profile {
   display: flex;
   align-items: center;
@@ -230,6 +277,11 @@ button {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
+  /* Nome longo é cortado com "…" (o nome completo continua no title do avatar) */
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* <a class="btn"> (Entrar) herda line-height 1.6 do body e <button> (Sair) usa "normal":
