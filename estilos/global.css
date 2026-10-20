@@ -162,9 +162,31 @@ button {
 
 /* Header das páginas internas (painel, explorar, detalhes, minhas-candidaturas, perfil) */
 .dashboard-header {
+  /* Acompanha a rolagem; o modal de detalhes (z-index 1000) continua por cima */
+  position: sticky;
+  top: 0;
+  z-index: 100;
   background-color: white;
   border-bottom: 1px solid var(--border-color);
   padding: 16px 0;
+}
+
+/* Foco por teclado e "buscar na página" não param atrás do header fixo no topo.
+   Altura máxima medida do header interno por faixa (73/107/182 px) + 16px. */
+html:has(.dashboard-header) {
+  scroll-padding-top: 89px;
+}
+
+@media (max-width: 1199px) {
+  html:has(.dashboard-header) {
+    scroll-padding-top: 123px;
+  }
+}
+
+@media (max-width: 500px) {
+  html:has(.dashboard-header) {
+    scroll-padding-top: 198px;
+  }
 }
 
 .header-container {
