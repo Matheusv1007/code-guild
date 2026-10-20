@@ -37,7 +37,7 @@ Variáveis lidas do `.env` (ver `.env.example`): `DATABASE_URL` (obrigatória) e
 | `/me/github`, `/me/github/refresh` | `api/github.py` | em uso pelo frontend (card GitHub do perfil) |
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
 | `/users` | `api/users.py` | CRUD de usuários; cada usuário só altera a própria conta |
-| `/leads` | `api/leads.py` | pré-cadastro; ainda sem tela |
+| `/leads` (POST) | `api/leads.py` | pré-cadastro, em uso pela landing; sem rota de listagem |
 | `/items` | `api/item.py` | exemplo de aula, sem uso no produto |
 
 Projetos, vagas e candidaturas já têm modelos e dados no seed, mas **ainda não têm rotas**.

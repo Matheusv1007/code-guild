@@ -172,7 +172,7 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | `GET /technologies` | — | catálogo de tecnologias |
 | `GET /me/github` | Bearer | dados do GitHub salvos no perfil (não consulta o GitHub) |
 | `POST /me/github/refresh` | Bearer | consulta o GitHub agora e salva (no máximo a cada 10 minutos) |
-| `POST /leads` · `GET /leads` | — · Bearer | pré-cadastro de interessados (sem tela no frontend) |
+| `POST /leads` | — | pré-cadastro de interessados (formulário da landing); não há rota de listagem |
 | `/users` (CRUD) | Bearer, exceto `POST` | gestão de usuários (cada usuário só altera a própria conta) |
 | `/items` (CRUD) | Bearer | exemplo de aula, sem uso no produto |
 

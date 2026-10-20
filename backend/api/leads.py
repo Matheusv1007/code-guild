@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from integration.database import SessionDep
-from models import Lead, LeadCreate, LeadRead, User
-from auth.dependencies import get_current_user
+from models import Lead, LeadCreate, LeadRead
 from services import lead_service
 
 leads_router = APIRouter(tags=["Leads (Interessados)"])
@@ -20,13 +19,3 @@ def create_lead(
             detail="E-mail já cadastrado na lista de interesse",
         )
     return db_lead
-
-@leads_router.get("/leads", response_model=list[LeadRead])
-def read_leads(
-    session: SessionDep,
-    skip: int = 0,
-    limit: int = 100,
-    current_user: User = Depends(get_current_user),
-):
-    """Rota protegida para listar os interessados capturados."""
-    return lead_service.get_leads(session, skip=skip, limit=limit)

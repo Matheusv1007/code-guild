@@ -11,6 +11,3 @@ def create_lead(session: SessionDep, lead: LeadCreate) -> Lead | None:
     session.commit()
     session.refresh(db_lead)
     return db_lead
-
-def get_leads(session: SessionDep, skip: int = 0, limit: int = 100) -> list[Lead]:
-    return session.exec(select(Lead).offset(skip).limit(limit)).all()
