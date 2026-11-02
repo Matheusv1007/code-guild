@@ -13,6 +13,7 @@ from api.leads import leads_router
 from api.technologies import technologies_router
 from api.profile import profile_router
 from api.github import github_router
+from api.projects import projects_router
 from integration.database import lifespan
 
 # Criação da instância principal da aplicação FastAPI
@@ -63,3 +64,6 @@ app.include_router(profile_router)
 
 # Inclui os dados públicos do GitHub do perfil (integração com a GitHub REST API)
 app.include_router(github_router)
+
+# Inclui as rotas de projetos (mural público; criar, editar e encerrar exigem login)
+app.include_router(projects_router)

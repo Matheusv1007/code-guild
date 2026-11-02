@@ -30,8 +30,13 @@
 
     <main class="container main-content">
         <section class="explore-header">
-            <h1>Explorar projetos</h1>
-            <p>Encontre oportunidades compatíveis com seus interesses e tecnologias.</p>
+            <div class="explore-title-row">
+                <div>
+                    <h1>Explorar projetos</h1>
+                    <p>Encontre oportunidades compatíveis com seus interesses e tecnologias.</p>
+                </div>
+                <a href="../projeto-form/index.html" class="btn btn-primary" data-auth-only hidden>Criar projeto</a>
+            </div>
             
             <div class="filters-bar">
                 <input type="text" class="search-input" placeholder="Buscar por termo...">
@@ -56,49 +61,25 @@
         </section>
 
         <section class="explore-results">
-            <div class="projects-list">
-                <!-- Project 1 -->
-                <div class="card project-list-card">
-                    <div class="card-left">
-                        <div class="card-title-row">
-                            <h3>Sistema de Gestão Acadêmica</h3>
-                            <span class="match-score">75% Match</span>
-                        </div>
-                        <p class="creator">Criado por: Matheus Vasco</p>
-                        <p class="description">Plataforma completa para gestão acadêmica integrada de disciplinas, frequência, notas e laboratórios.</p>
-                        <div class="tags">
-                            <span class="badge">Python</span>
-                            <span class="badge">FastAPI</span>
-                            <span class="badge">PostgreSQL</span>
-                            <span class="badge">React</span>
-                        </div>
-                    </div>
-                    <div class="card-right">
-                        <span class="openings">2 vagas abertas</span>
-                        <a href="../detalhes-projeto/index.html" class="btn btn-primary">Ver projeto</a>
-                    </div>
-                </div>
+            <p id="projects-loading" class="results-status" role="status">Carregando projetos...</p>
 
-                <!-- Project 2 -->
-                <div class="card project-list-card">
-                    <div class="card-left">
-                        <div class="card-title-row">
-                            <h3>CodeGuild Mobile</h3>
-                            <span class="match-score match">74% Match</span>
-                        </div>
-                        <p class="creator">Criado por: Erick Alves</p>
-                        <p class="description">Versão mobile para iOS e Android focado no matchmaking acelerado de equipes de tecnologia.</p>
-                        <div class="tags">
-                            <span class="badge">React Native</span>
-                            <span class="badge">FastAPI</span>
-                            <span class="badge">PostgreSQL</span>
-                        </div>
-                    </div>
-                    <div class="card-right">
-                        <span class="openings">3 vagas abertas</span>
-                        <a href="../detalhes-projeto/index.html" class="btn btn-primary">Ver projeto</a>
-                    </div>
-                </div>
+            <div id="projects-error" class="results-error" role="alert" hidden>
+                <span id="projects-error-message"></span>
+                <button type="button" id="projects-retry" class="btn btn-outline">Tentar novamente</button>
+            </div>
+
+            <div id="projects-empty" class="card results-empty" hidden>
+                <h2>Nenhum projeto aberto no momento</h2>
+                <p>Que tal ser o primeiro? Crie um projeto e anuncie as vagas da sua equipe.</p>
+                <a href="../projeto-form/index.html" class="btn btn-primary" data-auth-only hidden>Criar projeto</a>
+                <a href="../login/index.html" class="btn btn-primary" data-guest-only>Entrar para criar um projeto</a>
+            </div>
+
+            <!-- Preenchido por scripts/explorar.js (GET /projects?status=OPEN) -->
+            <div id="projects-list" class="projects-list"></div>
+
+            <div class="load-more">
+                <button type="button" id="projects-load-more" class="btn btn-outline" hidden>Carregar mais projetos</button>
             </div>
         </section>
     </main>
@@ -116,6 +97,8 @@
     <script src="../../scripts/api.js"></script>
     <script src="../../scripts/user-header.js"></script>
     <script src="../../scripts/public-header.js"></script>
+    <script src="../../scripts/projects.js"></script>
+    <script src="../../scripts/explorar.js"></script>
 </body>
 </html>
 
