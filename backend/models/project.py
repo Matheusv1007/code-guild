@@ -7,6 +7,7 @@ from sqlmodel import Field, Relationship, SQLModel
 
 from .common import utcnow
 from .enums import ProjectStatus
+from .technology import TechnologyRead
 
 if TYPE_CHECKING:
     from .user import User
@@ -75,11 +76,18 @@ class ProjectOwner(SQLModel):
 
 
 class ProjectRead(SQLModel):
+    """
+    Projeto com o resumo das vagas:
+    - `open_vacancies`: vagas que aceitam candidaturas agora (abertas e com posição livre);
+    - `technologies`: stack pedida por essas vagas, sem repetição, em ordem alfabética.
+    """
     id: int
     title: str
     description: str
     github_url: str | None = None
     status: ProjectStatus
     owner: ProjectOwner
+    open_vacancies: int = 0
+    technologies: list[TechnologyRead] = []
     created_at: datetime
     updated_at: datetime

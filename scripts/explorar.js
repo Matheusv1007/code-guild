@@ -34,11 +34,14 @@ function createProjectListCard(project) {
         createElement("p", "creator", `Criado por: ${getOwnerName(project.owner)}`),
         createElement("p", "description", project.description),
     );
+    if (project.technologies.length > 0) {
+        left.append(createTechnologyTags(project.technologies, 8));
+    }
 
     const right = createElement("div", "card-right");
     const link = createElement("a", "btn btn-primary", "Ver projeto");
     link.href = projectDetailsUrl(project.id);
-    right.append(link);
+    right.append(createElement("span", "openings", openVacanciesLabel(project.open_vacancies)), link);
 
     card.append(left, right);
     return card;

@@ -65,6 +65,56 @@
                         <h2>Sobre o projeto</h2>
                         <p id="project-description" class="project-description"></p>
                     </section>
+
+                    <!-- Vagas do projeto: scripts/vagas.js (GET /projects/{id}/vacancies) -->
+                    <section class="details-section card">
+                        <div class="section-title-row">
+                            <h2>Vagas</h2>
+                            <button type="button" id="vacancy-new" class="btn btn-primary" hidden>Nova vaga</button>
+                        </div>
+
+                        <!-- Criar/editar vaga: só o responsável, com o projeto aberto -->
+                        <form id="vacancy-form" class="vacancy-form" novalidate hidden>
+                            <h3 id="vacancy-form-title">Nova vaga</h3>
+                            <div class="form-grid">
+                                <div class="form-group form-group-full">
+                                    <label for="vacancy-title">Especialidade <span class="required">*</span></label>
+                                    <input type="text" id="vacancy-title" maxlength="120" placeholder="Ex.: Backend Developer" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vacancy-quantity">Quantidade de pessoas <span class="required">*</span></label>
+                                    <input type="number" id="vacancy-quantity" min="1" max="50" step="1" value="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vacancy-level">Nível recomendado</label>
+                                    <!-- Valores do enum Level do backend (models/enums.py) -->
+                                    <select id="vacancy-level">
+                                        <option value="">Qualquer nível</option>
+                                        <option value="BEGINNER">Iniciante</option>
+                                        <option value="INTERMEDIATE">Intermediário</option>
+                                        <option value="ADVANCED">Avançado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="vacancy-description">Descrição</label>
+                                    <textarea id="vacancy-description" rows="3" maxlength="2000" placeholder="O que a pessoa vai fazer na equipe."></textarea>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <span class="form-label">Stack</span>
+                                    <div id="vacancy-technologies" class="tech-grid"></div>
+                                </div>
+                            </div>
+                            <p id="vacancy-form-error" class="form-error" role="alert" hidden></p>
+                            <div class="form-actions">
+                                <button type="button" id="vacancy-cancel" class="btn btn-outline">Cancelar</button>
+                                <button type="submit" id="vacancy-submit" class="btn btn-primary">Criar vaga</button>
+                            </div>
+                        </form>
+
+                        <p id="vacancy-action-error" class="page-error" role="alert" hidden></p>
+                        <p id="vacancies-status" class="page-status" role="status">Carregando vagas...</p>
+                        <div id="vacancies-list" class="vacancies-list"></div>
+                    </section>
                 </div>
 
                 <div class="side-column">
@@ -92,11 +142,33 @@
         </div>
     </footer>
 
+    <!-- Candidatura: o fluxo real pertence ao módulo de candidaturas (ainda sem API) -->
+    <div id="application-modal" class="modal-overlay" hidden>
+        <div class="modal-content card" role="dialog" aria-modal="true" aria-labelledby="application-modal-title">
+            <div class="modal-header">
+                <h2 id="application-modal-title">Candidatar-se à vaga</h2>
+                <button type="button" class="close-btn" data-close-modal aria-label="Fechar">&times;</button>
+            </div>
+            <p><strong>Projeto:</strong> <span id="application-project"></span></p>
+            <p><strong>Vaga:</strong> <span id="application-vacancy"></span></p>
+            <div class="form-group modal-message">
+                <label for="application-message">Por que você gostaria de participar deste projeto?</label>
+                <textarea id="application-message" rows="4" placeholder="Escreva uma breve mensagem destacando seu interesse..."></textarea>
+            </div>
+            <p id="application-notice" class="modal-notice" role="status" hidden>Candidaturas ainda não estão disponíveis nesta versão.</p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-close-modal>Cancelar</button>
+                <button type="button" id="application-submit" class="btn btn-primary">Enviar candidatura</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../../scripts/auth.js"></script>
     <script src="../../scripts/api.js"></script>
     <script src="../../scripts/user-header.js"></script>
     <script src="../../scripts/public-header.js"></script>
     <script src="../../scripts/projects.js"></script>
+    <script src="../../scripts/vagas.js"></script>
     <script src="../../scripts/detalhes-projeto.js"></script>
 </body>
 </html>

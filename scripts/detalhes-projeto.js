@@ -1,8 +1,9 @@
 /**
  * Detalhes do projeto (paginas/detalhes-projeto/index.html?id=N).
  *
- * Depende de api.js, user-header.js (getInitials), public-header.js (publicUserPromise)
- * e projects.js. GET /projects/{id} é público; as ações abaixo exigem ser o responsável:
+ * Depende de api.js, user-header.js (getInitials), public-header.js (publicUserPromise),
+ * projects.js e vagas.js (loadVacanciesSection). GET /projects/{id} é público; as ações abaixo
+ * exigem ser o responsável:
  * - "Editar projeto" → projeto-form?id=N;
  * - "Encerrar projeto" → POST /projects/{id}/close (após confirmação; não há reabertura).
  * Projeto encerrado continua visível, com aviso, e sem ações de edição.
@@ -76,6 +77,7 @@ function renderProject(project) {
     projectLoading.hidden = true;
     projectError.hidden = true;
     projectContent.hidden = false;
+    loadVacanciesSection(project, viewer);
 }
 
 function closeErrorMessage(error) {

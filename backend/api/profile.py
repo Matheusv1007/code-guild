@@ -3,7 +3,8 @@ from integration.database import SessionDep
 from models import ProfileRead, ProfileWrite, User
 from auth.dependencies import get_current_user
 from services import profile_service
-from services.profile_service import InvalidTechnologiesError, ProfileAlreadyExistsError
+from services.profile_service import ProfileAlreadyExistsError
+from services.technology_service import InvalidTechnologiesError
 
 profile_router = APIRouter(tags=["Perfil técnico"])
 

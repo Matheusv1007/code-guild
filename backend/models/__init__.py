@@ -6,7 +6,7 @@ from .enums import ApplicationStatus, Level, ProjectStatus, TechnologyKind, Vaca
 from .technology import Technology, TechnologyBase, TechnologyRead
 from .profile import Profile, ProfileBase, ProfileRead, ProfileSummary, ProfileTechnology, ProfileWrite
 from .project import Project, ProjectBase, ProjectOwner, ProjectRead, ProjectWrite
-from .vacancy import Vacancy, VacancyBase, VacancyTechnology
+from .vacancy import Vacancy, VacancyBase, VacancyRead, VacancyTechnology, VacancyWrite
 from .application import Application, ApplicationBase
 from .github import GitHubData, GitHubRead
 
@@ -19,7 +19,7 @@ __all__ = [
     "Technology", "TechnologyBase", "TechnologyRead",
     "Profile", "ProfileBase", "ProfileRead", "ProfileSummary", "ProfileTechnology", "ProfileWrite",
     "Project", "ProjectBase", "ProjectOwner", "ProjectRead", "ProjectWrite",
-    "Vacancy", "VacancyBase", "VacancyTechnology",
+    "Vacancy", "VacancyBase", "VacancyRead", "VacancyTechnology", "VacancyWrite",
     "Application", "ApplicationBase",
     "GitHubData", "GitHubRead",
 ]

@@ -34,12 +34,13 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 - Integração com a GitHub REST API na tela de perfil: perfil público, repositórios recentes e linguagens. Os dados ficam salvos no banco com a data da última consulta e são atualizados sob demanda (no máximo a cada 10 minutos); se o GitHub estiver fora do ar, os dados salvos continuam sendo exibidos e o resto do sistema funciona normalmente.
 - Navegação pública e autenticada: o header muda conforme a sessão; visitantes navegam pelas páginas públicas sem serem levados ao login.
 - Projetos: criar, editar, listar e encerrar (`/projects`, `/me/projects`). O mural (explorar) e os detalhes são públicos; só o responsável edita ou encerra o projeto, e encerrar também encerra as vagas abertas dele. O painel mostra "Meus projetos" e os projetos abertos mais recentes.
+- Vagas: o responsável anuncia, edita e encerra vagas por especialidade, stack, nível e quantidade nos detalhes do projeto (`/projects/{id}/vacancies`, `/vacancies/{id}`). Cada vaga mostra quantas posições restam (quantidade menos candidaturas aprovadas); vaga encerrada, sem posição livre ou de projeto encerrado não aceita candidaturas. O mural mostra, por projeto, as vagas abertas e a stack pedida.
 - Landing page com as seções Como funciona, Projetos e Benefícios.
 - API FastAPI + PostgreSQL, com seed de dados para desenvolvimento.
 
 **Em desenvolvimento**
 
-- Vagas e candidaturas: os modelos (`vacancy`, `application`) e o seed já existem, mas ainda não há rotas na API; a tela de minhas candidaturas mostra um estado vazio.
+- Candidaturas: o modelo (`application`) e o seed já existem, mas ainda não há rotas na API; "Enviar candidatura" apenas informa que a funcionalidade não está disponível e a tela de minhas candidaturas mostra um estado vazio.
 
 **Planejado**
 
@@ -173,12 +174,16 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | `GET /technologies` | — | catálogo de tecnologias |
 | `GET /me/github` | Bearer | dados do GitHub salvos no perfil (não consulta o GitHub) |
 | `POST /me/github/refresh` | Bearer | consulta o GitHub agora e salva (no máximo a cada 10 minutos) |
-| `GET /projects` | — | mural de projetos, mais recentes primeiro; `?status=OPEN\|CLOSED`, paginado com `skip` e `limit` (padrão 20, máx. 100) |
-| `GET /projects/{id}` | — | detalhes de um projeto (com o responsável) |
+| `GET /projects` | — | mural de projetos, mais recentes primeiro; `?status=OPEN\|CLOSED`, paginado com `skip` e `limit` (padrão 20, máx. 100); cada projeto traz `open_vacancies` e a stack (`technologies`) das vagas abertas |
+| `GET /projects/{id}` | — | detalhes de um projeto (com o responsável e o mesmo resumo de vagas) |
 | `GET /me/projects` | Bearer | projetos de que o usuário é responsável (abertos e encerrados) |
 | `POST /projects` | Bearer | cria projeto (título, descrição, link do GitHub opcional); o usuário vira o responsável |
 | `PUT /projects/{id}` | Bearer | edita o projeto; só o responsável (403) e só se estiver aberto (409) |
 | `POST /projects/{id}/close` | Bearer | encerra o projeto e as vagas abertas dele; só o responsável; não há reabertura |
+| `GET /projects/{id}/vacancies` | — | vagas do projeto (abertas primeiro), com `filled`, `available` e `accepts_applications` |
+| `POST /projects/{id}/vacancies` | Bearer | anuncia vaga (especialidade, quantidade 1–50, nível opcional, descrição, `technology_ids`); só o responsável, projeto aberto |
+| `PUT /vacancies/{id}` | Bearer | edita a vaga (inclusive a stack); só o responsável; vaga e projeto abertos; quantidade não fica abaixo das aprovadas (409) |
+| `POST /vacancies/{id}/close` | Bearer | encerra a vaga (deixa de aceitar candidaturas); só o responsável; não há reabertura |
 | `POST /leads` | — | pré-cadastro de interessados (formulário da landing); não há rota de listagem |
 | `/users` (CRUD) | Bearer, exceto `POST` | gestão de usuários (cada usuário só altera a própria conta) |
 | `/items` (CRUD) | Bearer | exemplo de aula, sem uso no produto |
