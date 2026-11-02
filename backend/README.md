@@ -36,11 +36,22 @@ Variáveis lidas do `.env` (ver `.env.example`): `DATABASE_URL` (obrigatória) e
 | `/me/profile` (GET/POST/PUT) | `api/profile.py` | em uso pelo frontend (perfil técnico) |
 | `/me/github`, `/me/github/refresh` | `api/github.py` | em uso pelo frontend (card GitHub do perfil) |
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
+| `/projects`, `/projects/{id}`, `/projects/{id}/close`, `/me/projects` | `api/projects.py` | em uso pelo frontend (explorar, detalhes, painel, projeto-form) |
 | `/users` | `api/users.py` | CRUD de usuários; cada usuário só altera a própria conta |
 | `/leads` (POST) | `api/leads.py` | pré-cadastro, em uso pela landing; sem rota de listagem |
 | `/items` | `api/item.py` | exemplo de aula, sem uso no produto |
 
-Projetos, vagas e candidaturas já têm modelos e dados no seed, mas **ainda não têm rotas**.
+Vagas e candidaturas já têm modelos e dados no seed, mas **ainda não têm rotas**.
+
+### Projetos
+
+Regras em `services/project_service.py`; a autorização fica em `api/projects.py` (`ensure_project_owner`, compara `project.owner_id` com o usuário autenticado).
+
+- Leitura pública (`GET /projects`, `GET /projects/{id}`); criar, editar e encerrar exigem login.
+- Só o responsável edita (`PUT`) ou encerra (`POST /close`): outro usuário recebe 403.
+- Projeto encerrado não aceita edição nem novo encerramento (409) e não é reaberto. Encerrar fecha no mesmo commit as vagas OPEN do projeto.
+- `title` (1–120) e `description` (1–5000) chegam sem espaços nas pontas; `github_url` vazio vira `null` e, se informado, precisa ser `https://github.com/usuario` ou `https://github.com/usuario/repositorio`.
+- Respostas trazem `owner` (`id`, `username` e `full_name` do perfil, ou `null` sem perfil).
 
 ## Modelo de dados
 
@@ -59,7 +70,7 @@ Projetos, vagas e candidaturas já têm modelos e dados no seed, mas **ainda nã
 
 Datas (`created_at`/`updated_at`) são gravadas em UTC com timezone (`models/common.py`).
 
-Regras previstas para quando as rotas de projetos/vagas/candidaturas existirem (ainda não implementadas): só o dono do projeto cria vagas e decide candidaturas; a vaga precisa estar OPEN e com posições livres; transições de estado só a partir de PENDING; ninguém se candidata à própria vaga.
+Regras previstas para quando as rotas de vagas/candidaturas existirem (ainda não implementadas): só o dono do projeto cria vagas e decide candidaturas; a vaga precisa estar OPEN e com posições livres; transições de estado só a partir de PENDING; ninguém se candidata à própria vaga.
 
 ## Seed
 

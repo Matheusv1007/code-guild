@@ -9,6 +9,9 @@
  * - token expirado (ao abrir ou com a página aberta) ou recusado (401): apaga o token e volta ao
  *   estado anônimo, sem redirecionar.
  *
+ * Scripts da página usam `publicUserPromise` (usuário de GET /me ou null, sem sessão ou com a
+ * API fora do ar) para reaproveitar a mesma chamada. A promessa nunca é rejeitada.
+ *
  * Carregar no fim do <body>, depois de auth.js, api.js e user-header.js.
  */
 
@@ -51,11 +54,12 @@ function schedulePublicSessionExpiry() {
     }
 }
 
+/** Resolve com o usuário de GET /me ou null (sem sessão, sessão recusada ou API fora do ar). */
 async function initPublicHeader() {
     // isAuthenticated() já apaga token expirado.
     if (!isAuthenticated()) {
         setHeaderSession(false);
-        return;
+        return null;
     }
 
     setHeaderSession(true);
@@ -66,14 +70,16 @@ async function initPublicHeader() {
         // Sem a opção `auth`: em página pública um 401 não deve levar ao login.
         const user = await apiFetch("/me", { headers: { Authorization: `Bearer ${getToken()}` } });
         renderHeaderUser(user);
+        return user;
     } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
             endPublicSession();
-            return;
+            return null;
         }
         // API fora do ar: mantém o estado logado (Sair continua disponível), sem nome.
         console.error("Não foi possível carregar o usuário:", error.message);
+        return null;
     }
 }
 
-initPublicHeader();
+const publicUserPromise = initPublicHeader();

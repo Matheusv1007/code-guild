@@ -1,6 +1,8 @@
+import re
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from pydantic import field_validator
 from sqlmodel import Field, Relationship, SQLModel
 
 from .common import utcnow
@@ -9,6 +11,9 @@ from .enums import ProjectStatus
 if TYPE_CHECKING:
     from .user import User
     from .vacancy import Vacancy
+
+# Repositório (https://github.com/dono/repo) ou perfil/organização (https://github.com/dono).
+GITHUB_URL_PATTERN = re.compile(r"^https://github\.com/[A-Za-z0-9-]+(/[A-Za-z0-9._-]+)?/?$")
 
 
 class ProjectBase(SQLModel):
@@ -34,3 +39,47 @@ class Project(ProjectBase, table=True):
 
     owner: "User" = Relationship()
     vacancies: list["Vacancy"] = Relationship(back_populates="project", cascade_delete=True)
+
+
+class ProjectWrite(ProjectBase):
+    """Corpo de POST /projects e PUT /projects/{id}: substitui todos os campos editáveis."""
+    title: str = Field(min_length=1, max_length=120)
+    description: str = Field(min_length=1, max_length=5000)
+
+    @field_validator("title", "description", mode="before")
+    @classmethod
+    def strip_text(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+    @field_validator("github_url", mode="before")
+    @classmethod
+    def blank_to_none(cls, value):
+        if isinstance(value, str):
+            value = value.strip()
+            return value or None
+        return value
+
+    @field_validator("github_url")
+    @classmethod
+    def check_github_url(cls, value: str | None) -> str | None:
+        if value is not None and not GITHUB_URL_PATTERN.match(value):
+            raise ValueError("Informe um link do GitHub no formato https://github.com/usuario/repositorio")
+        return value
+
+
+class ProjectOwner(SQLModel):
+    """Responsável pelo projeto: nome do perfil (se houver) e username."""
+    id: int
+    username: str
+    full_name: str | None = None
+
+
+class ProjectRead(SQLModel):
+    id: int
+    title: str
+    description: str
+    github_url: str | None = None
+    status: ProjectStatus
+    owner: ProjectOwner
+    created_at: datetime
+    updated_at: datetime

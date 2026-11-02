@@ -33,25 +33,26 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 - Catálogo de tecnologias (`/technologies`).
 - Integração com a GitHub REST API na tela de perfil: perfil público, repositórios recentes e linguagens. Os dados ficam salvos no banco com a data da última consulta e são atualizados sob demanda (no máximo a cada 10 minutos); se o GitHub estiver fora do ar, os dados salvos continuam sendo exibidos e o resto do sistema funciona normalmente.
 - Navegação pública e autenticada: o header muda conforme a sessão; visitantes navegam pelas páginas públicas sem serem levados ao login.
+- Projetos: criar, editar, listar e encerrar (`/projects`, `/me/projects`). O mural (explorar) e os detalhes são públicos; só o responsável edita ou encerra o projeto, e encerrar também encerra as vagas abertas dele. O painel mostra "Meus projetos" e os projetos abertos mais recentes.
 - Landing page com as seções Como funciona, Projetos e Benefícios.
 - API FastAPI + PostgreSQL, com seed de dados para desenvolvimento.
 
 **Em desenvolvimento**
 
-- Projetos: os modelos (`project`, `vacancy`, `application`) e o seed já existem, mas ainda não há rotas na API; as telas de explorar, detalhes, painel e minhas candidaturas exibem dados de exemplo fixos no HTML.
+- Vagas e candidaturas: os modelos (`vacancy`, `application`) e o seed já existem, mas ainda não há rotas na API; a tela de minhas candidaturas mostra um estado vazio.
 
 **Planejado**
 
-- Vagas e candidaturas reais (hoje "Enviar candidatura" apenas informa que a funcionalidade ainda não está disponível).
-- Match por tecnologias (os percentuais exibidos são fixos).
-- Busca e filtros funcionais, recuperação de senha, pré-cadastro na landing e layout responsivo para celular.
+- Candidaturas reais.
+- Match por tecnologias.
+- Busca e filtros funcionais, recuperação de senha e layout responsivo para celular.
 
 ## Estrutura do projeto
 
 ```
 code-guild/
 ├── backend/
-│   ├── api/                # rotas (auth, users, profile, technologies, leads, items)
+│   ├── api/                # rotas (auth, users, profile, technologies, github, projects, leads, items)
 │   ├── auth/               # hash de senha, JWT e dependência de usuário autenticado
 │   ├── integration/        # conexão com o banco (database.py)
 │   ├── models/             # tabelas e schemas SQLModel
@@ -158,8 +159,8 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 |---|---|
 | `paginas/inicio` | pública (landing; mostra "Ir para o painel" quando há sessão) |
 | `paginas/login`, `paginas/cadastro` | visitante (com sessão, redirecionam ao painel) |
-| `paginas/explorar`, `paginas/detalhes-projeto` | públicas (header muda conforme a sessão) |
-| `paginas/painel`, `paginas/minhas-candidaturas`, `paginas/perfil` | privadas (sem sessão, redirecionam ao login) |
+| `paginas/explorar`, `paginas/detalhes-projeto` | públicas (header muda conforme a sessão; o responsável vê "Editar" e "Encerrar" nos detalhes) |
+| `paginas/painel`, `paginas/minhas-candidaturas`, `paginas/perfil`, `paginas/projeto-form` | privadas (sem sessão, redirecionam ao login); `projeto-form` cria projeto ou, com `?id=N`, edita |
 
 ## Endpoints da API
 
@@ -172,6 +173,12 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | `GET /technologies` | — | catálogo de tecnologias |
 | `GET /me/github` | Bearer | dados do GitHub salvos no perfil (não consulta o GitHub) |
 | `POST /me/github/refresh` | Bearer | consulta o GitHub agora e salva (no máximo a cada 10 minutos) |
+| `GET /projects` | — | mural de projetos, mais recentes primeiro; `?status=OPEN\|CLOSED`, paginado com `skip` e `limit` (padrão 20, máx. 100) |
+| `GET /projects/{id}` | — | detalhes de um projeto (com o responsável) |
+| `GET /me/projects` | Bearer | projetos de que o usuário é responsável (abertos e encerrados) |
+| `POST /projects` | Bearer | cria projeto (título, descrição, link do GitHub opcional); o usuário vira o responsável |
+| `PUT /projects/{id}` | Bearer | edita o projeto; só o responsável (403) e só se estiver aberto (409) |
+| `POST /projects/{id}/close` | Bearer | encerra o projeto e as vagas abertas dele; só o responsável; não há reabertura |
 | `POST /leads` | — | pré-cadastro de interessados (formulário da landing); não há rota de listagem |
 | `/users` (CRUD) | Bearer, exceto `POST` | gestão de usuários (cada usuário só altera a própria conta) |
 | `/items` (CRUD) | Bearer | exemplo de aula, sem uso no produto |
