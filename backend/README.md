@@ -37,11 +37,12 @@ Variáveis lidas do `.env` (ver `.env.example`): `DATABASE_URL` (obrigatória) e
 | `/me/github`, `/me/github/refresh` | `api/github.py` | em uso pelo frontend (card GitHub do perfil) |
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
 | `/projects`, `/projects/{id}`, `/projects/{id}/close`, `/me/projects` | `api/projects.py` | em uso pelo frontend (explorar, detalhes, painel, projeto-form) |
+| `/projects/{id}/vacancies`, `/vacancies/{id}`, `/vacancies/{id}/close` | `api/vacancies.py` | em uso pelo frontend (vagas nos detalhes do projeto) |
 | `/users` | `api/users.py` | CRUD de usuários; cada usuário só altera a própria conta |
 | `/leads` (POST) | `api/leads.py` | pré-cadastro, em uso pela landing; sem rota de listagem |
 | `/items` | `api/item.py` | exemplo de aula, sem uso no produto |
 
-Vagas e candidaturas já têm modelos e dados no seed, mas **ainda não têm rotas**.
+Candidaturas já têm modelo e dados no seed, mas **ainda não têm rotas**.
 
 ### Projetos
 
@@ -51,7 +52,17 @@ Regras em `services/project_service.py`; a autorização fica em `api/projects.p
 - Só o responsável edita (`PUT`) ou encerra (`POST /close`): outro usuário recebe 403.
 - Projeto encerrado não aceita edição nem novo encerramento (409) e não é reaberto. Encerrar fecha no mesmo commit as vagas OPEN do projeto.
 - `title` (1–120) e `description` (1–5000) chegam sem espaços nas pontas; `github_url` vazio vira `null` e, se informado, precisa ser `https://github.com/usuario` ou `https://github.com/usuario/repositorio`.
-- Respostas trazem `owner` (`id`, `username` e `full_name` do perfil, ou `null` sem perfil).
+- Respostas trazem `owner` (`id`, `username` e `full_name` do perfil, ou `null` sem perfil), `open_vacancies` (vagas que aceitam candidaturas agora) e `technologies` (stack dessas vagas, sem repetição).
+
+### Vagas
+
+Regras em `services/vacancy_service.py`; a autorização reaproveita `ensure_project_owner` (`api/vacancies.py`).
+
+- Leitura pública (`GET /projects/{id}/vacancies`); criar, editar e encerrar exigem ser o responsável pelo projeto (403).
+- Projeto encerrado: nenhuma vaga é criada, editada ou encerrada (409). Vaga encerrada não é editada nem reaberta (409).
+- `title` 1–120 (especialidade), `quantity` 1–50, `level` opcional (`null` = qualquer nível), `description` até 2000, `technology_ids` do catálogo (ids inexistentes → 422). `PUT` substitui tudo, inclusive a stack.
+- Disponibilidade calculada a cada leitura: `filled` = candidaturas APPROVED, `available` = `quantity - filled`. A quantidade não pode ficar abaixo de `filled` (409).
+- `accepts_applications` (função `vacancy_service.accepts_applications`): vaga OPEN, projeto OPEN e `filled < quantity`. Regra do escopo: vaga encerrada ou sem disponibilidade não aceita novas candidaturas; o fluxo de candidaturas deve validar com a mesma função.
 
 ## Modelo de dados
 
@@ -70,7 +81,7 @@ Regras em `services/project_service.py`; a autorização fica em `api/projects.p
 
 Datas (`created_at`/`updated_at`) são gravadas em UTC com timezone (`models/common.py`).
 
-Regras previstas para quando as rotas de vagas/candidaturas existirem (ainda não implementadas): só o dono do projeto cria vagas e decide candidaturas; a vaga precisa estar OPEN e com posições livres; transições de estado só a partir de PENDING; ninguém se candidata à própria vaga.
+Regras previstas para quando as rotas de candidaturas existirem (ainda não implementadas): só o dono do projeto decide candidaturas; a vaga precisa aceitar candidaturas (`accepts_applications`); transições de estado só a partir de PENDING; ninguém se candidata à própria vaga.
 
 ## Seed
 

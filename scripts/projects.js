@@ -9,6 +9,8 @@ const PROJECT_DETAILS_PAGE = "../detalhes-projeto/index.html";
 const PROJECT_FORM_PAGE = "../projeto-form/index.html";
 
 const PROJECT_STATUS_LABELS = { OPEN: "Aberto", CLOSED: "Encerrado" };
+// Valores do enum Level do backend (models/enums.py); vaga sem nível = qualquer nível
+const LEVEL_LABELS = { BEGINNER: "Iniciante", INTERMEDIATE: "Intermediário", ADVANCED: "Avançado" };
 
 function projectDetailsUrl(projectId) {
     return `${PROJECT_DETAILS_PAGE}?id=${encodeURIComponent(projectId)}`;
@@ -56,6 +58,28 @@ function safeProjectGithubUrl(url) {
     } catch {
         return null;
     }
+}
+
+/** Badges da stack; acima de `limit`, os demais viram "+N". */
+function createTechnologyTags(technologies, limit = Infinity) {
+    const tags = createElement("div", "tags");
+    technologies.slice(0, limit).forEach((technology) => {
+        tags.append(createElement("span", "badge", technology.name));
+    });
+    if (technologies.length > limit) {
+        const more = createElement("span", "badge", `+${technologies.length - limit}`);
+        more.title = technologies.slice(limit).map((technology) => technology.name).join(", ");
+        tags.append(more);
+    }
+    return tags;
+}
+
+/** "1 vaga aberta", "3 vagas abertas" ou "Nenhuma vaga aberta" (vagas que aceitam candidaturas). */
+function openVacanciesLabel(count) {
+    if (count === 0) {
+        return "Nenhuma vaga aberta";
+    }
+    return count === 1 ? "1 vaga aberta" : `${count} vagas abertas`;
 }
 
 /** Mensagem amigável para falhas de carregamento (rede, servidor). */

@@ -21,8 +21,8 @@ function createProjectGridCard(project, own) {
     }
 
     const footer = createElement("div", "project-footer");
-    if (!own) {
-        footer.append(createElement("span", "openings", `Por ${getOwnerName(project.owner)}`));
+    if (project.status === "OPEN") {
+        footer.append(createElement("span", "openings", openVacanciesLabel(project.open_vacancies)));
     }
     const actions = createElement("div", "project-card-actions");
     if (own && project.status === "OPEN") {
@@ -35,7 +35,15 @@ function createProjectGridCard(project, own) {
     actions.append(view);
     footer.append(actions);
 
-    card.append(header, createElement("p", "project-card-description", project.description), footer);
+    card.append(header);
+    if (!own) {
+        card.append(createElement("p", "project-card-owner", `Por ${getOwnerName(project.owner)}`));
+    }
+    card.append(createElement("p", "project-card-description", project.description));
+    if (project.technologies.length > 0) {
+        card.append(createTechnologyTags(project.technologies, 4));
+    }
+    card.append(footer);
     return card;
 }
 

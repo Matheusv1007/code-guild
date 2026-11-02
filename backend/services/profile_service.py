@@ -5,18 +5,11 @@ from models import (Profile, ProfileRead, ProfileTechnology, ProfileWrite, Techn
                     TechnologyRead, User)
 from models.common import utcnow
 from services.github_service import clear_github_data
+from services.technology_service import ensure_technologies_exist
 
 
 class ProfileAlreadyExistsError(Exception):
     """O usuário já possui perfil (inclui a corrida no UNIQUE de profile.user_id)."""
-
-
-class InvalidTechnologiesError(Exception):
-    """Algum id de tecnologia não existe no catálogo."""
-
-    def __init__(self, ids: list[int]):
-        super().__init__(ids)
-        self.ids = ids
 
 
 PROFILE_FIELDS = {"full_name", "level", "bio", "interests", "github_username"}
@@ -44,13 +37,7 @@ def to_profile_read(session: SessionDep, profile: Profile) -> ProfileRead:
 
 
 def _ensure_technologies_exist(session: SessionDep, data: ProfileWrite) -> None:
-    requested = set(data.mastered_technology_ids) | set(data.learning_technology_ids)
-    if not requested:
-        return
-    found = set(session.exec(select(Technology.id).where(Technology.id.in_(requested))).all())
-    missing = sorted(requested - found)
-    if missing:
-        raise InvalidTechnologiesError(missing)
+    ensure_technologies_exist(session, set(data.mastered_technology_ids) | set(data.learning_technology_ids))
 
 
 def _add_technology_links(session: SessionDep, profile_id: int, data: ProfileWrite) -> None:

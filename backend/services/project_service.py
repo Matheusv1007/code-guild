@@ -12,6 +12,7 @@ from integration.database import SessionDep
 from models import (Profile, Project, ProjectOwner, ProjectRead, ProjectStatus, ProjectWrite, User, Vacancy,
                     VacancyStatus)
 from models.common import utcnow
+from services.vacancy_service import project_vacancy_summaries
 
 PROJECT_FIELDS = {"title", "description", "github_url"}
 
@@ -39,13 +40,17 @@ def _owners(session: SessionDep, owner_ids: set[int]) -> dict[int, ProjectOwner]
 
 def to_project_reads(session: SessionDep, projects: list[Project]) -> list[ProjectRead]:
     owners = _owners(session, {project.owner_id for project in projects})
-    return [
-        ProjectRead(
+    summaries = project_vacancy_summaries(session, projects)
+    reads = []
+    for project in projects:
+        open_vacancies, technologies = summaries.get(project.id, (0, []))
+        reads.append(ProjectRead(
             **project.model_dump(include=PROJECT_FIELDS | {"id", "status", "created_at", "updated_at"}),
             owner=owners[project.owner_id],
-        )
-        for project in projects
-    ]
+            open_vacancies=open_vacancies,
+            technologies=technologies,
+        ))
+    return reads
 
 
 def to_project_read(session: SessionDep, project: Project) -> ProjectRead:
