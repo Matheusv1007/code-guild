@@ -71,3 +71,11 @@ app.include_router(projects_router)
 
 # Inclui as rotas de vagas dos projetos (leitura pública; só o responsável cria, edita e encerra)
 app.include_router(vacancies_router)
+
+
+@app.get("/", tags=["Health"])
+@app.get("/health", tags=["Health"])
+def health_check():
+    """Endpoint leve para verificação de status e manter o serviço acordado."""
+    return {"status": "ok"}
+
