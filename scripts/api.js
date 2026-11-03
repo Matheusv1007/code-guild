@@ -12,7 +12,10 @@
  * o que evita loop na própria tela de login.
  */
 
-const API_URL = "http://127.0.0.1:8000";
+const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+const API_URL = isLocalhost
+    ? "http://127.0.0.1:8000"
+    : "https://code-guild-api.onrender.com";
 
 class ApiError extends Error {
     constructor(status, message, data = null) {

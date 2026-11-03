@@ -1,0 +1,16 @@
+name: Keep API Alive
+
+on:
+  schedule:
+    # Executa a cada 10 minutos
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Permite disparar manualmente na aba Actions
+
+jobs:
+  ping:
+    name: Ping Render API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping CodeGuild Health Endpoint
+        run: |
+          curl -s -f https://code-guild-api.onrender.com/health || true
