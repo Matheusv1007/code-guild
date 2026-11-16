@@ -118,8 +118,9 @@
                 </div>
 
                 <div class="side-column">
+                    <!-- Equipe: responsável + aprovados (GET /projects/{id}/members) -->
                     <section class="team-section card">
-                        <h2>Responsável</h2>
+                        <h2>Equipe</h2>
                         <div class="team-member">
                             <div id="owner-initials" class="avatar"></div>
                             <div class="member-info">
@@ -127,6 +128,8 @@
                                 <span id="owner-username"></span>
                             </div>
                         </div>
+                        <div id="team-members"></div>
+                        <p id="team-status" class="team-status" role="status" hidden></p>
                     </section>
                 </div>
             </div>

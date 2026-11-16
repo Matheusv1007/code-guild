@@ -48,7 +48,7 @@ Regras em `services/launch_service.py`, aplicadas em `api/auth.py`, `api/users.p
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
 | `/projects`, `/projects/{id}`, `/projects/{id}/close`, `/me/projects` | `api/projects.py` | em uso pelo frontend (explorar, detalhes, painel, projeto-form) |
 | `/projects/{id}/vacancies`, `/vacancies/{id}`, `/vacancies/{id}/close` | `api/vacancies.py` | em uso pelo frontend (vagas nos detalhes do projeto) |
-| `/vacancies/{id}/applications`, `/me/applications`, `/projects/{id}/applications`, `/applications/{id}/approve`, `/reject`, `/cancel` | `api/applications.py` | em uso pelo frontend (detalhes do projeto e minhas candidaturas) |
+| `/vacancies/{id}/applications`, `/me/applications`, `/projects/{id}/applications`, `/projects/{id}/members`, `/applications/{id}/approve`, `/reject`, `/cancel` | `api/applications.py` | em uso pelo frontend (detalhes do projeto e minhas candidaturas) |
 | `/users` | `api/users.py` | `POST` cria conta (igual a `/register`); `GET`/`PUT`/`DELETE /users/{id}` só da própria conta. Não há listagem de usuários |
 | `/leads` (POST) | `api/leads.py` | pré-cadastro, em uso pela landing; sem rota de listagem |
 | `/items` | `api/item.py` | exemplo de aula, sem uso no produto |
@@ -84,6 +84,7 @@ Regras em `services/application_service.py`; a autorização fica em `api/applic
 - Vaga ou projeto encerrado: as PENDING continuam como estão, mas não podem mais ser aprovadas (409); rejeitar e cancelar continuam permitidos.
 - `GET /projects/{id}/applications` (só o responsável) traz todas as candidaturas das vagas do projeto com o resumo do perfil do candidato (nome, nível, GitHub e tecnologias), pendentes primeiro.
 - `GET /me/applications`: candidaturas do usuário autenticado, mais recentes primeiro.
+- `GET /projects/{id}/members` (público): equipe do projeto, ou seja, as candidaturas aprovadas (nome, username, nível e vaga ocupada), sem e-mail. O responsável não entra na lista; ele já vem em `owner` no projeto.
 
 ## Modelo de dados
 

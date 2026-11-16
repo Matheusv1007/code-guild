@@ -37,7 +37,7 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 - Vagas: o responsável anuncia, edita e encerra vagas por especialidade, stack, nível e quantidade nos detalhes do projeto (`/projects/{id}/vacancies`, `/vacancies/{id}`). Cada vaga mostra quantas posições restam (quantidade menos candidaturas aprovadas); vaga encerrada, sem posição livre ou de projeto encerrado não aceita candidaturas. O mural mostra, por projeto, as vagas abertas e a stack pedida.
 - Landing page com as seções Como funciona, Projetos e Benefícios, contagem regressiva e pré-cadastro.
 - Trava de lançamento: até `LAUNCH_AT` o cadastro fica fechado e só a equipe (`EARLY_ACCESS_USER_IDS`) entra; visitantes usam o pré-cadastro. Detalhes em [`backend/README.md`](backend/README.md#trava-de-lançamento).
-- Candidaturas: candidatar-se a uma vaga com mensagem, acompanhar e cancelar em "Minhas candidaturas" (filtros por status) e, para o responsável, ver os candidatos de cada vaga com o resumo do perfil e aprovar ou rejeitar. Uma candidatura ativa por pessoa em cada vaga; aprovar ocupa uma posição da vaga.
+- Candidaturas: candidatar-se a uma vaga com mensagem, acompanhar e cancelar em "Minhas candidaturas" (filtros por status) e, para o responsável, ver os candidatos de cada vaga com o resumo do perfil e aprovar ou rejeitar. Uma candidatura ativa por pessoa em cada vaga; aprovar ocupa uma posição da vaga e coloca a pessoa na "Equipe" do projeto.
 - API FastAPI + PostgreSQL, com seed de dados para desenvolvimento.
 
 **Planejado**
@@ -187,6 +187,7 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | `POST /vacancies/{id}/applications` | Bearer | candidata-se à vaga (mensagem opcional); exige perfil técnico; uma candidatura ativa por vaga |
 | `GET /me/applications` | Bearer | candidaturas do usuário, mais recentes primeiro |
 | `GET /projects/{id}/applications` | Bearer | candidaturas das vagas do projeto com o perfil do candidato; só o responsável |
+| `GET /projects/{id}/members` | — | equipe do projeto (candidaturas aprovadas, com a vaga de cada pessoa) |
 | `POST /applications/{id}/approve` · `POST /applications/{id}/reject` | Bearer | aprova ou rejeita uma candidatura pendente; só o responsável; aprovar exige posição livre (409) |
 | `POST /applications/{id}/cancel` | Bearer | cancela a própria candidatura pendente |
 | `POST /leads` | — | pré-cadastro de interessados (formulário da landing); não há rota de listagem |

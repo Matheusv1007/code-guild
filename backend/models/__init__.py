@@ -7,7 +7,8 @@ from .technology import Technology, TechnologyBase, TechnologyRead
 from .profile import Profile, ProfileBase, ProfileRead, ProfileSummary, ProfileTechnology, ProfileWrite
 from .project import Project, ProjectBase, ProjectOwner, ProjectRead, ProjectWrite
 from .vacancy import Vacancy, VacancyBase, VacancyRead, VacancyTechnology, VacancyWrite
-from .application import Application, ApplicationApplicant, ApplicationBase, ApplicationCreate, ApplicationRead
+from .application import (Application, ApplicationApplicant, ApplicationBase, ApplicationCreate, ApplicationRead,
+                          ProjectMember)
 from .github import GitHubData, GitHubRead
 
 __all__ = [
@@ -20,6 +21,6 @@ __all__ = [
     "Profile", "ProfileBase", "ProfileRead", "ProfileSummary", "ProfileTechnology", "ProfileWrite",
     "Project", "ProjectBase", "ProjectOwner", "ProjectRead", "ProjectWrite",
     "Vacancy", "VacancyBase", "VacancyRead", "VacancyTechnology", "VacancyWrite",
-    "Application", "ApplicationApplicant", "ApplicationBase", "ApplicationCreate", "ApplicationRead",
+    "Application", "ApplicationApplicant", "ApplicationBase", "ApplicationCreate", "ApplicationRead", "ProjectMember",
     "GitHubData", "GitHubRead",
 ]

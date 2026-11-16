@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from integration.database import SessionDep
-from models import Application, ApplicationCreate, ApplicationRead, User
+from models import Application, ApplicationCreate, ApplicationRead, ProjectMember, User
 from auth.dependencies import get_current_user
-from api.projects import ensure_project_owner, get_owned_project
+from api.projects import ensure_project_owner, get_owned_project, get_project_or_404
 from services import application_service, vacancy_service
 from services.application_service import (AlreadyAppliedError, NotPendingError, OwnProjectError, ProfileRequiredError,
                                           VacancyNotAcceptingError)
@@ -70,6 +70,12 @@ def read_project_applications(
     """Candidaturas de todas as vagas do projeto, com o perfil de cada candidato. Só o responsável."""
     project = get_owned_project(session, project_id, current_user)
     return application_service.list_project_applications(session, project)
+
+
+@applications_router.get("/projects/{project_id}/members", response_model=list[ProjectMember])
+def read_project_members(session: SessionDep, project_id: int):
+    """Rota pública: equipe do projeto (candidaturas aprovadas), sem e-mail."""
+    return application_service.list_project_members(session, get_project_or_404(session, project_id))
 
 
 @applications_router.post("/applications/{application_id}/approve", response_model=ApplicationRead)
