@@ -2,7 +2,8 @@
  * Seção "Vagas" dos detalhes do projeto (paginas/detalhes-projeto/index.html).
  *
  * Depende de api.js e projects.js. detalhes-projeto.js chama loadVacanciesSection(project, viewer)
- * sempre que (re)desenha o projeto (ex.: depois de encerrá-lo, as vagas também aparecem encerradas).
+ * sempre que (re)desenha o projeto (ex.: depois de encerrá-lo, as vagas também aparecem encerradas);
+ * depois de aprovar alguém, chama loadTeam() de detalhes-projeto.js para atualizar a equipe.
  *
  * - GET /projects/{id}/vacancies é público; cada vaga traz `available` e `accepts_applications`
  *   (vaga encerrada ou sem disponibilidade não aceita novas candidaturas);
@@ -192,6 +193,9 @@ async function handleDecision(application, action, button) {
     button.disabled = true;
     try {
         await apiFetch(`/applications/${application.id}/${action}`, { method: "POST", auth: true });
+        if (action === "approve") {
+            loadTeam();
+        }
         await fetchVacancies();
     } catch (error) {
         if (error instanceof ApiError && error.status === 401) {

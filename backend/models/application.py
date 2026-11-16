@@ -80,3 +80,14 @@ class ApplicationRead(SQLModel):
     applicant: ApplicationApplicant
     created_at: datetime
     updated_at: datetime
+
+
+class ProjectMember(SQLModel):
+    """Participante do projeto: candidatura aprovada (uma linha por vaga ocupada). Dados públicos, sem e-mail."""
+    user_id: int
+    username: str
+    full_name: str | None = None
+    level: Level | None = None
+    vacancy_id: int
+    vacancy_title: str
+    joined_at: datetime

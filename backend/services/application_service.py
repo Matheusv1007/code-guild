@@ -20,7 +20,8 @@ from sqlmodel import case, col, func, select
 
 from integration.database import SessionDep
 from models import (Application, ApplicationApplicant, ApplicationCreate, ApplicationRead, ApplicationStatus, Profile,
-                    ProfileTechnology, Project, Technology, TechnologyKind, TechnologyRead, User, Vacancy)
+                    ProfileTechnology, Project, ProjectMember, Technology, TechnologyKind, TechnologyRead, User,
+                    Vacancy)
 from services.vacancy_service import accepts_applications
 
 ACTIVE_STATUSES = (ApplicationStatus.PENDING, ApplicationStatus.APPROVED)
@@ -217,3 +218,22 @@ def list_project_applications(session: SessionDep, project: Project) -> list[App
         .order_by(status_order, col(Application.created_at), col(Application.id))
     ).all()
     return to_application_reads(session, list(applications))
+
+
+def list_project_members(session: SessionDep, project: Project) -> list[ProjectMember]:
+    """Equipe do projeto: candidaturas aprovadas, na ordem em que as pessoas entraram."""
+    rows = session.exec(
+        select(User.id, User.username, Profile.full_name, Profile.level, Vacancy.id, Vacancy.title, Application.updated_at)
+        .join(Vacancy, Vacancy.id == Application.vacancy_id)
+        .join(User, User.id == Application.user_id)
+        .join(Profile, Profile.user_id == User.id, isouter=True)
+        .where(Vacancy.project_id == project.id, Application.status == ApplicationStatus.APPROVED)
+        .order_by(col(Application.updated_at), col(Application.id))
+    ).all()
+    return [
+        ProjectMember(
+            user_id=user_id, username=username, full_name=full_name, level=level,
+            vacancy_id=vacancy_id, vacancy_title=vacancy_title, joined_at=joined_at,
+        )
+        for user_id, username, full_name, level, vacancy_id, vacancy_title, joined_at in rows
+    ]

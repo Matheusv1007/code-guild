@@ -2,11 +2,13 @@
  * Detalhes do projeto (paginas/detalhes-projeto/index.html?id=N).
  *
  * Depende de api.js, user-header.js (getInitials), public-header.js (publicUserPromise),
- * projects.js e vagas.js (loadVacanciesSection). GET /projects/{id} é público; as ações abaixo
- * exigem ser o responsável:
+ * projects.js e vagas.js (loadVacanciesSection). GET /projects/{id} e GET /projects/{id}/members
+ * são públicos; as ações abaixo exigem ser o responsável:
  * - "Editar projeto" → projeto-form?id=N;
  * - "Encerrar projeto" → POST /projects/{id}/close (após confirmação; não há reabertura).
  * Projeto encerrado continua visível, com aviso, e sem ações de edição.
+ * "Equipe" mostra o responsável e quem teve candidatura aprovada; vagas.js chama loadTeam()
+ * depois de uma aprovação.
  */
 
 const projectId = getProjectIdFromUrl();
@@ -29,6 +31,8 @@ const projectFields = {
     ownerName: document.getElementById("owner-name"),
     ownerUsername: document.getElementById("owner-username"),
 };
+const teamMembers = document.getElementById("team-members");
+const teamStatus = document.getElementById("team-status");
 
 let currentProject = null;
 let viewer = null; // usuário autenticado (GET /me) ou null
@@ -72,12 +76,38 @@ function renderProject(project) {
 
     projectFields.ownerInitials.textContent = getInitials(ownerName);
     projectFields.ownerName.textContent = ownerName;
-    projectFields.ownerUsername.textContent = `@${project.owner.username}`;
+    projectFields.ownerUsername.textContent = `Responsável · @${project.owner.username}`;
 
     projectLoading.hidden = true;
     projectError.hidden = true;
     projectContent.hidden = false;
     loadVacanciesSection(project, viewer);
+    loadTeam();
+}
+
+function createTeamMember(member) {
+    const name = (member.full_name || "").trim() || member.username;
+    const item = createElement("div", "team-member");
+    const avatar = createElement("div", "avatar", getInitials(name));
+    avatar.setAttribute("aria-hidden", "true");
+    const info = createElement("div", "member-info");
+    info.append(createElement("strong", null, name), createElement("span", null, `${member.vacancy_title} · @${member.username}`));
+    item.append(avatar, info);
+    return item;
+}
+
+/** Participantes aprovados; chamado a cada renderização do projeto e por vagas.js depois de aprovar alguém. */
+async function loadTeam() {
+    try {
+        const members = await apiFetch(`/projects/${currentProject.id}/members`);
+        teamMembers.replaceChildren(...members.map(createTeamMember));
+        teamStatus.textContent = "Ninguém entrou na equipe ainda.";
+        teamStatus.hidden = members.length > 0;
+    } catch (error) {
+        teamMembers.replaceChildren();
+        teamStatus.textContent = "Não foi possível carregar a equipe agora.";
+        teamStatus.hidden = false;
+    }
 }
 
 function closeErrorMessage(error) {
