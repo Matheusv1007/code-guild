@@ -3,7 +3,8 @@
  *
  * Envia username + email + senha para POST /register (cria só a conta, sem perfil)
  * e, em caso de sucesso, leva ao login.
- * Depende de auth.js (redirectIfAuthenticated) e api.js (apiFetch, ApiError) carregados antes.
+ * Antes do lançamento (launch.js) esconde o formulário e mostra o aviso do pré-cadastro.
+ * Depende de auth.js (redirectIfAuthenticated), api.js (apiFetch, ApiError) e launch.js carregados antes.
  */
 
 const LOGIN_REDIRECT_DELAY_MS = 1500;
@@ -62,6 +63,10 @@ function registerErrorMessage(error) {
     if (error.status === 422) {
         return "Dados inválidos. Revise os campos e tente novamente.";
     }
+    if (error.status === 403) {
+        // Cadastro fechado até o lançamento: o backend explica até quando.
+        return error.message;
+    }
     return "Não foi possível criar a conta agora. Tente novamente.";
 }
 
@@ -97,4 +102,13 @@ registerForm.addEventListener("submit", async (event) => {
         showRegisterError(registerErrorMessage(error));
         registerButton.disabled = false;
     }
+});
+
+launchPromise.then((launch) => {
+    if (!launch || launch.open) {
+        return;
+    }
+    registerForm.hidden = true;
+    document.getElementById("register-launch-date").textContent = formatLaunchDate(new Date(launch.launch_at));
+    document.getElementById("register-closed").hidden = false;
 });

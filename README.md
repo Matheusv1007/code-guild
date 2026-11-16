@@ -35,7 +35,8 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 - Navegação pública e autenticada: o header muda conforme a sessão; visitantes navegam pelas páginas públicas sem serem levados ao login.
 - Projetos: criar, editar, listar e encerrar (`/projects`, `/me/projects`). O mural (explorar) e os detalhes são públicos; só o responsável edita ou encerra o projeto, e encerrar também encerra as vagas abertas dele. O painel mostra "Meus projetos" e os projetos abertos mais recentes.
 - Vagas: o responsável anuncia, edita e encerra vagas por especialidade, stack, nível e quantidade nos detalhes do projeto (`/projects/{id}/vacancies`, `/vacancies/{id}`). Cada vaga mostra quantas posições restam (quantidade menos candidaturas aprovadas); vaga encerrada, sem posição livre ou de projeto encerrado não aceita candidaturas. O mural mostra, por projeto, as vagas abertas e a stack pedida.
-- Landing page com as seções Como funciona, Projetos e Benefícios.
+- Landing page com as seções Como funciona, Projetos e Benefícios, contagem regressiva e pré-cadastro.
+- Trava de lançamento: até `LAUNCH_AT` o cadastro fica fechado e só a equipe (`EARLY_ACCESS_USER_IDS`) entra; visitantes usam o pré-cadastro. Detalhes em [`backend/README.md`](backend/README.md#trava-de-lançamento).
 - API FastAPI + PostgreSQL, com seed de dados para desenvolvimento.
 
 **Em desenvolvimento**
@@ -113,6 +114,8 @@ O `.env` é local de cada integrante e está no `.gitignore`: **nunca faça comm
 
 As variáveis `GITHUB_API_URL` e `GITHUB_TOKEN` são **opcionais** (comentadas no `.env.example`); sem elas a integração com o GitHub funciona normalmente. O `GITHUB_TOKEN` só aumenta o limite de consultas da API do GitHub (60 por hora sem token, 5.000 com) e **nunca deve ser commitado**.
 
+`LAUNCH_AT` e `EARLY_ACCESS_USER_IDS` também são opcionais: sem `LAUNCH_AT` não há trava de lançamento e a contagem regressiva da landing não aparece. Para testar a trava localmente, defina as duas (ex.: `LAUNCH_AT=2026-12-01T19:00:00-03:00` e `EARLY_ACCESS_USER_IDS=1`).
+
 ### 4. Executar o backend
 
 Dentro de `backend/`, com o ambiente virtual ativado:
@@ -167,8 +170,9 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 
 | Método e rota | Autenticação | Descrição |
 |---|---|---|
-| `POST /register` | — | cria conta (usuário, e-mail, senha) |
-| `POST /login` | — | devolve o token JWT |
+| `POST /register` | — | cria conta (usuário, e-mail, senha); antes do lançamento responde 403 |
+| `POST /login` | — | devolve o token JWT; antes do lançamento só para a equipe (403 para os demais) |
+| `GET /launch` | — | data do lançamento e se a plataforma já está aberta (`{launch_at, open}`) |
 | `GET /me` | Bearer | usuário autenticado, com resumo do perfil (ou `null`) |
 | `GET /me/profile` · `POST /me/profile` · `PUT /me/profile` | Bearer | consulta, cria e edita o perfil técnico |
 | `GET /technologies` | — | catálogo de tecnologias |
@@ -185,7 +189,7 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | `PUT /vacancies/{id}` | Bearer | edita a vaga (inclusive a stack); só o responsável; vaga e projeto abertos; quantidade não fica abaixo das aprovadas (409) |
 | `POST /vacancies/{id}/close` | Bearer | encerra a vaga (deixa de aceitar candidaturas); só o responsável; não há reabertura |
 | `POST /leads` | — | pré-cadastro de interessados (formulário da landing); não há rota de listagem |
-| `/users` (CRUD) | Bearer, exceto `POST` | gestão de usuários (cada usuário só altera a própria conta) |
+| `/users/{id}` (GET/PUT/DELETE), `POST /users` | Bearer, exceto `POST` | cada usuário só vê e altera a própria conta; não há listagem |
 | `/items` (CRUD) | Bearer | exemplo de aula, sem uso no produto |
 
 Detalhes dos modelos e das camadas do backend: [`backend/README.md`](backend/README.md).

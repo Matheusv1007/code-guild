@@ -26,19 +26,29 @@ Swagger: http://127.0.0.1:8000/docs
 | `main.py` | aplicação FastAPI: CORS e registro das rotas |
 | `seed.py` | dados de desenvolvimento |
 
-Variáveis lidas do `.env` (ver `.env.example`): `DATABASE_URL` (obrigatória) e `SECRET_KEY`. Sem `SECRET_KEY`, o código usa um valor inseguro só para desenvolvimento. Opcionais: `GITHUB_API_URL` (padrão `https://api.github.com`) e `GITHUB_TOKEN` (só aumenta o limite de consultas).
+Variáveis lidas do `.env` (ver `.env.example`): `DATABASE_URL` (obrigatória) e `SECRET_KEY`. Sem `SECRET_KEY`, o código usa um valor inseguro só para desenvolvimento. Opcionais: `GITHUB_API_URL` (padrão `https://api.github.com`), `GITHUB_TOKEN` (só aumenta o limite de consultas), `LAUNCH_AT` e `EARLY_ACCESS_USER_IDS` (trava de lançamento, abaixo).
+
+## Trava de lançamento
+
+Regras em `services/launch_service.py`, aplicadas em `api/auth.py`, `api/users.py` e `auth/dependencies.py`.
+
+- `LAUNCH_AT` (data com fuso, ex.: `2026-12-01T19:00:00-03:00`): antes dela o cadastro fica fechado e só entra quem está em `EARLY_ACCESS_USER_IDS` (ids separados por vírgula, a equipe).
+- Antes do lançamento: `POST /register` e `POST /users` → 403; `POST /login` de conta fora da lista → 403 com a data de liberação; token já emitido de conta fora da lista → 401 em qualquer rota autenticada.
+- A partir de `LAUNCH_AT` tudo libera sozinho, sem deploy. Sem `LAUNCH_AT` não há trava (padrão no ambiente local).
+- `GET /launch` (público) devolve `{"launch_at": ..., "open": ...}`; o front usa para a contagem regressiva, os botões de cadastro e a página de cadastro.
+- A lista usa id, não username: hoje o username pode ser trocado em `PUT /users/{id}`.
 
 ## Rotas
 
 | Rotas | Arquivo | Situação |
 |---|---|---|
-| `/register`, `/login`, `/me` | `api/auth.py` | em uso pelo frontend |
+| `/register`, `/login`, `/me`, `/launch` | `api/auth.py` | em uso pelo frontend |
 | `/me/profile` (GET/POST/PUT) | `api/profile.py` | em uso pelo frontend (perfil técnico) |
 | `/me/github`, `/me/github/refresh` | `api/github.py` | em uso pelo frontend (card GitHub do perfil) |
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
 | `/projects`, `/projects/{id}`, `/projects/{id}/close`, `/me/projects` | `api/projects.py` | em uso pelo frontend (explorar, detalhes, painel, projeto-form) |
 | `/projects/{id}/vacancies`, `/vacancies/{id}`, `/vacancies/{id}/close` | `api/vacancies.py` | em uso pelo frontend (vagas nos detalhes do projeto) |
-| `/users` | `api/users.py` | CRUD de usuários; cada usuário só altera a própria conta |
+| `/users` | `api/users.py` | `POST` cria conta (igual a `/register`); `GET`/`PUT`/`DELETE /users/{id}` só da própria conta. Não há listagem de usuários |
 | `/leads` (POST) | `api/leads.py` | pré-cadastro, em uso pela landing; sem rota de listagem |
 | `/items` | `api/item.py` | exemplo de aula, sem uso no produto |
 

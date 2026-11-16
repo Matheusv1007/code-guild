@@ -15,6 +15,11 @@
                 <h1>Crie sua conta e encontre seu squad.</h1>
             </div>
 
+            <p id="register-closed" class="form-success" role="status" hidden>
+                O cadastro abre em <span id="register-launch-date"></span>.
+                <a href="../inicio/index.html#pre-cadastro">Faça seu pré-cadastro</a> para ser avisado no lançamento.
+            </p>
+
             <form class="auth-form" novalidate>
                 <p id="register-error" class="form-error" role="alert" hidden></p>
                 <p id="register-success" class="form-success" role="status" hidden></p>
@@ -54,6 +59,7 @@
 
     <script src="../../scripts/auth.js"></script>
     <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/launch.js"></script>
     <script src="../../scripts/cadastro.js"></script>
 </body>
 </html>
