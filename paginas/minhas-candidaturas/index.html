@@ -35,10 +35,20 @@
         <section class="applications-header">
             <h1>Minhas candidaturas</h1>
             <p>Acompanhe o andamento de suas solicitações para squads acadêmicos.</p>
+
+            <div id="applications-tabs" class="tabs" hidden>
+                <button type="button" class="tab-btn active" data-filter="ALL" aria-pressed="true">Todas</button>
+                <button type="button" class="tab-btn" data-filter="PENDING" aria-pressed="false">Pendentes</button>
+                <button type="button" class="tab-btn" data-filter="APPROVED" aria-pressed="false">Aprovadas</button>
+                <button type="button" class="tab-btn" data-filter="REJECTED" aria-pressed="false">Rejeitadas</button>
+            </div>
         </section>
 
-        <!-- Candidaturas ainda não têm API: estado vazio até a integração (sem dados de exemplo) -->
-        <section class="card empty-state" aria-labelledby="empty-state-title">
+        <p id="applications-error" class="applications-error" role="alert" hidden></p>
+        <p id="applications-status" class="applications-status" role="status">Carregando candidaturas...</p>
+        <section id="applications-list" class="applications-list" aria-label="Candidaturas"></section>
+
+        <section id="applications-empty" class="card empty-state" aria-labelledby="empty-state-title" hidden>
             <div class="empty-state-icon" aria-hidden="true">✉</div>
             <h2 id="empty-state-title">Nenhuma candidatura para exibir</h2>
             <p>Explore projetos e candidate-se a uma vaga para acompanhar suas solicitações por aqui.</p>
@@ -54,5 +64,8 @@
             </div>
         </div>
     </footer>
+
+    <script src="../../scripts/projects.js"></script>
+    <script src="../../scripts/minhas-candidaturas.js"></script>
 </body>
 </html>

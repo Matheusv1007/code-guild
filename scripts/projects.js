@@ -7,10 +7,12 @@
 
 const PROJECT_DETAILS_PAGE = "../detalhes-projeto/index.html";
 const PROJECT_FORM_PAGE = "../projeto-form/index.html";
+const MY_APPLICATIONS_PAGE = "../minhas-candidaturas/index.html";
 
 const PROJECT_STATUS_LABELS = { OPEN: "Aberto", CLOSED: "Encerrado" };
 // Valores do enum Level do backend (models/enums.py); vaga sem nível = qualquer nível
 const LEVEL_LABELS = { BEGINNER: "Iniciante", INTERMEDIATE: "Intermediário", ADVANCED: "Avançado" };
+const APPLICATION_STATUS_LABELS = { PENDING: "Pendente", APPROVED: "Aprovada", REJECTED: "Rejeitada", CANCELED: "Cancelada" };
 
 function projectDetailsUrl(projectId) {
     return `${PROJECT_DETAILS_PAGE}?id=${encodeURIComponent(projectId)}`;
@@ -48,6 +50,11 @@ function createStatusBadge(status) {
     const badge = createElement("span", "badge", PROJECT_STATUS_LABELS[status] || status);
     badge.classList.toggle("match", status === "OPEN");
     return badge;
+}
+
+/** Badge do status da candidatura (cores em .status-badge, estilos/global.css). */
+function createApplicationStatusBadge(status) {
+    return createElement("span", `status-badge status-${status.toLowerCase()}`, APPLICATION_STATUS_LABELS[status] || status);
 }
 
 /** Só links https://github.com entram em href (o valor vem do usuário). */
