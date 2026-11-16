@@ -312,6 +312,36 @@ html:has(.dashboard-header) {
   line-height: normal;
 }
 
+/* Status da candidatura (minhas candidaturas e candidatos nos detalhes do projeto) */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.status-pending {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.status-badge.status-approved {
+  background-color: #ecfdf5;
+  color: var(--primary-hover);
+}
+
+.status-badge.status-rejected {
+  background-color: #fee2e2;
+  color: var(--danger-color);
+}
+
+.status-badge.status-canceled {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
 /* "hidden" sempre esconde, mesmo em elementos com display próprio (.btn, .user-profile, flex...) */
 [hidden] {
   display: none !important;

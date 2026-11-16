@@ -142,7 +142,7 @@
         </div>
     </footer>
 
-    <!-- Candidatura: o fluxo real pertence ao módulo de candidaturas (ainda sem API) -->
+    <!-- Candidatura: POST /vacancies/{id}/applications (scripts/vagas.js) -->
     <div id="application-modal" class="modal-overlay" hidden>
         <div class="modal-content card" role="dialog" aria-modal="true" aria-labelledby="application-modal-title">
             <div class="modal-header">
@@ -153,9 +153,9 @@
             <p><strong>Vaga:</strong> <span id="application-vacancy"></span></p>
             <div class="form-group modal-message">
                 <label for="application-message">Por que você gostaria de participar deste projeto?</label>
-                <textarea id="application-message" rows="4" placeholder="Escreva uma breve mensagem destacando seu interesse..."></textarea>
+                <textarea id="application-message" rows="4" maxlength="1000" placeholder="Escreva uma breve mensagem destacando seu interesse..."></textarea>
             </div>
-            <p id="application-notice" class="modal-notice" role="status" hidden>Candidaturas ainda não estão disponíveis nesta versão.</p>
+            <p id="application-notice" class="modal-notice" role="status" hidden></p>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline" data-close-modal>Cancelar</button>
                 <button type="button" id="application-submit" class="btn btn-primary">Enviar candidatura</button>

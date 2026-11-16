@@ -194,6 +194,87 @@
     color: var(--text-secondary);
 }
 
+/* Link para "Minhas candidaturas" de quem já se candidatou à vaga */
+.job-applied {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.job-applied:hover {
+    text-decoration: underline;
+}
+
+/* Candidatos da vaga (só o responsável vê) */
+.candidates {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.candidates h4 {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.candidates-empty {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.candidate {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-color);
+}
+
+.candidate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.candidate-identity {
+    display: flex;
+    flex-direction: column;
+}
+
+.candidate-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.candidate-message {
+    font-size: 14px;
+    color: var(--text-primary);
+    white-space: pre-line;
+}
+
+.candidate-github {
+    font-size: 13px;
+    color: var(--primary-color);
+    align-self: flex-start;
+}
+
+.candidate-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.candidate-actions .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .vacancies-list .page-status {
     margin: 0;
 }
@@ -425,6 +506,22 @@
     background-color: #fef3c7;
     color: #b45309;
     font-size: 14px;
+}
+
+.modal-notice.is-success {
+    background-color: #ecfdf5;
+    color: var(--primary-hover);
+}
+
+.modal-notice.is-error {
+    background-color: #f8d7da;
+    color: var(--danger-color);
+}
+
+.modal-notice a {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
 }
 
 /* Estados da página (scripts/detalhes-projeto.js) */

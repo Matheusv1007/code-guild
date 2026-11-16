@@ -48,11 +48,10 @@ Regras em `services/launch_service.py`, aplicadas em `api/auth.py`, `api/users.p
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
 | `/projects`, `/projects/{id}`, `/projects/{id}/close`, `/me/projects` | `api/projects.py` | em uso pelo frontend (explorar, detalhes, painel, projeto-form) |
 | `/projects/{id}/vacancies`, `/vacancies/{id}`, `/vacancies/{id}/close` | `api/vacancies.py` | em uso pelo frontend (vagas nos detalhes do projeto) |
+| `/vacancies/{id}/applications`, `/me/applications`, `/projects/{id}/applications`, `/applications/{id}/approve`, `/reject`, `/cancel` | `api/applications.py` | em uso pelo frontend (detalhes do projeto e minhas candidaturas) |
 | `/users` | `api/users.py` | `POST` cria conta (igual a `/register`); `GET`/`PUT`/`DELETE /users/{id}` só da própria conta. Não há listagem de usuários |
 | `/leads` (POST) | `api/leads.py` | pré-cadastro, em uso pela landing; sem rota de listagem |
 | `/items` | `api/item.py` | exemplo de aula, sem uso no produto |
-
-Candidaturas já têm modelo e dados no seed, mas **ainda não têm rotas**.
 
 ### Projetos
 
@@ -72,7 +71,19 @@ Regras em `services/vacancy_service.py`; a autorização reaproveita `ensure_pro
 - Projeto encerrado: nenhuma vaga é criada, editada ou encerrada (409). Vaga encerrada não é editada nem reaberta (409).
 - `title` 1–120 (especialidade), `quantity` 1–50, `level` opcional (`null` = qualquer nível), `description` até 2000, `technology_ids` do catálogo (ids inexistentes → 422). `PUT` substitui tudo, inclusive a stack.
 - Disponibilidade calculada a cada leitura: `filled` = candidaturas APPROVED, `available` = `quantity - filled`. A quantidade não pode ficar abaixo de `filled` (409).
-- `accepts_applications` (função `vacancy_service.accepts_applications`): vaga OPEN, projeto OPEN e `filled < quantity`. Regra do escopo: vaga encerrada ou sem disponibilidade não aceita novas candidaturas; o fluxo de candidaturas deve validar com a mesma função.
+- `accepts_applications` (função `vacancy_service.accepts_applications`): vaga OPEN, projeto OPEN e `filled < quantity`. Regra do escopo: vaga encerrada ou sem disponibilidade não aceita novas candidaturas; o fluxo de candidaturas valida com a mesma função.
+
+### Candidaturas
+
+Regras em `services/application_service.py`; a autorização fica em `api/applications.py` (aprovar e rejeitar usam `ensure_project_owner`; cancelar, só o próprio candidato).
+
+- `POST /vacancies/{id}/applications` (mensagem opcional, até 1000): exige perfil técnico criado (409), não vale para vaga do próprio projeto (403) e a vaga precisa aceitar candidaturas (409).
+- Uma candidatura ativa (PENDING ou APPROVED) por pessoa em cada vaga (409). Depois de rejeitada ou cancelada, a pessoa pode se candidatar de novo.
+- Transições só a partir de PENDING: APPROVED ou REJECTED (responsável), CANCELED (candidato). Qualquer outra → 409.
+- Aprovar trava a vaga (`SELECT ... FOR UPDATE`) e confere posição livre: duas aprovações ao mesmo tempo não passam da quantidade (a segunda recebe 409).
+- Vaga ou projeto encerrado: as PENDING continuam como estão, mas não podem mais ser aprovadas (409); rejeitar e cancelar continuam permitidos.
+- `GET /projects/{id}/applications` (só o responsável) traz todas as candidaturas das vagas do projeto com o resumo do perfil do candidato (nome, nível, GitHub e tecnologias), pendentes primeiro.
+- `GET /me/applications`: candidaturas do usuário autenticado, mais recentes primeiro.
 
 ## Modelo de dados
 
@@ -85,13 +96,11 @@ Regras em `services/vacancy_service.py`; a autorização reaproveita `ensure_pro
 | `project` | `project.py` | `owner_id` → `user` com `ON DELETE RESTRICT`; `status` OPEN/CLOSED; `github_url` opcional |
 | `vacancy` | `vacancy.py` | vaga de um projeto; `quantity > 0` (check); `level` opcional; `status` OPEN/CLOSED |
 | `vacancy_technology` | `vacancy.py` | stack pedida pela vaga |
-| `application` | `application.py` | candidatura; `status` PENDING/APPROVED/REJECTED/CANCELED; índice único parcial `(vacancy_id, user_id) WHERE status = 'PENDING'` (uma candidatura pendente por vaga) |
+| `application` | `application.py` | candidatura; `status` PENDING/APPROVED/REJECTED/CANCELED; índice único parcial `(vacancy_id, user_id) WHERE status = 'PENDING'`. A regra completa (PENDING ou APPROVED) é checada no serviço, porque mudar o índice não altera bancos que já existem (não há migrations) |
 | `lead` | `lead.py` | pré-cadastro |
 | `item` | `item.py` | exemplo de aula |
 
 Datas (`created_at`/`updated_at`) são gravadas em UTC com timezone (`models/common.py`).
-
-Regras previstas para quando as rotas de candidaturas existirem (ainda não implementadas): só o dono do projeto decide candidaturas; a vaga precisa aceitar candidaturas (`accepts_applications`); transições de estado só a partir de PENDING; ninguém se candidata à própria vaga.
 
 ## Seed
 

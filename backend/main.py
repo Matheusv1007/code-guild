@@ -15,6 +15,7 @@ from api.profile import profile_router
 from api.github import github_router
 from api.projects import projects_router
 from api.vacancies import vacancies_router
+from api.applications import applications_router
 from integration.database import lifespan
 
 # Criação da instância principal da aplicação FastAPI
@@ -71,6 +72,9 @@ app.include_router(projects_router)
 
 # Inclui as rotas de vagas dos projetos (leitura pública; só o responsável cria, edita e encerra)
 app.include_router(vacancies_router)
+
+# Inclui as rotas de candidaturas (candidatar-se, minhas candidaturas, aprovar, rejeitar e cancelar)
+app.include_router(applications_router)
 
 
 @app.get("/", tags=["Health"])
