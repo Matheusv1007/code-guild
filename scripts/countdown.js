@@ -1,19 +1,15 @@
 /**
- * Contagem regressiva da landing (paginas/inicio) até o marco definido pelo grupo.
+ * Contagem regressiva da landing (paginas/inicio) até o lançamento.
  *
- * Para trocar o marco, altere APENAS COUNTDOWN_TARGET (data e hora com fuso).
- * A data exibida na página e o cálculo vêm daqui.
+ * A data vem de GET /launch (variável LAUNCH_AT do backend), a mesma que libera o cadastro.
  *
  * - atualiza a cada segundo, sempre a partir do relógio (Date.now()), sem acumular atraso;
  * - ao chegar a zero: para em 00, para o intervalo e mostra a mensagem de chegada
  *   ([data-countdown-finished]); quem abrir a página depois da data já vê esse estado;
- * - data inválida: esconde a seção e registra o erro no console.
+ * - sem data (LAUNCH_AT não definida) ou API fora do ar: esconde a seção.
  *
- * Carregar no fim do <body> de paginas/inicio/index.html.
+ * Carregar no fim do <body> de paginas/inicio/index.html, depois de launch.js.
  */
-
-// Lançamento do MVP: 01/12/2026 às 19:00, horário de Brasília (-03:00).
-const COUNTDOWN_TARGET = "2026-12-01T19:00:00-03:00";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -35,26 +31,18 @@ function pad(value) {
     return String(value).padStart(2, "0");
 }
 
-/** "01/12/2026 às 19:00", no fuso de Brasília (o mesmo de COUNTDOWN_TARGET). */
-function formatTargetDate(date) {
-    const options = { timeZone: "America/Sao_Paulo" };
-    const day = date.toLocaleDateString("pt-BR", options);
-    const time = date.toLocaleTimeString("pt-BR", { ...options, hour: "2-digit", minute: "2-digit" });
-    return `${day} às ${time}`;
-}
-
-function initCountdown() {
+async function initCountdown() {
     const section = document.querySelector("[data-countdown]");
     if (!section) {
         return;
     }
 
-    const target = new Date(COUNTDOWN_TARGET);
-    if (Number.isNaN(target.getTime())) {
-        console.error("COUNTDOWN_TARGET inválida:", COUNTDOWN_TARGET);
+    const launch = await launchPromise;
+    if (!launch || !launch.launch_at) {
         section.hidden = true;
         return;
     }
+    const target = new Date(launch.launch_at);
 
     const units = {};
     section.querySelectorAll("[data-countdown-unit]").forEach((element) => {
@@ -64,7 +52,7 @@ function initCountdown() {
     const finished = section.querySelector("[data-countdown-finished]");
 
     const dateElement = section.querySelector("[data-countdown-date]");
-    dateElement.textContent = formatTargetDate(target);
+    dateElement.textContent = formatLaunchDate(target);
     dateElement.setAttribute("datetime", target.toISOString());
 
     let intervalId = null;

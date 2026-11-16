@@ -19,7 +19,7 @@
         </nav>
         <div class="header-actions">
             <a href="../login/index.html" class="btn btn-outline" data-guest-only>Entrar</a>
-            <a href="../cadastro/index.html" class="btn btn-primary" data-guest-only>Criar conta</a>
+            <a href="../cadastro/index.html" class="btn btn-primary" data-guest-only data-signup-link="Pré-cadastro">Criar conta</a>
             <a href="../painel/index.html" class="btn btn-primary" data-auth-only hidden>Ir para o painel</a>
             <button type="button" class="btn btn-outline" data-logout data-auth-only hidden>Sair</button>
         </div>
@@ -32,7 +32,7 @@
                 <p>Conecte-se com estudantes que possuem habilidades e interesses compatíveis com os seus e transforme ideias em projetos reais.</p>
                 <div class="hero-actions">
                     <a href="../explorar/index.html" class="btn btn-primary">Explorar projetos</a>
-                    <a href="../cadastro/index.html" class="btn btn-outline" data-guest-only>Criar minha conta</a>
+                    <a href="../cadastro/index.html" class="btn btn-outline" data-guest-only data-signup-link="Fazer pré-cadastro">Criar minha conta</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -47,7 +47,7 @@
             </div>
         </section>
 
-        <!-- Contagem regressiva: data alvo em COUNTDOWN_TARGET (scripts/countdown.js) -->
+        <!-- Contagem regressiva: data em LAUNCH_AT no backend (GET /launch, scripts/countdown.js) -->
         <section id="lancamento" class="countdown container" data-countdown>
             <div class="countdown-card">
                 <div class="countdown-info">
@@ -243,6 +243,7 @@
 
     <script src="../../scripts/auth.js"></script>
     <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/launch.js"></script>
     <script src="../../scripts/user-header.js"></script>
     <script src="../../scripts/public-header.js"></script>
     <script src="../../scripts/countdown.js"></script>

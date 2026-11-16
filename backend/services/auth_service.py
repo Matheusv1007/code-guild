@@ -2,6 +2,10 @@ from sqlmodel import select
 from integration.database import SessionDep
 from models import Profile, ProfileSummary, User, UserCreate, UserLogin, UserMe
 from auth.security import get_password_hash, verify_password, create_access_token
+from services import launch_service
+
+class AccessNotReleasedError(Exception):
+    """Usuário e senha corretos, mas a conta só entra a partir do lançamento."""
 
 def register_user(session: SessionDep, user_data: UserCreate) -> User | None:
     statement = select(User).where(User.username == user_data.username)
@@ -24,6 +28,8 @@ def authenticate_user(session: SessionDep, user_login: UserLogin) -> str | None:
         return None
     if not user.is_active:
         return None
+    if not launch_service.has_access(user):
+        raise AccessNotReleasedError()
     return create_access_token(data={"sub": user.username})
 
 def get_me(session: SessionDep, user: User) -> UserMe:

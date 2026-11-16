@@ -17,9 +17,6 @@ def create_user(session: SessionDep, user: UserCreate) -> User | None:
     session.refresh(db_user)
     return db_user
 
-def get_users(session: SessionDep, skip: int = 0, limit: int = 100) -> list[User]:
-    return session.exec(select(User).offset(skip).limit(limit)).all()
-
 def get_user(session: SessionDep, user_id: int) -> User | None:
     return session.get(User, user_id)
 
