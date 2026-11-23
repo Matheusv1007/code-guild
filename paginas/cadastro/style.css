@@ -9,3 +9,25 @@
     color: var(--primary-hover);
     font-size: 14px;
 }
+
+/* Regra do campo (sempre visível) e mensagem de erro do campo (só quando inválido) */
+.field-hint,
+.field-error {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.field-hint {
+    color: var(--text-secondary);
+}
+
+.field-error {
+    color: var(--danger-color);
+}
+
+/* Campo inválido continua vermelho mesmo com foco (o foco vai para o primeiro campo inválido) */
+.auth-form [aria-invalid="true"],
+.auth-form [aria-invalid="true"]:focus {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
