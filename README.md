@@ -67,7 +67,9 @@ code-guild/
 ├── paginas/                # uma pasta por tela: index.html + style.css
 ├── scripts/                # JavaScript compartilhado e de cada tela
 ├── estilos/global.css      # estilos compartilhados
-├── marca/web/              # logos e favicons otimizados para o site (WebP/PNG/ICO)
+├── marca/
+│   ├── originais/          # logos originais em alta resolução (fonte dos arquivos de web/)
+│   └── web/                # logos e favicons otimizados para o site (WebP/PNG/ICO)
 ├── docs/
 │   ├── planejamento/       # proposta e escopo, registro da escolha do nome (PDF)
 │   ├── prototipo/          # protótipo das telas (PDF)
