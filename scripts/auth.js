@@ -16,6 +16,37 @@ const LOGIN_PAGE = "../login/index.html";
 const HOME_PAGE = "../painel/index.html"; // início de quem está logado
 const GUEST_HOME_PAGE = "../inicio/index.html"; // início do visitante (landing)
 
+// Quem é mandado ao login volta depois para a página de origem, guardada em ?next=<caminho>.
+// Só caminhos internos no formato das telas ("../detalhes-projeto/index.html?id=3"): URL completa,
+// "//outro.site" ou "../../" são ignorados, para o login não virar redirecionamento para outro site.
+const NEXT_PARAM = "next";
+const SAFE_NEXT_PATTERN = /^\.\.\/([a-z0-9-]+)\/(index\.html)?(\?[^#]*)?(#.*)?$/;
+const NEXT_BLOCKED_PAGES = ["login", "cadastro"]; // voltar para elas depois do login seria um laço
+
+/** Página atual como caminho interno, ex.: "../detalhes-projeto/index.html?id=3". */
+function getCurrentPagePath() {
+    const parts = window.location.pathname.split("/");
+    const { search, hash } = window.location;
+    return `../${parts[parts.length - 2]}/${parts[parts.length - 1]}${search}${hash}`;
+}
+
+/** Login que, depois de entrar, volta para a página atual. */
+function getLoginUrl() {
+    return `${LOGIN_PAGE}?${NEXT_PARAM}=${encodeURIComponent(getCurrentPagePath())}`;
+}
+
+/** O ?next= da URL, se for um caminho interno aceito; senão null. */
+function getSafeNext() {
+    const next = new URLSearchParams(window.location.search).get(NEXT_PARAM);
+    const match = next === null ? null : SAFE_NEXT_PATTERN.exec(next);
+    return match && !NEXT_BLOCKED_PAGES.includes(match[1]) ? next : null;
+}
+
+/** Para onde ir depois do login: a página de origem (?next=) ou o painel. */
+function getPostLoginPage() {
+    return getSafeNext() || HOME_PAGE;
+}
+
 function saveToken(token) {
     try {
         localStorage.setItem(TOKEN_KEY, token);
@@ -68,21 +99,21 @@ function isAuthenticated() {
 }
 
 /**
- * Páginas privadas: sem sessão válida, vai direto ao login.
+ * Páginas privadas: sem sessão válida, vai direto ao login, que depois devolve à página atual.
  * Usa replace() para a página privada não ficar no histórico (o "voltar" não a reabre).
  */
 function requireAuth() {
     if (!isAuthenticated()) {
-        window.location.replace(LOGIN_PAGE);
+        window.location.replace(getLoginUrl());
         return false;
     }
     return true;
 }
 
-/** Página de login: com sessão válida, vai direto ao painel. */
+/** Página de login: com sessão válida, vai direto à página de origem (?next=) ou ao painel. */
 function redirectIfAuthenticated() {
     if (isAuthenticated()) {
-        window.location.replace(HOME_PAGE);
+        window.location.replace(getPostLoginPage());
         return true;
     }
     return false;

@@ -107,7 +107,7 @@ function createApplyAction(vacancy) {
     }
     if (vacancyViewer === null) {
         const login = createElement("a", "btn btn-primary", "Entrar para se candidatar");
-        login.href = LOGIN_PAGE;
+        login.href = getLoginUrl();
         return login;
     }
     const apply = createElement("button", "btn btn-primary", "Candidatar-se");
@@ -475,7 +475,7 @@ function showApplicationNotice(kind, message, link = null) {
 
 function openApplicationModal(vacancy) {
     if (!isAuthenticated()) {
-        window.location.href = LOGIN_PAGE;
+        window.location.href = getLoginUrl();
         return;
     }
     applyingVacancy = vacancy;

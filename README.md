@@ -169,9 +169,9 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | Página | Acesso |
 |---|---|
 | `paginas/inicio` | pública (landing; mostra "Ir para o painel" quando há sessão) |
-| `paginas/login`, `paginas/cadastro` | visitante (com sessão, redirecionam ao painel) |
+| `paginas/login`, `paginas/cadastro` | visitante (com sessão, redirecionam ao painel; o login aceita `?next=<caminho>` e, depois de entrar, volta para essa página, só se for caminho interno como `../detalhes-projeto/index.html?id=3`) |
 | `paginas/explorar`, `paginas/detalhes-projeto` | públicas (header muda conforme a sessão; o responsável vê "Editar" e "Encerrar" nos detalhes) |
-| `paginas/painel`, `paginas/minhas-candidaturas`, `paginas/perfil`, `paginas/projeto-form` | privadas (sem sessão, redirecionam ao login); `projeto-form` cria projeto ou, com `?id=N`, edita |
+| `paginas/painel`, `paginas/minhas-candidaturas`, `paginas/perfil`, `paginas/projeto-form` | privadas (sem sessão, redirecionam ao login com `?next=` da página aberta); `projeto-form` cria projeto ou, com `?id=N`, edita |
 
 ## Endpoints da API
 
