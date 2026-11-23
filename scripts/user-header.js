@@ -6,7 +6,7 @@
  *
  * - [data-user-name]: nome completo do perfil ou username
  * - [data-user-initials]: iniciais do mesmo nome
- * - [data-logout]: encerra a sessão
+ * - [data-logout]: encerra a sessão (`logout` por padrão; as páginas públicas passam outra ação)
  */
 
 /** Nome completo do perfil ou, sem perfil, o username. */
@@ -45,8 +45,9 @@ function renderHeaderUser(user) {
     });
 }
 
-function bindLogoutButtons() {
+/** `onLogout`: o que o botão "Sair" faz; páginas privadas usam logout (vai ao login). */
+function bindLogoutButtons(onLogout = logout) {
     document.querySelectorAll("[data-logout]").forEach((button) => {
-        button.addEventListener("click", logout);
+        button.addEventListener("click", onLogout);
     });
 }

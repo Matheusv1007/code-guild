@@ -128,3 +128,21 @@ function logout() {
     removeToken();
     window.location.replace(LOGIN_PAGE);
 }
+
+/**
+ * O token fica no localStorage, compartilhado entre as abas: quando outra aba entra, sai ou troca de
+ * conta, o evento "storage" chega às demais (nunca à aba que mudou). Com token, esta aba recarrega
+ * para mostrar a conta atual; sem token, chama `onLoggedOut` (padrão: recarregar como visitante).
+ */
+function syncSessionAcrossTabs(onLoggedOut = () => window.location.reload()) {
+    window.addEventListener("storage", (event) => {
+        if (event.key !== TOKEN_KEY && event.key !== null) { // null: localStorage.clear()
+            return;
+        }
+        if (getToken()) {
+            window.location.reload();
+        } else {
+            onLoggedOut();
+        }
+    });
+}
