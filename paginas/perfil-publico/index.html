@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - CodeGuild</title>
+    <link rel="icon" href="../../marca/web/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="../../marca/web/apple-touch-icon.png">
+    <link rel="stylesheet" href="../../estilos/global.css">
+    <!-- Layout e card do GitHub vêm do perfil; style.css só acrescenta o que é da leitura -->
+    <link rel="stylesheet" href="../perfil/style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="profile-layout">
+    <header class="header dashboard-header">
+        <div class="container header-container">
+            <div class="header-logo"><a href="../inicio/index.html"><img src="../../marca/web/logo-horizontal-header.webp" alt="CodeGuild" width="114" height="40"></a></div>
+            <nav class="header-nav">
+                <a href="../inicio/index.html" data-home-link>Início</a>
+                <a href="../explorar/index.html">Explorar Projetos</a>
+                <a href="../minhas-candidaturas/index.html" data-auth-only hidden>Minhas Candidaturas</a>
+                <a href="../perfil/index.html" data-auth-only hidden>Meu Perfil</a>
+            </nav>
+            <div class="header-actions">
+                <a href="../login/index.html" class="btn btn-outline" data-guest-only>Entrar</a>
+                <div class="user-profile" data-auth-only hidden>
+                    <span class="user-name" data-user-name></span>
+                    <div class="avatar" data-user-initials></div>
+                </div>
+                <button type="button" class="btn btn-outline" data-logout data-auth-only hidden>Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content profile-content">
+        <a id="back-link" href="../explorar/index.html" class="back-link">&larr; Voltar</a>
+
+        <p id="profile-loading" class="profile-loading" role="status">Carregando perfil...</p>
+
+        <div id="profile-error" class="form-error load-error" role="alert" hidden>
+            <span id="profile-error-message"></span>
+        </div>
+
+        <!-- Preenchido por scripts/perfil-publico.js (GET /users/{id}/profile). Só leitura. -->
+        <div id="profile-view" class="profile-form" hidden>
+            <section class="card form-section">
+                <div class="public-profile-header">
+                    <div id="profile-initials" class="avatar avatar-large" aria-hidden="true"></div>
+                    <div class="public-profile-identity">
+                        <h1 id="profile-name"></h1>
+                        <p id="profile-meta" class="public-profile-meta"></p>
+                    </div>
+                    <a id="profile-edit" class="btn btn-outline" href="../perfil/index.html" hidden>Editar meu perfil</a>
+                </div>
+
+                <h2 class="public-subtitle">Bio</h2>
+                <p id="profile-bio" class="public-text"></p>
+
+                <h2 class="public-subtitle">Interesses</h2>
+                <p id="profile-interests" class="public-text"></p>
+            </section>
+
+            <section class="card form-section">
+                <h2 class="public-subtitle">Tecnologias que domina</h2>
+                <div id="profile-mastered" class="public-tags"></div>
+            </section>
+
+            <section class="card form-section">
+                <h2 class="public-subtitle">Tecnologias que está estudando</h2>
+                <div id="profile-learning" class="public-tags"></div>
+            </section>
+        </div>
+
+        <!-- Dados públicos do GitHub (scripts/github.js, só leitura: sem o botão de atualizar) -->
+        <section id="github-section" class="card form-section github-section" hidden>
+            <div class="form-section-header">
+                <h2>GitHub</h2>
+            </div>
+            <p id="github-status" class="section-hint" role="status"></p>
+            <p id="github-error" class="form-error" role="alert" hidden></p>
+
+            <div id="github-content" class="github-content" hidden>
+                <div class="github-user">
+                    <img id="github-avatar" class="github-avatar" alt="" width="64" height="64">
+                    <div>
+                        <a id="github-name" class="github-name" target="_blank" rel="noopener noreferrer"></a>
+                        <p id="github-bio" class="github-bio"></p>
+                        <div class="github-stats">
+                            <span><strong id="github-public-repos"></strong> repositórios públicos</span>
+                            <span><strong id="github-followers"></strong> seguidores</span>
+                            <span><strong id="github-following"></strong> seguindo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="github-subtitle">Linguagens</h3>
+                <p class="field-hint">Linguagem principal de cada repositório próprio (forks não contam).</p>
+                <ul id="github-languages" class="github-languages"></ul>
+
+                <h3 class="github-subtitle">Repositórios atualizados recentemente</h3>
+                <ul id="github-repos" class="github-repos"></ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo"><img src="../../marca/web/logo-horizontal-footer.webp" alt="CodeGuild" width="101" height="32"></div>
+                <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../scripts/auth.js"></script>
+    <script src="../../scripts/api.js"></script>
+    <script src="../../scripts/user-header.js"></script>
+    <script src="../../scripts/public-header.js"></script>
+    <script src="../../scripts/projects.js"></script>
+    <script src="../../scripts/github.js"></script>
+    <script src="../../scripts/perfil-publico.js"></script>
+</body>
+</html>

@@ -31,7 +31,7 @@ function createProjectGridCard(project, own) {
         actions.append(edit);
     }
     const view = createElement("a", "btn btn-outline", "Ver projeto \u2192");
-    view.href = projectDetailsUrl(project.id);
+    view.href = projectDetailsUrl(project.id, "painel");
     actions.append(view);
     footer.append(actions);
 

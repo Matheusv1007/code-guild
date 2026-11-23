@@ -44,6 +44,7 @@ Regras em `services/launch_service.py`, aplicadas em `api/auth.py`, `api/users.p
 |---|---|---|
 | `/register`, `/login`, `/me`, `/launch` | `api/auth.py` | em uso pelo frontend |
 | `/me/profile` (GET/POST/PUT) | `api/profile.py` | em uso pelo frontend (perfil técnico) |
+| `/users/{id}/profile` (GET) | `api/profile.py` | público; em uso pelo frontend (perfil público) |
 | `/me/github`, `/me/github/refresh` | `api/github.py` | em uso pelo frontend (card GitHub do perfil) |
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
 | `/projects`, `/projects/{id}`, `/projects/{id}/close`, `/me/projects` | `api/projects.py` | em uso pelo frontend (explorar, detalhes, painel, projeto-form) |
@@ -72,6 +73,7 @@ Regras em `models/profile.py` (`ProfileWrite`), válidas em `POST` e `PUT /me/pr
 - `bio` até 1000 caracteres e `interests` até 500; texto só com espaços ou invisíveis vira `null`.
 - `github_username` segue `[A-Za-z0-9-]{1,39}` (`integration/github.py`, a mesma regra da consulta ao GitHub); `a b/../c?x=1`, link ou `@` → 422 ao salvar, não mais só ao buscar os dados.
 - Perfil antigo que passe dos limites continua sendo lido normalmente; ao salvar de novo, é preciso ajustar o texto.
+- `GET /users/{id}/profile` (público, `PublicProfileRead`): nome, nível, bio, interesses, tecnologias, username e os dados do GitHub **já salvos** (não consulta o GitHub; `next_refresh_at` sempre `null`). Não traz e-mail nem datas. Conta inexistente, inativa ou sem perfil → o mesmo 404 `Perfil não encontrado`, para a rota não revelar quais ids existem.
 
 ### Projetos
 

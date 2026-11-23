@@ -129,7 +129,9 @@ function createCandidateItem(vacancy, application) {
     const header = createElement("div", "candidate-header");
     const identity = createElement("div", "candidate-identity");
     const meta = [`@${applicant.username}`, applicant.level ? LEVEL_LABELS[applicant.level] : null].filter(Boolean);
-    identity.append(createElement("strong", null, applicantName(applicant)), createElement("span", "candidate-meta", meta.join(" · ")));
+    const candidateName = createElement("strong");
+    candidateName.append(createProfileLink(applicant.id, applicantName(applicant)));
+    identity.append(candidateName, createElement("span", "candidate-meta", meta.join(" · ")));
     header.append(identity, createApplicationStatusBadge(application.status));
     item.append(header);
 

@@ -497,6 +497,17 @@
     color: var(--text-secondary);
 }
 
+/* Nome que leva ao perfil público: mantém a cor do texto e destaca ao apontar ou focar */
+.profile-link {
+    color: inherit;
+}
+
+.profile-link:hover,
+.profile-link:focus-visible {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
 .team-status {
     font-size: 13px;
     color: var(--text-secondary);

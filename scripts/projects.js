@@ -8,14 +8,31 @@
 const PROJECT_DETAILS_PAGE = "../detalhes-projeto/index.html";
 const PROJECT_FORM_PAGE = "../projeto-form/index.html";
 const MY_APPLICATIONS_PAGE = "../minhas-candidaturas/index.html";
+const PUBLIC_PROFILE_PAGE = "../perfil-publico/index.html";
 
 const PROJECT_STATUS_LABELS = { OPEN: "Aberto", CLOSED: "Encerrado" };
 // Valores do enum Level do backend (models/enums.py); vaga sem nível = qualquer nível
 const LEVEL_LABELS = { BEGINNER: "Iniciante", INTERMEDIATE: "Intermediário", ADVANCED: "Avançado" };
 const APPLICATION_STATUS_LABELS = { PENDING: "Pendente", APPROVED: "Aprovada", REJECTED: "Rejeitada", CANCELED: "Cancelada" };
 
-function projectDetailsUrl(projectId) {
-    return `${PROJECT_DETAILS_PAGE}?id=${encodeURIComponent(projectId)}`;
+/**
+ * Detalhes do projeto. `from` ("painel" ou "minhas-candidaturas") diz de onde a pessoa veio e só
+ * serve para o menu marcar a página certa; sem ele vale "Explorar Projetos".
+ */
+function projectDetailsUrl(projectId, from = null) {
+    const origin = from ? `&from=${encodeURIComponent(from)}` : "";
+    return `${PROJECT_DETAILS_PAGE}?id=${encodeURIComponent(projectId)}${origin}`;
+}
+
+function publicProfileUrl(userId) {
+    return `${PUBLIC_PROFILE_PAGE}?id=${encodeURIComponent(userId)}`;
+}
+
+/** Nome que leva ao perfil público da pessoa. */
+function createProfileLink(userId, text, className = "profile-link") {
+    const link = createElement("a", className, text);
+    link.href = publicProfileUrl(userId);
+    return link;
 }
 
 function projectFormUrl(projectId) {
@@ -23,7 +40,7 @@ function projectFormUrl(projectId) {
 }
 
 /** Id numérico do parâmetro ?id= da URL atual, ou null se ausente/inválido. */
-function getProjectIdFromUrl() {
+function getIdFromUrl() {
     const value = new URLSearchParams(window.location.search).get("id");
     return value && /^\d+$/.test(value) ? Number(value) : null;
 }

@@ -3,7 +3,8 @@
  *
  * Depende de api.js (apiFetch, ApiError) e projects.js (helpers de projeto).
  * GET /projects?status=OPEN é público: funciona com ou sem sessão.
- * Paginação: PAGE_SIZE por vez; "Carregar mais" aparece enquanto a última página vier cheia.
+ * Paginação: PAGE_SIZE por vez; pede um projeto a mais só para saber se existe próxima página,
+ * então "Carregar mais" nunca aparece sem ter o que carregar (nem com exatamente PAGE_SIZE projetos).
  */
 
 const PAGE_SIZE = 20;
@@ -94,12 +95,13 @@ async function loadProjects() {
     let loaded = false;
 
     try {
-        const projects = await apiFetch(`/projects?status=OPEN&skip=${loadedCount}&limit=${PAGE_SIZE}`);
+        const fetched = await apiFetch(`/projects?status=OPEN&skip=${loadedCount}&limit=${PAGE_SIZE + 1}`);
+        const projects = fetched.slice(0, PAGE_SIZE);
         projects.forEach((project) => projectsList.append(createProjectListCard(project)));
         loadedCount += projects.length;
 
         projectsEmpty.hidden = loadedCount > 0;
-        projectsLoadMore.hidden = projects.length < PAGE_SIZE;
+        projectsLoadMore.hidden = fetched.length <= PAGE_SIZE;
         loaded = true;
     } catch (error) {
         projectsErrorMessage.textContent = describeProjectsLoadError(error);

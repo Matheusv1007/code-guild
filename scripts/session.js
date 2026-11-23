@@ -8,6 +8,7 @@
  * - GET /me: preenche nome e iniciais no header ([data-user-name], [data-user-initials])
  * - botões [data-logout]: encerram a sessão
  * - encerra a sessão sozinha quando o token expira com a página aberta
+ * - acompanha as outras abas: sair numa aba leva esta ao login; entrar com outra conta recarrega
  *
  * Scripts da página usam getCurrentUser() para reaproveitar a mesma chamada a /me.
  * Nome, iniciais e botão "Sair" vêm de user-header.js (compartilhado com as páginas públicas).
@@ -40,6 +41,7 @@ function scheduleSessionExpiry() {
 
 if (hasSession) {
     scheduleSessionExpiry();
+    syncSessionAcrossTabs(() => window.location.replace(LOGIN_PAGE));
 
     document.addEventListener("DOMContentLoaded", () => {
         bindLogoutButtons();

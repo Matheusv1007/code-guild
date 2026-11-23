@@ -22,17 +22,27 @@
 <body>
     <header class="header container">
         <div class="header-logo"><a href="../inicio/index.html"><img src="../../marca/web/logo-horizontal-header.webp" alt="CodeGuild" width="114" height="40"></a></div>
-        <nav class="header-nav">
+        <!-- Visitante: âncoras da landing. Com sessão: o mesmo menu das páginas internas (scripts/public-header.js) -->
+        <nav class="header-nav" data-guest-only>
             <a href="#lancamento">Lançamento</a>
             <a href="#como-funciona">Como funciona</a>
             <a href="#projetos">Projetos</a>
             <a href="#beneficios">Benefícios</a>
             <a href="#pre-cadastro">Pré-cadastro</a>
         </nav>
+        <nav class="header-nav" data-auth-only hidden>
+            <a href="../painel/index.html">Painel</a>
+            <a href="../explorar/index.html">Explorar Projetos</a>
+            <a href="../minhas-candidaturas/index.html">Minhas Candidaturas</a>
+            <a href="../perfil/index.html">Meu Perfil</a>
+        </nav>
         <div class="header-actions">
             <a href="../login/index.html" class="btn btn-outline" data-guest-only>Entrar</a>
             <a href="../cadastro/index.html" class="btn btn-primary" data-guest-only data-signup-link="Pré-cadastro">Criar conta</a>
-            <a href="../painel/index.html" class="btn btn-primary" data-auth-only hidden>Ir para o painel</a>
+            <div class="user-profile" data-auth-only hidden>
+                <span class="user-name" data-user-name></span>
+                <div class="avatar" data-user-initials></div>
+            </div>
             <button type="button" class="btn btn-outline" data-logout data-auth-only hidden>Sair</button>
         </div>
     </header>

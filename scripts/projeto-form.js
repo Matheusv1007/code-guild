@@ -10,7 +10,7 @@
 
 const GITHUB_PROJECT_URL_PATTERN = /^https:\/\/github\.com\/[A-Za-z0-9-]+(\/[A-Za-z0-9._-]+)?\/?$/;
 
-const editingProjectId = getProjectIdFromUrl();
+const editingProjectId = getIdFromUrl();
 const projectForm = document.getElementById("project-form");
 const projectFormTitle = document.getElementById("project-form-title");
 const projectFormSubtitle = document.getElementById("project-form-subtitle");
