@@ -1,12 +1,14 @@
 /**
- * Card "GitHub" da tela de perfil (paginas/perfil/index.html).
+ * Card "GitHub" das telas de perfil (paginas/perfil e paginas/perfil-publico).
  *
  * Depende de api.js (apiFetch, ApiError). 401 já é tratado por apiFetch (logout + login).
  * perfil.js chama loadGithubSection() depois de carregar e depois de salvar o perfil.
+ * perfil-publico.js chama renderGithub() com os dados que vêm no próprio perfil público.
  *
  * - GET /me/github: dados salvos no banco (não consulta o GitHub);
  * - POST /me/github/refresh: consulta o GitHub agora (botão "Buscar"/"Atualizar");
  *   o backend aceita no máximo uma atualização a cada 10 minutos (next_refresh_at);
+ * - sem o botão #github-refresh na página (perfil público) o card é só de leitura;
  * - qualquer erro aqui fica só neste card: o formulário de perfil continua funcionando
  *   e os dados já exibidos permanecem na tela.
  */
@@ -16,6 +18,7 @@ const githubRefresh = document.getElementById("github-refresh");
 const githubStatus = document.getElementById("github-status");
 const githubError = document.getElementById("github-error");
 const githubContent = document.getElementById("github-content");
+const githubReadOnly = githubRefresh === null;
 const githubFields = {
     avatar: document.getElementById("github-avatar"),
     name: document.getElementById("github-name"),
@@ -179,6 +182,9 @@ function renderGithubRepos(repositories) {
 
 /** Botão "Buscar"/"Atualizar": bloqueado até next_refresh_at e liberado sozinho depois. */
 function setRefreshButton(github) {
+    if (githubReadOnly) {
+        return;
+    }
     clearTimeout(githubRefreshTimer);
     githubRefresh.hidden = !github.username;
     githubRefresh.textContent = github.data ? "Atualizar dados" : "Buscar dados do GitHub";
@@ -201,6 +207,10 @@ function renderGithub(github) {
 
     if (!github.username) {
         githubContent.hidden = true;
+        if (githubReadOnly) {
+            githubSection.hidden = true; // perfil público: sem GitHub informado, o card nem aparece
+            return;
+        }
         githubStatus.textContent =
             "Informe seu usuário do GitHub em \"Informações pessoais\" e salve o perfil para exibir seu perfil público, repositórios e linguagens.";
         return;
@@ -208,7 +218,9 @@ function renderGithub(github) {
 
     if (!github.data) {
         githubContent.hidden = true;
-        githubStatus.textContent = `Os dados de @${github.username} ainda não foram buscados. Clique em "Buscar dados do GitHub".`;
+        githubStatus.textContent = githubReadOnly
+            ? `Os dados de @${github.username} no GitHub ainda não foram carregados.`
+            : `Os dados de @${github.username} ainda não foram buscados. Clique em "Buscar dados do GitHub".`;
         return;
     }
 
@@ -283,4 +295,6 @@ async function handleGithubRefresh() {
     }
 }
 
-githubRefresh.addEventListener("click", handleGithubRefresh);
+if (githubRefresh) {
+    githubRefresh.addEventListener("click", handleGithubRefresh);
+}

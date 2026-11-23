@@ -11,7 +11,7 @@
  * depois de uma aprovação.
  */
 
-const projectId = getProjectIdFromUrl();
+const projectId = getIdFromUrl();
 
 const projectLoading = document.getElementById("project-loading");
 const projectError = document.getElementById("project-error");
@@ -57,7 +57,9 @@ function renderProject(project) {
     projectFields.status.textContent = PROJECT_STATUS_LABELS[project.status] || project.status;
     projectFields.status.classList.toggle("match", open);
     projectFields.title.textContent = project.title;
-    projectFields.owner.textContent = `Criado por: ${ownerName}`;
+    // Quem ainda não criou perfil não tem página pública: o nome fica sem link.
+    const ownerLabel = () => (project.owner.full_name ? createProfileLink(project.owner.id, ownerName) : ownerName);
+    projectFields.owner.replaceChildren("Criado por: ", ownerLabel());
     projectFields.description.textContent = project.description;
 
     const githubUrl = project.github_url ? safeProjectGithubUrl(project.github_url) : null;
@@ -75,7 +77,7 @@ function renderProject(project) {
     projectClosedNotice.hidden = open;
 
     projectFields.ownerInitials.textContent = getInitials(ownerName);
-    projectFields.ownerName.textContent = ownerName;
+    projectFields.ownerName.replaceChildren(ownerLabel());
     projectFields.ownerUsername.textContent = `Responsável · @${project.owner.username}`;
 
     projectLoading.hidden = true;
@@ -91,7 +93,9 @@ function createTeamMember(member) {
     const avatar = createElement("div", "avatar", getInitials(name));
     avatar.setAttribute("aria-hidden", "true");
     const info = createElement("div", "member-info");
-    info.append(createElement("strong", null, name), createElement("span", null, `${member.vacancy_title} · @${member.username}`));
+    const nameLabel = createElement("strong");
+    nameLabel.append(createProfileLink(member.user_id, name));
+    info.append(nameLabel, createElement("span", null, `${member.vacancy_title} · @${member.username}`));
     item.append(avatar, info);
     return item;
 }
