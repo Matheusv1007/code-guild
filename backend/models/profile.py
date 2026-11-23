@@ -1,3 +1,4 @@
+import unicodedata
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
@@ -6,6 +7,8 @@ from sqlalchemy import JSON, Column
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, Relationship, SQLModel
 
+from integration.github import USERNAME_PATTERN as GITHUB_USERNAME_PATTERN
+
 from .common import utcnow
 from .enums import Level, TechnologyKind
 from .technology import TechnologyRead
@@ -13,6 +16,25 @@ from .technology import TechnologyRead
 if TYPE_CHECKING:
     from .technology import Technology
     from .user import User
+
+BIO_MAX_LENGTH = 1000
+INTERESTS_MAX_LENGTH = 500
+FULL_NAME_MIN_VISIBLE = 2
+
+
+def is_invisible(char: str) -> bool:
+    """Espaço, separador ou caractere de controle/formatação (ex.: espaço de largura zero)."""
+    return unicodedata.category(char)[0] in ("Z", "C")
+
+
+def trim_invisible(value: str) -> str:
+    """Tira das pontas o que `str.strip()` não tira: caracteres invisíveis como U+200B."""
+    start, end = 0, len(value)
+    while start < end and is_invisible(value[start]):
+        start += 1
+    while end > start and is_invisible(value[end - 1]):
+        end -= 1
+    return value[start:end]
 
 
 class ProfileTechnology(SQLModel, table=True):
@@ -47,21 +69,47 @@ class ProfileSummary(SQLModel):
 
 class ProfileWrite(ProfileBase):
     """Corpo de POST/PUT /me/profile: substitui o perfil inteiro, inclusive as tecnologias."""
-    full_name: str = Field(min_length=1, max_length=120)
+    full_name: str = Field(max_length=120)
     mastered_technology_ids: list[int] = Field(default_factory=list)
     learning_technology_ids: list[int] = Field(default_factory=list)
 
     @field_validator("full_name", mode="before")
     @classmethod
-    def strip_full_name(cls, value):
-        return value.strip() if isinstance(value, str) else value
+    def check_full_name(cls, value):
+        if not isinstance(value, str):
+            return value
+        value = trim_invisible(value)
+        if sum(not is_invisible(char) for char in value) < FULL_NAME_MIN_VISIBLE:
+            raise ValueError(f"O nome completo deve ter pelo menos {FULL_NAME_MIN_VISIBLE} caracteres visíveis")
+        return value
 
     @field_validator("bio", "interests", "github_username", mode="before")
     @classmethod
     def blank_to_none(cls, value):
         if isinstance(value, str):
-            value = value.strip()
-            return value or None
+            return trim_invisible(value) or None
+        return value
+
+    @field_validator("bio")
+    @classmethod
+    def check_bio(cls, value):
+        if value is not None and len(value) > BIO_MAX_LENGTH:
+            raise ValueError(f"A bio pode ter no máximo {BIO_MAX_LENGTH} caracteres")
+        return value
+
+    @field_validator("interests")
+    @classmethod
+    def check_interests(cls, value):
+        if value is not None and len(value) > INTERESTS_MAX_LENGTH:
+            raise ValueError(f"Os interesses podem ter no máximo {INTERESTS_MAX_LENGTH} caracteres")
+        return value
+
+    @field_validator("github_username")
+    @classmethod
+    def check_github_username(cls, value):
+        # Mesma regra usada na consulta ao GitHub: sem isso o erro só aparecia ao buscar os dados.
+        if value is not None and not GITHUB_USERNAME_PATTERN.fullmatch(value):
+            raise ValueError("O usuário do GitHub deve ter até 39 caracteres: letras, números e hífen, sem link ou @")
         return value
 
     @field_validator("mastered_technology_ids", "learning_technology_ids")
