@@ -36,7 +36,8 @@ O projeto é desenvolvido na disciplina *Desenvolvimento de Software para Web*. 
 - Perfil técnico: criar, consultar e editar (`/me/profile`).
 - Catálogo de tecnologias (`/technologies`).
 - Integração com a GitHub REST API na tela de perfil: perfil público, repositórios recentes e linguagens. Os dados ficam salvos no banco com a data da última consulta e são atualizados sob demanda (no máximo a cada 10 minutos); se o GitHub estiver fora do ar, os dados salvos continuam sendo exibidos e o resto do sistema funciona normalmente.
-- Navegação pública e autenticada: o header muda conforme a sessão; visitantes navegam pelas páginas públicas sem serem levados ao login.
+- Perfil público de outra pessoa (`paginas/perfil-publico/index.html?id=N`, `GET /users/{id}/profile`), só leitura e sem e-mail, com o card do GitHub. O nome do responsável, da equipe e dos candidatos nos detalhes do projeto leva a ele.
+- Navegação pública e autenticada: o header muda conforme a sessão (inclusive na landing); visitantes navegam pelas páginas públicas sem serem levados ao login; "Sair" numa página pública continua nela como visitante; sair, entrar ou trocar de conta numa aba vale para as outras abertas; o menu dos detalhes do projeto marca a página de onde a pessoa veio.
 - Projetos: criar, editar, listar e encerrar (`/projects`, `/me/projects`). O mural (explorar) e os detalhes são públicos; só o responsável edita ou encerra o projeto, e encerrar também encerra as vagas abertas dele. O painel mostra "Meus projetos" e os projetos abertos mais recentes.
 - Vagas: o responsável anuncia, edita e encerra vagas por especialidade, stack, nível e quantidade nos detalhes do projeto (`/projects/{id}/vacancies`, `/vacancies/{id}`). Cada vaga mostra quantas posições restam (quantidade menos candidaturas aprovadas); vaga encerrada, sem posição livre ou de projeto encerrado não aceita candidaturas. O mural mostra, por projeto, as vagas abertas e a stack pedida.
 - Landing page com as seções Como funciona, Projetos e Benefícios, contagem regressiva e pré-cadastro.
@@ -168,9 +169,9 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 
 | Página | Acesso |
 |---|---|
-| `paginas/inicio` | pública (landing; mostra "Ir para o painel" quando há sessão) |
+| `paginas/inicio` | pública (landing; com sessão, o header mostra o menu do app, o nome e "Sair") |
 | `paginas/login`, `paginas/cadastro` | visitante (com sessão, redirecionam ao painel; o login aceita `?next=<caminho>` e, depois de entrar, volta para essa página, só se for caminho interno como `../detalhes-projeto/index.html?id=3`) |
-| `paginas/explorar`, `paginas/detalhes-projeto` | públicas (header muda conforme a sessão; o responsável vê "Editar" e "Encerrar" nos detalhes) |
+| `paginas/explorar`, `paginas/detalhes-projeto`, `paginas/perfil-publico` | públicas (header muda conforme a sessão; o responsável vê "Editar" e "Encerrar" nos detalhes; `perfil-publico?id=N` mostra o perfil de outra pessoa) |
 | `paginas/painel`, `paginas/minhas-candidaturas`, `paginas/perfil`, `paginas/projeto-form` | privadas (sem sessão, redirecionam ao login com `?next=` da página aberta); `projeto-form` cria projeto ou, com `?id=N`, edita |
 
 ## Endpoints da API
