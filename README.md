@@ -63,6 +63,7 @@ code-guild/
 ├── paginas/                # uma pasta por tela: index.html + style.css
 ├── scripts/                # JavaScript compartilhado e de cada tela
 ├── estilos/global.css      # estilos compartilhados
+├── marca/web/              # logos e favicons otimizados para o site (WebP/PNG/ICO)
 ├── docs/                   # proposta, escopo e protótipo (PDF)
 └── README.md
 ```
