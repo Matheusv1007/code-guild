@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="marca/web/logo-vertical.webp" alt="CodeGuild" width="180">
+</p>
+
 # CodeGuild
 
 **Fraternidade Acadêmica de Desenvolvedores**
