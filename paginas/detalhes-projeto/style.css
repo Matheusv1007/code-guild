@@ -283,7 +283,7 @@
 .vacancy-form {
     margin-bottom: 24px;
     padding: 20px;
-    border: 1px solid rgba(12, 177, 114, 0.3);
+    border: 1px solid rgba(0, 135, 58, 0.3);
     border-radius: var(--border-radius);
     background-color: #f6fdf9;
 }
@@ -345,7 +345,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(12, 177, 114, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 135, 58, 0.1);
 }
 
 /* Stack: checkboxes com aparência de badge selecionável (mesmo visual do perfil) */
@@ -386,13 +386,13 @@
 }
 
 .tech-option input:checked + span {
-    background-color: rgba(12, 177, 114, 0.1);
+    background-color: rgba(0, 135, 58, 0.1);
     border-color: var(--primary-color);
     color: var(--primary-hover);
 }
 
 .tech-option input:focus-visible + span {
-    box-shadow: 0 0 0 3px rgba(12, 177, 114, 0.25);
+    box-shadow: 0 0 0 3px rgba(0, 135, 58, 0.25);
 }
 
 .form-error {

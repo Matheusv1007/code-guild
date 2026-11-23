@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="marca/web/logo-vertical.webp" alt="CodeGuild" width="180">
+</p>
+
 # CodeGuild
 
 **Fraternidade Acadêmica de Desenvolvedores**
@@ -63,6 +67,7 @@ code-guild/
 ├── paginas/                # uma pasta por tela: index.html + style.css
 ├── scripts/                # JavaScript compartilhado e de cada tela
 ├── estilos/global.css      # estilos compartilhados
+├── marca/web/              # logos e favicons otimizados para o site (WebP/PNG/ICO)
 ├── docs/                   # proposta, escopo e protótipo (PDF)
 └── README.md
 ```
