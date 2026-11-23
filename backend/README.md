@@ -64,6 +64,15 @@ Regras em `models/user.py` (`UserCreate`, `UserUpdate`) e `services/user_service
 - **Índice único de e-mail:** `uq_user_email_lower` (`lower(email)`) é criado na inicialização, também em banco que já existia (`create_all()` não faz isso sozinho). Se já houver e-mails repetidos, o índice não é criado e o log mostra `AVISO` com a consulta para achá-los; a checagem do serviço continua valendo. Resolva os repetidos e reinicie a API.
 - A senha do seed (`123456`) tem menos de 8 caracteres: só vale para essas contas de desenvolvimento, criadas direto no banco.
 
+### Perfil técnico
+
+Regras em `models/profile.py` (`ProfileWrite`), válidas em `POST` e `PUT /me/profile`; o front (`scripts/perfil.js`) repete as mesmas.
+
+- `full_name`: sem espaços nem caracteres invisíveis (ex.: U+200B) nas pontas, com no mínimo 2 caracteres visíveis e até 120.
+- `bio` até 1000 caracteres e `interests` até 500; texto só com espaços ou invisíveis vira `null`.
+- `github_username` segue `[A-Za-z0-9-]{1,39}` (`integration/github.py`, a mesma regra da consulta ao GitHub); `a b/../c?x=1`, link ou `@` → 422 ao salvar, não mais só ao buscar os dados.
+- Perfil antigo que passe dos limites continua sendo lido normalmente; ao salvar de novo, é preciso ajustar o texto.
+
 ### Projetos
 
 Regras em `services/project_service.py`; a autorização fica em `api/projects.py` (`ensure_project_owner`, compara `project.owner_id` com o usuário autenticado).

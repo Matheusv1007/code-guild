@@ -169,9 +169,9 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | Página | Acesso |
 |---|---|
 | `paginas/inicio` | pública (landing; mostra "Ir para o painel" quando há sessão) |
-| `paginas/login`, `paginas/cadastro` | visitante (com sessão, redirecionam ao painel) |
+| `paginas/login`, `paginas/cadastro` | visitante (com sessão, redirecionam ao painel; o login aceita `?next=<caminho>` e, depois de entrar, volta para essa página, só se for caminho interno como `../detalhes-projeto/index.html?id=3`) |
 | `paginas/explorar`, `paginas/detalhes-projeto` | públicas (header muda conforme a sessão; o responsável vê "Editar" e "Encerrar" nos detalhes) |
-| `paginas/painel`, `paginas/minhas-candidaturas`, `paginas/perfil`, `paginas/projeto-form` | privadas (sem sessão, redirecionam ao login); `projeto-form` cria projeto ou, com `?id=N`, edita |
+| `paginas/painel`, `paginas/minhas-candidaturas`, `paginas/perfil`, `paginas/projeto-form` | privadas (sem sessão, redirecionam ao login com `?next=` da página aberta); `projeto-form` cria projeto ou, com `?id=N`, edita |
 
 ## Endpoints da API
 
@@ -181,7 +181,7 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 | `POST /login` | — | devolve o token JWT; antes do lançamento só para a equipe (403 para os demais) |
 | `GET /launch` | — | data do lançamento e se a plataforma já está aberta (`{launch_at, open}`) |
 | `GET /me` | Bearer | usuário autenticado, com resumo do perfil (ou `null`) |
-| `GET /me/profile` · `POST /me/profile` · `PUT /me/profile` | Bearer | consulta, cria e edita o perfil técnico |
+| `GET /me/profile` · `POST /me/profile` · `PUT /me/profile` | Bearer | consulta, cria e edita o perfil técnico (422 se nome com menos de 2 caracteres visíveis, bio acima de 1000, interesses acima de 500 ou usuário do GitHub inválido) |
 | `GET /technologies` | — | catálogo de tecnologias |
 | `GET /me/github` | Bearer | dados do GitHub salvos no perfil (não consulta o GitHub) |
 | `POST /me/github/refresh` | Bearer | consulta o GitHub agora e salva (no máximo a cada 10 minutos) |
