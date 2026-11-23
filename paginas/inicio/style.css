@@ -436,7 +436,6 @@ html {
     font-family: inherit;
     color: var(--text-primary);
     background-color: white;
-    outline: none;
     transition: border-color 0.2s ease;
 }
 
