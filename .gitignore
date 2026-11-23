@@ -23,3 +23,6 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+# Prints de apresentacao do sistema (locais, nao versionar)
+docs/print-sistema/*
+!docs/print-sistema/.gitkeep

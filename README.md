@@ -74,7 +74,7 @@ code-guild/
 │   ├── planejamento/       # proposta e escopo, registro da escolha do nome (PDF)
 │   ├── prototipo/          # protótipo das telas (PDF)
 │   ├── auditoria/          # relatórios de auditoria do projeto
-│   └── print-sistema/      # reservada para a atividade de prints do sistema
+│   └── print-sistema/      # prints do sistema para a apresentação (só local, não versionado)
 └── README.md
 ```
 
@@ -209,7 +209,7 @@ Detalhes dos modelos e das camadas do backend: [`backend/README.md`](backend/REA
 
 ## Documentação
 
-A pasta `docs/` é organizada por assunto: `planejamento/` (documento de proposta e escopo, com MVP, arquitetura, regras e roadmap, e o registro da escolha do nome), `prototipo/` (protótipo das telas), `auditoria/` (relatórios de auditoria) e `print-sistema/` (reservada para uma atividade futura).
+A pasta `docs/` é organizada por assunto: `planejamento/` (documento de proposta e escopo, com MVP, arquitetura, regras e roadmap, e o registro da escolha do nome), `prototipo/` (protótipo das telas), `auditoria/` (relatórios de auditoria) e `print-sistema/` (prints do sistema para a apresentação; o conteúdo fica só na máquina de quem os gerou, ignorado pelo `.gitignore`).
 
 ---
 
