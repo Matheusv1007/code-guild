@@ -11,6 +11,7 @@ from integration.github import USERNAME_PATTERN as GITHUB_USERNAME_PATTERN
 
 from .common import utcnow
 from .enums import Level, TechnologyKind
+from .github import GitHubRead
 from .technology import TechnologyRead
 
 if TYPE_CHECKING:
@@ -138,6 +139,23 @@ class ProfileRead(SQLModel):
     learning: list[TechnologyRead] = []
     created_at: datetime
     updated_at: datetime
+
+
+class PublicProfileRead(SQLModel):
+    """
+    Perfil de outra pessoa (GET /users/{id}/profile), público e só de leitura.
+    Sem e-mail e sem datas de cadastro. `github` traz só o que está salvo (nunca consulta o GitHub);
+    `next_refresh_at` fica sempre null, pois só a própria pessoa atualiza.
+    """
+    user_id: int
+    username: str
+    full_name: str
+    level: Level
+    bio: str | None = None
+    interests: str | None = None
+    mastered: list[TechnologyRead] = []
+    learning: list[TechnologyRead] = []
+    github: GitHubRead
 
 
 class Profile(ProfileBase, table=True):

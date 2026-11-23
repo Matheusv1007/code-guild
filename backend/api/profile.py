@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from integration.database import SessionDep
-from models import ProfileRead, ProfileWrite, User
+from models import ProfileRead, ProfileWrite, PublicProfileRead, User
 from auth.dependencies import get_current_user
 from services import profile_service
 from services.profile_service import ProfileAlreadyExistsError
@@ -24,6 +24,15 @@ def read_my_profile(session: SessionDep, current_user: User = Depends(get_curren
     if not profile:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=PROFILE_NOT_FOUND)
     return profile_service.to_profile_read(session, profile)
+
+@profile_router.get("/users/{user_id}/profile", response_model=PublicProfileRead)
+def read_public_profile(user_id: int, session: SessionDep):
+    """Perfil de outra pessoa, público e só de leitura (sem e-mail). O mesmo 404 vale para conta inexistente,
+    inativa ou sem perfil, para a rota não servir para descobrir quais ids existem."""
+    profile = profile_service.get_public_profile(session, user_id)
+    if not profile:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Perfil não encontrado")
+    return profile
 
 @profile_router.post("/me/profile", response_model=ProfileRead, status_code=status.HTTP_201_CREATED)
 def create_my_profile(

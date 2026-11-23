@@ -4,7 +4,8 @@ from .token import Token, TokenData
 from .lead import Lead, LeadBase, LeadCreate, LeadRead
 from .enums import ApplicationStatus, Level, ProjectStatus, TechnologyKind, VacancyStatus
 from .technology import Technology, TechnologyBase, TechnologyRead
-from .profile import Profile, ProfileBase, ProfileRead, ProfileSummary, ProfileTechnology, ProfileWrite
+from .profile import (Profile, ProfileBase, ProfileRead, ProfileSummary, ProfileTechnology, ProfileWrite,
+                      PublicProfileRead)
 from .project import Project, ProjectBase, ProjectOwner, ProjectRead, ProjectWrite
 from .vacancy import Vacancy, VacancyBase, VacancyRead, VacancyTechnology, VacancyWrite
 from .application import (Application, ApplicationApplicant, ApplicationBase, ApplicationCreate, ApplicationRead,
@@ -18,7 +19,7 @@ __all__ = [
     "Lead", "LeadBase", "LeadCreate", "LeadRead",
     "ApplicationStatus", "Level", "ProjectStatus", "TechnologyKind", "VacancyStatus",
     "Technology", "TechnologyBase", "TechnologyRead",
-    "Profile", "ProfileBase", "ProfileRead", "ProfileSummary", "ProfileTechnology", "ProfileWrite",
+    "Profile", "ProfileBase", "ProfileRead", "ProfileSummary", "ProfileTechnology", "ProfileWrite", "PublicProfileRead",
     "Project", "ProjectBase", "ProjectOwner", "ProjectRead", "ProjectWrite",
     "Vacancy", "VacancyBase", "VacancyRead", "VacancyTechnology", "VacancyWrite",
     "Application", "ApplicationApplicant", "ApplicationBase", "ApplicationCreate", "ApplicationRead", "ProjectMember",

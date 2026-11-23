@@ -1,10 +1,10 @@
 from sqlalchemy.exc import IntegrityError
-from sqlmodel import delete, select
+from sqlmodel import col, delete, select
 from integration.database import SessionDep
-from models import (Profile, ProfileRead, ProfileTechnology, ProfileWrite, Technology, TechnologyKind,
-                    TechnologyRead, User)
+from models import (Profile, ProfileRead, ProfileTechnology, ProfileWrite, PublicProfileRead, Technology,
+                    TechnologyKind, TechnologyRead, User)
 from models.common import utcnow
-from services.github_service import clear_github_data
+from services.github_service import clear_github_data, to_github_read
 from services.technology_service import ensure_technologies_exist
 
 
@@ -33,6 +33,28 @@ def to_profile_read(session: SessionDep, profile: Profile) -> ProfileRead:
         **profile.model_dump(include=PROFILE_FIELDS | {"id", "created_at", "updated_at"}),
         mastered=technologies[TechnologyKind.MASTERED],
         learning=technologies[TechnologyKind.LEARNING],
+    )
+
+
+def get_public_profile(session: SessionDep, user_id: int) -> PublicProfileRead | None:
+    """Perfil de uma conta ativa, sem dados privados. None se a conta não existe, está inativa ou não tem perfil."""
+    row = session.exec(
+        select(Profile, User).join(User, User.id == Profile.user_id).where(User.id == user_id, col(User.is_active).is_(True))
+    ).first()
+    if row is None:
+        return None
+    profile, user = row
+    read = to_profile_read(session, profile)
+    return PublicProfileRead(
+        user_id=user.id,
+        username=user.username,
+        full_name=read.full_name,
+        level=read.level,
+        bio=read.bio,
+        interests=read.interests,
+        mastered=read.mastered,
+        learning=read.learning,
+        github=to_github_read(profile).model_copy(update={"next_refresh_at": None}),
     )
 
 
