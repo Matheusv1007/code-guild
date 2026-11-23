@@ -26,10 +26,13 @@
 }
 
 .auth-logo {
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--primary-color);
     margin-bottom: 16px;
+}
+
+.auth-logo img {
+    display: inline-block;
+    height: 120px;
+    width: auto;
 }
 
 .auth-header h1 {
@@ -87,14 +90,13 @@ input {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-size: 14px;
-    outline: none;
     transition: border-color 0.2s ease;
     font-family: inherit;
 }
 
 input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(12, 177, 114, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 135, 58, 0.1);
 }
 
 .form-error {

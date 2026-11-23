@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CodeGuild</title>
+    <link rel="icon" href="../../marca/web/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="../../marca/web/apple-touch-icon.png">
     <link rel="stylesheet" href="../../estilos/global.css">
     <link rel="stylesheet" href="style.css">
     <script src="../../scripts/auth.js"></script>
@@ -14,7 +16,7 @@
 <body class="dashboard-layout">
     <header class="header dashboard-header">
         <div class="container header-container">
-            <div class="header-logo"><a href="../inicio/index.html">CodeGuild</a></div>
+            <div class="header-logo"><a href="../inicio/index.html"><img src="../../marca/web/logo-horizontal-header.webp" alt="CodeGuild" width="114" height="40"></a></div>
             <nav class="header-nav">
                 <a href="../painel/index.html" class="active" aria-current="page">Painel</a>
                 <a href="../explorar/index.html">Explorar Projetos</a>
@@ -38,10 +40,11 @@
                 <p>Encontre seu próximo projeto acadêmico.</p>
             </div>
             
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar projetos ou tecnologias...">
-                <button class="btn btn-primary">Buscar</button>
-            </div>
+            <form class="search-bar" action="../explorar/index.html" method="get" role="search">
+                <label for="dashboard-search" class="visually-hidden">Buscar projetos ou tecnologias</label>
+                <input type="text" id="dashboard-search" name="q" placeholder="Buscar projetos ou tecnologias..." autocomplete="off" maxlength="100">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
         </section>
 
         <!-- Exibido por painel.js apenas quando GET /me devolve profile: null -->
@@ -97,7 +100,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">CodeGuild</div>
+                <div class="footer-logo"><img src="../../marca/web/logo-horizontal-footer.webp" alt="CodeGuild" width="101" height="32"></div>
                 <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
             </div>
         </div>

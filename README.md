@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="marca/web/logo-vertical.webp" alt="CodeGuild" width="180">
+</p>
+
 # CodeGuild
 
 **Fraternidade Acadêmica de Desenvolvedores**
@@ -63,7 +67,14 @@ code-guild/
 ├── paginas/                # uma pasta por tela: index.html + style.css
 ├── scripts/                # JavaScript compartilhado e de cada tela
 ├── estilos/global.css      # estilos compartilhados
-├── docs/                   # proposta, escopo e protótipo (PDF)
+├── marca/
+│   ├── originais/          # logos originais em alta resolução (fonte dos arquivos de web/)
+│   └── web/                # logos e favicons otimizados para o site (WebP/PNG/ICO)
+├── docs/
+│   ├── planejamento/       # proposta e escopo, registro da escolha do nome (PDF)
+│   ├── prototipo/          # protótipo das telas (PDF)
+│   ├── auditoria/          # relatórios de auditoria do projeto
+│   └── print-sistema/      # prints do sistema para a apresentação (só local, não versionado)
 └── README.md
 ```
 
@@ -198,7 +209,7 @@ Detalhes dos modelos e das camadas do backend: [`backend/README.md`](backend/REA
 
 ## Documentação
 
-A pasta `docs/` contém o documento de proposta e escopo (MVP, arquitetura, regras e roadmap), o protótipo das telas e o registro da escolha do nome.
+A pasta `docs/` é organizada por assunto: `planejamento/` (documento de proposta e escopo, com MVP, arquitetura, regras e roadmap, e o registro da escolha do nome), `prototipo/` (protótipo das telas), `auditoria/` (relatórios de auditoria) e `print-sistema/` (prints do sistema para a apresentação; o conteúdo fica só na máquina de quem os gerou, ignorado pelo `.gitignore`).
 
 ---
 

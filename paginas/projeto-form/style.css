@@ -79,7 +79,6 @@
     font-family: inherit;
     color: var(--text-primary);
     background-color: white;
-    outline: none;
     transition: border-color 0.2s ease;
 }
 
@@ -90,7 +89,7 @@
 .project-form input[type="text"]:focus,
 .project-form textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(12, 177, 114, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 135, 58, 0.1);
 }
 
 .field-hint {

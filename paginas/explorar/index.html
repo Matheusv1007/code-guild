@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explorar Projetos - CodeGuild</title>
+    <link rel="icon" href="../../marca/web/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="../../marca/web/apple-touch-icon.png">
     <link rel="stylesheet" href="../../estilos/global.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="explore-layout">
     <header class="header dashboard-header">
         <div class="container header-container">
-            <div class="header-logo"><a href="../inicio/index.html">CodeGuild</a></div>
+            <div class="header-logo"><a href="../inicio/index.html"><img src="../../marca/web/logo-horizontal-header.webp" alt="CodeGuild" width="114" height="40"></a></div>
             <nav class="header-nav">
                 <a href="../inicio/index.html" data-home-link>Início</a>
                 <a href="../explorar/index.html" class="active" aria-current="page">Explorar Projetos</a>
@@ -39,20 +41,20 @@
             </div>
             
             <div class="filters-bar">
-                <input type="text" class="search-input" placeholder="Buscar por termo...">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar por termo..." aria-label="Buscar projetos por termo" autocomplete="off">
                 
                 <div class="filter-group">
-                    <select class="filter-select">
+                    <select class="filter-select" aria-label="Filtrar por tecnologia">
                         <option value="">Tecnologia</option>
                         <option value="python">Python</option>
                         <option value="react">React</option>
                     </select>
-                    <select class="filter-select">
+                    <select class="filter-select" aria-label="Filtrar por nível">
                         <option value="">Nível</option>
                         <option value="iniciante">Iniciante</option>
                         <option value="intermediario">Intermediário</option>
                     </select>
-                    <select class="filter-select">
+                    <select class="filter-select" aria-label="Filtrar por status">
                         <option value="">Status</option>
                         <option value="aberto">Aberto</option>
                     </select>
@@ -75,6 +77,11 @@
                 <a href="../login/index.html" class="btn btn-primary" data-guest-only>Entrar para criar um projeto</a>
             </div>
 
+            <div id="projects-no-match" class="card results-empty" role="status" hidden>
+                <h2>Nenhum projeto encontrado</h2>
+                <p>Nenhum projeto aberto combina com o termo buscado. Tente outras palavras.</p>
+            </div>
+
             <!-- Preenchido por scripts/explorar.js (GET /projects?status=OPEN) -->
             <div id="projects-list" class="projects-list"></div>
 
@@ -87,7 +94,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">CodeGuild</div>
+                <div class="footer-logo"><img src="../../marca/web/logo-horizontal-footer.webp" alt="CodeGuild" width="101" height="32"></div>
                 <div class="footer-copyright">© 2026 CodeGuild. Todos os direitos reservados.</div>
             </div>
         </div>
