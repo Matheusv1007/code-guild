@@ -39,7 +39,7 @@
 
 .search-bar input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 168, 64, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 135, 58, 0.1);
 }
 
 .dashboard-section {

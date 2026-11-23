@@ -447,7 +447,7 @@ html {
 .lead-form input:focus,
 .lead-form textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 168, 64, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 135, 58, 0.1);
 }
 
 /* Campo inválido continua vermelho mesmo com foco (o foco vai para o primeiro campo inválido) */
@@ -468,9 +468,9 @@ html {
 
 .lead-form .form-success {
     padding: 12px 16px;
-    border: 1px solid rgba(0, 168, 64, 0.3);
+    border: 1px solid rgba(0, 135, 58, 0.3);
     border-radius: var(--border-radius);
-    background-color: rgba(0, 168, 64, 0.1);
+    background-color: rgba(0, 135, 58, 0.1);
     color: var(--primary-hover);
     font-size: 14px;
 }
