@@ -15,8 +15,13 @@ const PROJECT_STATUS_LABELS = { OPEN: "Aberto", CLOSED: "Encerrado" };
 const LEVEL_LABELS = { BEGINNER: "Iniciante", INTERMEDIATE: "Intermediário", ADVANCED: "Avançado" };
 const APPLICATION_STATUS_LABELS = { PENDING: "Pendente", APPROVED: "Aprovada", REJECTED: "Rejeitada", CANCELED: "Cancelada" };
 
-function projectDetailsUrl(projectId) {
-    return `${PROJECT_DETAILS_PAGE}?id=${encodeURIComponent(projectId)}`;
+/**
+ * Detalhes do projeto. `from` ("painel" ou "minhas-candidaturas") diz de onde a pessoa veio e só
+ * serve para o menu marcar a página certa; sem ele vale "Explorar Projetos".
+ */
+function projectDetailsUrl(projectId, from = null) {
+    const origin = from ? `&from=${encodeURIComponent(from)}` : "";
+    return `${PROJECT_DETAILS_PAGE}?id=${encodeURIComponent(projectId)}${origin}`;
 }
 
 function publicProfileUrl(userId) {

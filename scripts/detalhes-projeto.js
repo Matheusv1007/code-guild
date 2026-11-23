@@ -150,6 +150,20 @@ async function handleCloseProject() {
     }
 }
 
+// Páginas de onde se chega aos detalhes com ?from= (ver projectDetailsUrl em projects.js).
+const NAV_ORIGINS = {
+    painel: "[data-home-link]",
+    "minhas-candidaturas": 'a[href="../minhas-candidaturas/index.html"]',
+};
+
+/** Marca no menu a página de onde a pessoa veio; sem origem (ou como visitante), "Explorar Projetos". */
+function markNavOrigin(user) {
+    const selector = user !== null && NAV_ORIGINS[new URLSearchParams(window.location.search).get("from")];
+    const link = document.querySelector(`.header-nav ${selector || 'a[href="../explorar/index.html"]'}`);
+    link.classList.add("active");
+    link.setAttribute("aria-current", "page");
+}
+
 async function loadProjectPage() {
     if (projectId === null) {
         showPageError("Projeto não encontrado.");
@@ -171,4 +185,5 @@ async function loadProjectPage() {
 }
 
 projectFields.close.addEventListener("click", handleCloseProject);
+publicUserPromise.then(markNavOrigin);
 loadProjectPage();

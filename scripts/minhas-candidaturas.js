@@ -46,7 +46,7 @@ function createApplicationCard(application) {
 
     const actions = createElement("div", "app-actions");
     const link = createElement("a", "view-link", "Ver projeto");
-    link.href = projectDetailsUrl(application.project_id);
+    link.href = projectDetailsUrl(application.project_id, "minhas-candidaturas");
     actions.append(createApplicationStatusBadge(application.status), link);
     if (application.status === "PENDING") {
         const cancel = createElement("button", "btn btn-outline cancel-btn", "Cancelar candidatura");
