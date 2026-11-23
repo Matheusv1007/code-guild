@@ -40,10 +40,11 @@
                 <p>Encontre seu próximo projeto acadêmico.</p>
             </div>
             
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar projetos ou tecnologias...">
-                <button class="btn btn-primary">Buscar</button>
-            </div>
+            <form class="search-bar" action="../explorar/index.html" method="get" role="search">
+                <label for="dashboard-search" class="visually-hidden">Buscar projetos ou tecnologias</label>
+                <input type="text" id="dashboard-search" name="q" placeholder="Buscar projetos ou tecnologias..." autocomplete="off" maxlength="100">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
         </section>
 
         <!-- Exibido por painel.js apenas quando GET /me devolve profile: null -->
