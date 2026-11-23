@@ -177,7 +177,7 @@ Abra http://127.0.0.1:5500/paginas/inicio/index.html.
 
 | Método e rota | Autenticação | Descrição |
 |---|---|---|
-| `POST /register` | — | cria conta (usuário, e-mail, senha); antes do lançamento responde 403 |
+| `POST /register` | — | cria conta (usuário, e-mail, senha); 422 se a senha tiver menos de 8 caracteres ou mais de 72 bytes, o usuário não seguir `[a-z0-9._-]{3,30}` ou o e-mail for inválido; 400 se usuário ou e-mail já existirem (sem diferenciar maiúsculas); antes do lançamento responde 403 |
 | `POST /login` | — | devolve o token JWT; antes do lançamento só para a equipe (403 para os demais) |
 | `GET /launch` | — | data do lançamento e se a plataforma já está aberta (`{launch_at, open}`) |
 | `GET /me` | Bearer | usuário autenticado, com resumo do perfil (ou `null`) |

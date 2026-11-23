@@ -9,6 +9,10 @@
 
 const LOGIN_REDIRECT_DELAY_MS = 1500;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Mesmas regras do backend (models/user.py). O usuário é salvo em minúsculas.
+const USERNAME_PATTERN = /^[a-z0-9._-]{3,30}$/;
+const PASSWORD_MIN_LENGTH = 8;
+const PASSWORD_MAX_BYTES = 72; // limite do bcrypt; letra com acento ocupa 2 bytes
 
 // Já logado: não faz sentido criar outra conta.
 redirectIfAuthenticated();
@@ -35,18 +39,50 @@ function hideRegisterMessages() {
     registerSuccess.hidden = true;
 }
 
-/** Retorna a mensagem do primeiro problema encontrado ou null se estiver tudo certo. */
+function getFieldError(name) {
+    return document.getElementById(`${name}-error`);
+}
+
+function showFieldError(name, message) {
+    const error = getFieldError(name);
+    error.textContent = message;
+    error.hidden = false;
+    registerForm.elements[name].setAttribute("aria-invalid", "true");
+}
+
+function clearFieldError(name) {
+    const error = getFieldError(name);
+    error.textContent = "";
+    error.hidden = true;
+    registerForm.elements[name].removeAttribute("aria-invalid");
+}
+
+/** Mensagem de cada campo inválido, na ordem do formulário: { username: "...", password: "..." }. */
 function validateRegisterForm({ username, email, password, passwordConfirm }) {
-    if (!username || !email || !password || !passwordConfirm) {
-        return "Preencha todos os campos.";
+    const errors = {};
+    if (!username) {
+        errors.username = "Informe o usuário.";
+    } else if (!USERNAME_PATTERN.test(username)) {
+        errors.username = "Use de 3 a 30 caracteres: letras, números, ponto, hífen ou sublinhado, sem espaços.";
     }
-    if (!EMAIL_PATTERN.test(email)) {
-        return "Informe um email válido.";
+    if (!email) {
+        errors.email = "Informe o email.";
+    } else if (!EMAIL_PATTERN.test(email)) {
+        errors.email = "Informe um email válido.";
     }
-    if (password !== passwordConfirm) {
-        return "As senhas não coincidem.";
+    if (!password) {
+        errors.password = "Informe a senha.";
+    } else if ([...password].length < PASSWORD_MIN_LENGTH) {
+        errors.password = `A senha deve ter pelo menos ${PASSWORD_MIN_LENGTH} caracteres.`;
+    } else if (new TextEncoder().encode(password).length > PASSWORD_MAX_BYTES) {
+        errors.password = `A senha deve ter no máximo ${PASSWORD_MAX_BYTES} bytes (letras com acento contam 2).`;
     }
-    return null;
+    if (!passwordConfirm) {
+        errors.password_confirm = "Confirme a senha.";
+    } else if (password !== passwordConfirm) {
+        errors.password_confirm = "As senhas não coincidem.";
+    }
+    return errors;
 }
 
 function registerErrorMessage(error) {
@@ -56,34 +92,38 @@ function registerErrorMessage(error) {
     if (error.status === 0) {
         return "Não foi possível conectar ao servidor. Verifique se a API está rodando e tente novamente.";
     }
-    if (error.status === 400) {
-        // Única regra de negócio do backend hoje: username único.
-        return "Este nome de usuário já está em uso. Escolha outro.";
-    }
-    if (error.status === 422) {
-        return "Dados inválidos. Revise os campos e tente novamente.";
-    }
-    if (error.status === 403) {
-        // Cadastro fechado até o lançamento: o backend explica até quando.
+    if (error.status === 400 || error.status === 422 || error.status === 403) {
+        // 400: usuário ou email já em uso; 422: regra de campo; 403: cadastro fechado até o lançamento.
+        // Em todos o backend manda a mensagem pronta.
         return error.message;
     }
     return "Não foi possível criar a conta agora. Tente novamente.";
 }
+
+// Campo corrigido: a mensagem some assim que a pessoa volta a digitar nele.
+Array.from(registerForm.elements).forEach((input) => {
+    if (input.name) {
+        input.addEventListener("input", () => clearFieldError(input.name));
+    }
+});
 
 registerForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     hideRegisterMessages();
 
     const fields = {
-        username: registerForm.username.value.trim(),
+        username: registerForm.username.value.trim().toLowerCase(),
         email: registerForm.email.value.trim(),
         password: registerForm.password.value,
         passwordConfirm: registerForm.password_confirm.value,
     };
 
-    const validationError = validateRegisterForm(fields);
-    if (validationError) {
-        showRegisterError(validationError);
+    ["username", "email", "password", "password_confirm"].forEach(clearFieldError);
+    const fieldErrors = validateRegisterForm(fields);
+    const invalidNames = Object.keys(fieldErrors);
+    if (invalidNames.length > 0) {
+        invalidNames.forEach((name) => showFieldError(name, fieldErrors[name]));
+        registerForm.elements[invalidNames[0]].focus();
         return;
     }
 

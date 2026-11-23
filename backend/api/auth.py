@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from integration.database import SessionDep
 from models import Token, User, UserCreate, UserLogin, UserMe, UserRead
 from auth.dependencies import get_current_user, require_registration_open
-from services import auth_service, launch_service
+from services import auth_service, launch_service, user_service
 
 auth_router = APIRouter(tags=["Autenticação"])
 
@@ -13,13 +13,10 @@ auth_router = APIRouter(tags=["Autenticação"])
     dependencies=[Depends(require_registration_open)],
 )
 def register_user(user: UserCreate, session: SessionDep):
-    db_user = auth_service.register_user(session, user)
-    if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username já registrado",
-        )
-    return db_user
+    try:
+        return user_service.create_user(session, user)
+    except user_service.AccountConflictError as conflict:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=conflict.detail)
 
 @auth_router.post("/login", response_model=Token)
 def login_for_access_token(session: SessionDep, user_login: UserLogin):
