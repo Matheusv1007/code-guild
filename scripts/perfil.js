@@ -10,7 +10,12 @@
  * - a mesma tecnologia nunca fica marcada em "domino" e "estudando" ao mesmo tempo.
  */
 
+// Mesmos limites e regras do backend (models/profile.py)
 const GITHUB_USERNAME_PATTERN = /^[A-Za-z0-9-]+$/;
+const BIO_MAX_LENGTH = 1000;
+const INTERESTS_MAX_LENGTH = 500;
+const FULL_NAME_MIN_VISIBLE = 2;
+const INVISIBLE_CHAR = /[\p{Z}\p{C}]/u; // espaços, separadores e caracteres de controle/formatação
 const TECHNOLOGY_KINDS = ["mastered", "learning"];
 
 const profileForm = document.getElementById("profile-form");
@@ -156,14 +161,24 @@ function buildProfilePayload() {
 
 /** Retorna a mensagem do primeiro problema encontrado ou null se estiver tudo certo. */
 function validateProfilePayload(payload) {
-    if (!payload.full_name) {
+    const visibleNameChars = [...payload.full_name].filter((char) => !INVISIBLE_CHAR.test(char)).length;
+    if (visibleNameChars === 0) {
         return "Informe seu nome completo.";
+    }
+    if (visibleNameChars < FULL_NAME_MIN_VISIBLE) {
+        return `O nome completo deve ter pelo menos ${FULL_NAME_MIN_VISIBLE} caracteres visíveis.`;
     }
     if (payload.full_name.length > 120) {
         return "O nome completo pode ter no máximo 120 caracteres.";
     }
     if (!payload.level) {
         return "Selecione seu nível.";
+    }
+    if ([...payload.bio].length > BIO_MAX_LENGTH) {
+        return `A bio pode ter no máximo ${BIO_MAX_LENGTH} caracteres.`;
+    }
+    if ([...payload.interests].length > INTERESTS_MAX_LENGTH) {
+        return `Os interesses podem ter no máximo ${INTERESTS_MAX_LENGTH} caracteres.`;
     }
     if (payload.github_username.length > 39) {
         return "O usuário do GitHub pode ter no máximo 39 caracteres.";

@@ -107,7 +107,7 @@ function createApplyAction(vacancy) {
     }
     if (vacancyViewer === null) {
         const login = createElement("a", "btn btn-primary", "Entrar para se candidatar");
-        login.href = LOGIN_PAGE;
+        login.href = getLoginUrl();
         return login;
     }
     const apply = createElement("button", "btn btn-primary", "Candidatar-se");
@@ -129,7 +129,9 @@ function createCandidateItem(vacancy, application) {
     const header = createElement("div", "candidate-header");
     const identity = createElement("div", "candidate-identity");
     const meta = [`@${applicant.username}`, applicant.level ? LEVEL_LABELS[applicant.level] : null].filter(Boolean);
-    identity.append(createElement("strong", null, applicantName(applicant)), createElement("span", "candidate-meta", meta.join(" · ")));
+    const candidateName = createElement("strong");
+    candidateName.append(createProfileLink(applicant.id, applicantName(applicant)));
+    identity.append(candidateName, createElement("span", "candidate-meta", meta.join(" · ")));
     header.append(identity, createApplicationStatusBadge(application.status));
     item.append(header);
 
@@ -475,7 +477,7 @@ function showApplicationNotice(kind, message, link = null) {
 
 function openApplicationModal(vacancy) {
     if (!isAuthenticated()) {
-        window.location.href = LOGIN_PAGE;
+        window.location.href = getLoginUrl();
         return;
     }
     applyingVacancy = vacancy;

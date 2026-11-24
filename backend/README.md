@@ -44,6 +44,7 @@ Regras em `services/launch_service.py`, aplicadas em `api/auth.py`, `api/users.p
 |---|---|---|
 | `/register`, `/login`, `/me`, `/launch` | `api/auth.py` | em uso pelo frontend |
 | `/me/profile` (GET/POST/PUT) | `api/profile.py` | em uso pelo frontend (perfil técnico) |
+| `/users/{id}/profile` (GET) | `api/profile.py` | público; em uso pelo frontend (perfil público) |
 | `/me/github`, `/me/github/refresh` | `api/github.py` | em uso pelo frontend (card GitHub do perfil) |
 | `/technologies` | `api/technologies.py` | em uso pelo frontend |
 | `/projects`, `/projects/{id}`, `/projects/{id}/close`, `/me/projects` | `api/projects.py` | em uso pelo frontend (explorar, detalhes, painel, projeto-form) |
@@ -52,6 +53,27 @@ Regras em `services/launch_service.py`, aplicadas em `api/auth.py`, `api/users.p
 | `/users` | `api/users.py` | `POST` cria conta (igual a `/register`); `GET`/`PUT`/`DELETE /users/{id}` só da própria conta. Não há listagem de usuários |
 | `/leads` (POST) | `api/leads.py` | pré-cadastro, em uso pela landing; sem rota de listagem |
 | `/items` | `api/item.py` | exemplo de aula, sem uso no produto |
+
+### Contas: cadastro e login
+
+Regras em `models/user.py` (`UserCreate`, `UserUpdate`) e `services/user_service.py`; limite de senha em `auth/security.py`. Valem para `POST /register`, `POST /users` e `PUT /users/{id}` (só nos campos enviados).
+
+- **Senha:** mínimo de 8 caracteres e máximo de 72 **bytes** (limite do bcrypt; "ç" ocupa 2). Fora disso → 422 com a mensagem.
+- **Username:** sem espaços nas pontas, salvo em minúsculas e no formato `[a-z0-9._-]{3,30}`. Repetido, sem diferenciar maiúsculas ("Pedro" com "pedro" existente) → 400.
+- **E-mail:** obrigatório, com formato válido (até 254 caracteres), salvo em minúsculas e único sem diferenciar maiúsculas → 400 `E-mail já registrado`.
+- **Login:** sem regras de formato, para contas antigas fora do padrão (ex.: `Yago.Ic02`) continuarem entrando. Senha acima de 72 bytes → 401 `Usuário ou senha incorretos` (nunca 500). O nome exato tem prioridade; se não houver, vale a conta que bate ignorando maiúsculas (desde que seja só uma).
+- **Índice único de e-mail:** `uq_user_email_lower` (`lower(email)`) é criado na inicialização, também em banco que já existia (`create_all()` não faz isso sozinho). Se já houver e-mails repetidos, o índice não é criado e o log mostra `AVISO` com a consulta para achá-los; a checagem do serviço continua valendo. Resolva os repetidos e reinicie a API.
+- A senha do seed (`123456`) tem menos de 8 caracteres: só vale para essas contas de desenvolvimento, criadas direto no banco.
+
+### Perfil técnico
+
+Regras em `models/profile.py` (`ProfileWrite`), válidas em `POST` e `PUT /me/profile`; o front (`scripts/perfil.js`) repete as mesmas.
+
+- `full_name`: sem espaços nem caracteres invisíveis (ex.: U+200B) nas pontas, com no mínimo 2 caracteres visíveis e até 120.
+- `bio` até 1000 caracteres e `interests` até 500; texto só com espaços ou invisíveis vira `null`.
+- `github_username` segue `[A-Za-z0-9-]{1,39}` (`integration/github.py`, a mesma regra da consulta ao GitHub); `a b/../c?x=1`, link ou `@` → 422 ao salvar, não mais só ao buscar os dados.
+- Perfil antigo que passe dos limites continua sendo lido normalmente; ao salvar de novo, é preciso ajustar o texto.
+- `GET /users/{id}/profile` (público, `PublicProfileRead`): nome, nível, bio, interesses, tecnologias, username e os dados do GitHub **já salvos** (não consulta o GitHub; `next_refresh_at` sempre `null`). Não traz e-mail nem datas. Conta inexistente, inativa ou sem perfil → o mesmo 404 `Perfil não encontrado`, para a rota não revelar quais ids existem.
 
 ### Projetos
 
@@ -90,7 +112,7 @@ Regras em `services/application_service.py`; a autorização fica em `api/applic
 
 | Tabela | Arquivo | Observação |
 |---|---|---|
-| `user` | `user.py` | `username` único; senha só em hash |
+| `user` | `user.py` | `username` único (sem diferenciar maiúsculas no cadastro); e-mail único por índice em `lower(email)`; senha só em hash |
 | `technology` | `technology.py` | catálogo compartilhado (perfil, vagas e futuro match); populado pelo seed |
 | `profile` | `profile.py` | 1:1 com `user` (`user_id` único). `full_name`, `bio`, `level`, `interests`, `github_username` opcional; `github_data` (JSON) e `github_updated_at` guardam a última consulta ao GitHub (descartados quando o `github_username` muda) |
 | `profile_technology` | `profile.py` | PK (profile, technology, `kind`); `kind` = MASTERED ou LEARNING |

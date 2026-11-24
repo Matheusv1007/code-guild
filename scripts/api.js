@@ -37,7 +37,8 @@ function extractErrorMessage(data, response) {
         return detail;
     }
     if (Array.isArray(detail) && detail.length > 0) {
-        return detail.map((item) => item.msg).join("; ");
+        // Os validadores do backend chegam como "Value error, <mensagem>": só a mensagem interessa.
+        return detail.map((item) => String(item.msg).replace(/^Value error, /, "")).join("; ");
     }
     return `Erro ${response.status} ao comunicar com a API`;
 }

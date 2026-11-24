@@ -7,7 +7,9 @@
  * - com sessão: mostra [data-auth-only] ("Minhas Candidaturas", "Meu Perfil", nome, iniciais, "Sair",
  *   "Candidatar-se"); [data-home-link] vira "Painel" → painel, e busca GET /me;
  * - token expirado (ao abrir ou com a página aberta) ou recusado (401): apaga o token e volta ao
- *   estado anônimo, sem redirecionar.
+ *   estado anônimo, sem redirecionar;
+ * - "Sair": apaga o token e recarrega a mesma página como visitante (não vai ao login);
+ * - sair, entrar ou trocar de conta em outra aba recarrega esta (syncSessionAcrossTabs, auth.js).
  *
  * Scripts da página usam `publicUserPromise` (usuário de GET /me ou null, sem sessão ou com a
  * API fora do ar) para reaproveitar a mesma chamada. A promessa nunca é rejeitada.
@@ -40,6 +42,12 @@ function endPublicSession() {
     setHeaderSession(false);
 }
 
+/** Botão "Sair" numa página pública: recarrega a página já como visitante (controles do responsável somem). */
+function leavePublicSession() {
+    removeToken();
+    window.location.reload();
+}
+
 /** Equivalente ao scheduleSessionExpiry() de session.js, mas sem levar ao login. */
 function schedulePublicSessionExpiry() {
     const token = getToken();
@@ -63,7 +71,7 @@ async function initPublicHeader() {
     }
 
     setHeaderSession(true);
-    bindLogoutButtons();
+    bindLogoutButtons(leavePublicSession);
     schedulePublicSessionExpiry();
 
     try {
@@ -82,4 +90,5 @@ async function initPublicHeader() {
     }
 }
 
+syncSessionAcrossTabs();
 const publicUserPromise = initPublicHeader();

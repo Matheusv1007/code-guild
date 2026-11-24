@@ -1,0 +1,72 @@
+/* Perfil público: usa o layout e o card do GitHub de ../perfil/style.css (carregado antes na página) */
+
+.public-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.public-profile-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.public-profile-identity h1 {
+    font-size: 28px;
+    color: #111827;
+    overflow-wrap: anywhere;
+}
+
+.public-profile-meta {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.avatar-large {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    font-size: 22px;
+}
+
+.public-subtitle {
+    font-size: 16px;
+    color: #111827;
+    margin: 20px 0 8px;
+}
+
+.public-profile-header + .public-subtitle {
+    margin-top: 16px;
+}
+
+.form-section > .public-subtitle:first-child {
+    margin-top: 0;
+}
+
+.public-text {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-line; /* bio e interesses mantêm as quebras de linha que a pessoa digitou */
+    overflow-wrap: anywhere;
+}
+
+.public-empty {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* createTechnologyTags (projects.js) devolve um .tags; o espaçamento dele é de cada página */
+.public-tags .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+@media (max-width: 500px) {
+    .public-profile-header {
+        flex-wrap: wrap;
+    }
+}

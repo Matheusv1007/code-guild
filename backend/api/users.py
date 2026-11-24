@@ -25,13 +25,10 @@ def create_user(
     session: SessionDep,
     user: UserCreate,
 ):
-    db_user = user_service.create_user(session, user)
-    if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username já registrado",
-        )
-    return db_user
+    try:
+        return user_service.create_user(session, user)
+    except user_service.AccountConflictError as conflict:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=conflict.detail)
 
 @users_router.get("/users/{user_id}", response_model=UserRead)
 def read_user(
@@ -54,7 +51,10 @@ def update_user(
     current_user: User = Depends(get_current_user),
 ):
     ensure_own_account(user_id, current_user)
-    user = user_service.update_user(session, user_id, user_update)
+    try:
+        user = user_service.update_user(session, user_id, user_update)
+    except user_service.AccountConflictError as conflict:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=conflict.detail)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado"
